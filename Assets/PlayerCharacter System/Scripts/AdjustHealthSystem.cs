@@ -50,7 +50,7 @@ namespace Test.CharacterStats
                 StatsChunk = GetArchetypeChunkComponentType<Stats>(false),
                 EntityChunk = GetArchetypeChunkEntityType(),
                 entityCommandBuffer = _entityCommandBufferSystem.CreateCommandBuffer().ToConcurrent()
-            }.ScheduleParallel(_increaseHealth, systemDeps);
+            }.Schedule(_increaseHealth, systemDeps);
 
             systemDeps = new DecreaseHealthJob()
             {
@@ -102,26 +102,31 @@ namespace Test.CharacterStats
             NativeArray<Stats> stats = chunk.GetNativeArray<Stats>(StatsChunk);
             NativeArray<IncreaseHealthTag> healthChanges = chunk.GetNativeArray<IncreaseHealthTag>(IncreaseChunk);
             NativeArray<Entity> entities = chunk.GetNativeArray(EntityChunk);
-
             for (int i = 0; i < chunk.Count; i++)
             {
                 Stats stat = stats[i];
                 Entity entity = entities[i];
                 IncreaseHealthTag healthChange = healthChanges[i];
-                stat.CurHealth += healthChange.value;
-                while (healthChange.Iterations>0) {
+
+                if (healthChange.Iterations > 0)
+                {
                     if (healthChange.Timer > 0.0f)
                     {
                         healthChange.Timer -= DeltaTime;
                     }
-                    else {
-                        healthChanges[i] = healthChange;
+                    else
+                    {
+                        stat.CurHealth += healthChange.value;
                         healthChange.Timer = healthChange.Frequency;
                         healthChange.Iterations--;
                     }
+                    stats[i] = stat;
+                    healthChanges[i] = healthChange;
                 }
-                 entityCommandBuffer.RemoveComponent<IncreaseHealthTag>(chunkIndex, entity); 
-
+                else
+                {
+                    entityCommandBuffer.RemoveComponent<IncreaseHealthTag>(chunkIndex, entity);
+                }
             }
             
         }
@@ -146,8 +151,7 @@ namespace Test.CharacterStats
                 Stats stat = stats[i];
                 Entity entity = entities[i];
                 DecreaseHealthTag healthChange = healthChanges[i];
-                stat.CurHealth -= healthChange.value;
-                while (healthChange.Iterations > 0)
+                if (healthChange.Iterations > 0)
                 {
                     if (healthChange.Timer > 0.0f)
                     {
@@ -155,13 +159,17 @@ namespace Test.CharacterStats
                     }
                     else
                     {
-                        healthChanges[i] = healthChange;
+                        stat.CurHealth -= healthChange.value;
                         healthChange.Timer = healthChange.Frequency;
                         healthChange.Iterations--;
                     }
+                    stats[i] = stat;
+                    healthChanges[i] = healthChange;
                 }
-                entityCommandBuffer.RemoveComponent<DecreaseHealthTag>(chunkIndex, entity);
-
+                else
+                {
+                    entityCommandBuffer.RemoveComponent<DecreaseHealthTag>(chunkIndex, entity);
+                }
             }
         }
     }
@@ -185,8 +193,7 @@ namespace Test.CharacterStats
                 Stats stat = stats[i];
                 Entity entity = entities[i];
                 IncreaseManaTag manaChange = manaChanges[i];
-                stat.CurMana += manaChange.value;
-                while (manaChange.Iterations > 0)
+                if (manaChange.Iterations > 0)
                 {
                     if (manaChange.Timer > 0.0f)
                     {
@@ -194,13 +201,17 @@ namespace Test.CharacterStats
                     }
                     else
                     {
-                        manaChanges[i] = manaChange;
+                        stat.CurMana += manaChange.value;
                         manaChange.Timer = manaChange.Frequency;
                         manaChange.Iterations--;
                     }
+                    stats[i] = stat;
+                    manaChanges[i] = manaChange;
                 }
-                entityCommandBuffer.RemoveComponent<DecreaseHealthTag>(chunkIndex, entity);
-
+                else
+                {
+                    entityCommandBuffer.RemoveComponent<DecreaseHealthTag>(chunkIndex, entity);
+                }
             }
         }
     }
@@ -223,8 +234,7 @@ namespace Test.CharacterStats
                 Stats stat = stats[i];
                 Entity entity = entities[i];
                 DecreaseManaTag manaChange = manaChanges[i];
-                stat.CurMana -= manaChange.value;
-                while (manaChange.Iterations > 0)
+                if (manaChange.Iterations > 0)
                 {
                     if (manaChange.Timer > 0.0f)
                     {
@@ -232,13 +242,17 @@ namespace Test.CharacterStats
                     }
                     else
                     {
-                        manaChanges[i] = manaChange;
+                        stat.CurMana -= manaChange.value;
                         manaChange.Timer = manaChange.Frequency;
                         manaChange.Iterations--;
                     }
+                    stats[i] = stat;
+                    manaChanges[i] = manaChange;
                 }
-                entityCommandBuffer.RemoveComponent<DecreaseHealthTag>(chunkIndex, entity);
-
+                else
+                {
+                    entityCommandBuffer.RemoveComponent<DecreaseHealthTag>(chunkIndex, entity);
+                }
             }
         }
     }

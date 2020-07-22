@@ -183,7 +183,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChangeValue: 25
   addering:
-  - {fileID: 11400000, guid: 8f0d556c56fe50443b2ec8bbef52364b, type: 2}
+  - {fileID: 11400000, guid: 5fa69137951380a40bd60918be05ae65, type: 2}
+  Inventory:
+    ItemsInInventory: []
+    MaxInventorySize: 0
 --- !u!114 &109663246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,8 +213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Inventory:
-    ItemInInventory:
-    - {fileID: 0}
+    ItemsInInventory: []
     MaxInventorySize: 10
 --- !u!114 &109663248
 MonoBehaviour:
@@ -225,7 +227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ab0c7c23808dbc4db2b736208fc62cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurHealth: 300
+  CurHealth: 50
   MaxHealth: 300
   CurMana: 30
   MaxMana: 30

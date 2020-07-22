@@ -11,15 +11,7 @@ namespace Test.CharacterStats
     public class PlayerCharacter : MonoBehaviour, IConvertGameObjectToEntity
     {
         [Range(0, 999)]
-        [SerializeField] int _curHealth;
-        public int CurHealth {
-            get { return _curHealth; }
-            private set { if (value > MaxHealth)
-                    _curHealth = MaxHealth;
-                else
-                    _curHealth = value;
-            }
-        }
+        public int CurHealth;
 
         [Range(0, 999)]
         public int MaxHealth;
@@ -31,7 +23,7 @@ namespace Test.CharacterStats
         Entity selfEntityRef;
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
-            var data = new Stats() { CurHealth = _curHealth, CurMana = CurMana, MaxHealth = MaxHealth, MaxMana = MaxMana };
+            var data = new Stats() { CurHealth = CurHealth, CurMana = CurMana, MaxHealth = MaxHealth, MaxMana = MaxMana };
             dstManager.AddComponentData(entity, data);
             dstManager.AddComponent<Unity.Transforms.CopyTransformFromGameObject>(entity);
             selfEntityRef = entity;
@@ -40,26 +32,28 @@ namespace Test.CharacterStats
 
         private void Start()
         {
-            _curHealth = MaxHealth;
+           // CurHealth = MaxHealth;
             CurMana = MaxMana;
         }
         //need to make a job to account for resistence and level in the future
-        public void IncreaseHealth(int Change){
-            World.DefaultGameObjectInjectionWorld.EntityManager.AddComponentData(selfEntityRef, new IncreaseHealthTag() { value = Change });
+        public void IncreaseHealth(int Change, uint Iterations, float Frequency){
+
+
+            World.DefaultGameObjectInjectionWorld.EntityManager.AddComponentData(selfEntityRef, new IncreaseHealthTag() { value = Change , Frequency = Frequency, Iterations= Iterations});
         }
 
-        public void IncreaseMana(int Change) {
-            World.DefaultGameObjectInjectionWorld.EntityManager.AddComponentData(selfEntityRef, new IncreaseManaTag() { value = Change });
+        public void IncreaseMana(int Change, uint Iterations, float Frequency) {
+            World.DefaultGameObjectInjectionWorld.EntityManager.AddComponentData(selfEntityRef, new IncreaseManaTag() { value = Change, Frequency = Frequency, Iterations = Iterations });
 
         }
-        public void DecreaseHealth(int Change)
+        public void DecreaseHealth(int Change, uint Iterations, float Frequency)
         {
-            World.DefaultGameObjectInjectionWorld.EntityManager.AddComponentData(selfEntityRef, new DecreaseHealthTag() { value = Change });
+            World.DefaultGameObjectInjectionWorld.EntityManager.AddComponentData(selfEntityRef, new DecreaseHealthTag() { value = Change, Frequency = Frequency, Iterations = Iterations });
         }
 
-        public void DecreaseMana(int Change)
+        public void DecreaseMana(int Change, uint Iterations, float Frequency)
         {
-            World.DefaultGameObjectInjectionWorld.EntityManager.AddComponentData(selfEntityRef, new DecreaseManaTag() { value = Change });
+            World.DefaultGameObjectInjectionWorld.EntityManager.AddComponentData(selfEntityRef, new DecreaseManaTag() { value = Change, Frequency = Frequency, Iterations = Iterations });
 
         }
     }

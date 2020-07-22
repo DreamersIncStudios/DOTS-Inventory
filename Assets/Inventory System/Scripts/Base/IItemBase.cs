@@ -1,5 +1,6 @@
 ﻿using Unity.Entities;
 using UnityEngine;
+using Test.CharacterStats;
 namespace Dreamers.InventorySystem
 {
 
@@ -35,13 +36,17 @@ namespace Dreamers.InventorySystem
         public ItemType Type { get { return _type; } }
         [SerializeField] bool _stackable;
         public bool Stackable { get { return _stackable; } }
-        [SerializeField] bool _disposible;
-        public bool Disposible { get { return _disposible; } }
+        //[SerializeField] bool _disposible;
+        public bool Disposible { get { return !QuestItem; } }
         [SerializeField] bool _questItem;
         public bool QuestItem { get { return _questItem; } }
 
-        public abstract void Use(InventoryBase inventoryBase, int IndexOf);
-       
+        public  void Use(InventoryBase inventoryBase, int IndexOf)
+        {
+            RemoveFromInvertory(inventoryBase, IndexOf);
+
+        }
+        public abstract void Use(InventoryBase inventoryBase, int IndexOf, PlayerCharacter player);
 
         public virtual void AddToInventory(InventoryBase inventory)
         {

@@ -10,12 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72aa084a1fca1fc47899e29728a89b4d, type: 3}
-  m_Name: Meds
+  m_Name: test potion
   m_EditorClassIdentifier: 
   _itemID: 1
-  _itemName: Potion
-  _value: 10
+  _itemName: Health Potion
+  _desc: 
+  _value: 0
   _type: 0
   _stackable: 1
   _disposible: 1
   _questItem: 0
+  _recoverAmount: 10
+  _iterations: 10
+  _freq: 5
+  _recoverWhat: 0
