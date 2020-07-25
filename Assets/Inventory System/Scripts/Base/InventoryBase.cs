@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Dreamers.InventorySystem {
+namespace Dreamers.InventorySystem.Base {
     [System.Serializable]
     public class InventoryBase
     {
         public List<ItemSlot> ItemsInInventory;
         public uint MaxInventorySize;
         public bool OpenSlots { get { return ItemsInInventory.Count < MaxInventorySize; } }
+
+
+
 
     }
 

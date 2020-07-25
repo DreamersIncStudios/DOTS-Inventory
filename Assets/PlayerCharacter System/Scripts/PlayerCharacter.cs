@@ -10,6 +10,7 @@ namespace Test.CharacterStats
 {
     public class PlayerCharacter : MonoBehaviour, IConvertGameObjectToEntity
     {
+        public uint Level;
         [Range(0, 999)]
         public int CurHealth;
 
@@ -21,11 +22,13 @@ namespace Test.CharacterStats
         [Range(0, 999)]
         public int MaxMana;
         Entity selfEntityRef;
+        public DynamicBuffer<EffectStatusBuffer> StatusBuffers;
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
             var data = new Stats() { CurHealth = CurHealth, CurMana = CurMana, MaxHealth = MaxHealth, MaxMana = MaxMana };
             dstManager.AddComponentData(entity, data);
             dstManager.AddComponent<Unity.Transforms.CopyTransformFromGameObject>(entity);
+            StatusBuffers = dstManager.AddBuffer<EffectStatusBuffer>(entity);
             selfEntityRef = entity;
 
         }
@@ -56,6 +59,11 @@ namespace Test.CharacterStats
             World.DefaultGameObjectInjectionWorld.EntityManager.AddComponentData(selfEntityRef, new DecreaseManaTag() { value = Change, Frequency = Frequency, Iterations = Iterations });
 
         }
+        public void AddStatus(StatusEffect StatusToAdd) { }
+        public void RemoveStatus(StatusEffect StatusToAdd) { }
+        public void RemoveStatus(EffectStatus StatusName) { }
+
+
     }
     public struct IncreaseHealthTag : IComponentData {
         public int value;

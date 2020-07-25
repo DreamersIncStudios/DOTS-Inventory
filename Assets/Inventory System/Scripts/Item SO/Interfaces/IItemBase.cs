@@ -1,6 +1,8 @@
 ﻿using Unity.Entities;
 using UnityEngine;
 using Test.CharacterStats;
+using Dreamers.InventorySystem.Base;
+
 namespace Dreamers.InventorySystem
 {
 
@@ -18,7 +20,7 @@ namespace Dreamers.InventorySystem
         void Use(InventoryBase inventoryBase, int IndexOf);
 
         void AddToInventory(InventoryBase inventory);
-        void RemoveFromInvertory(InventoryBase inventory, int IndexOf);
+        void RemoveFromInventory(InventoryBase inventory, int IndexOf);
 
     }
     [System.Serializable]
@@ -32,8 +34,8 @@ namespace Dreamers.InventorySystem
         public string Description { get { return _desc; } }
         [SerializeField] int _value;
         public int Value { get { return _value; } }
-        [SerializeField] ItemType _type;
-        public ItemType Type { get { return _type; } }
+       
+        public ItemType Type { get { return ItemType.None; } }
         [SerializeField] bool _stackable;
         public bool Stackable { get { return _stackable; } }
         //[SerializeField] bool _disposible;
@@ -43,11 +45,15 @@ namespace Dreamers.InventorySystem
 
         public  void Use(InventoryBase inventoryBase, int IndexOf)
         {
-            RemoveFromInvertory(inventoryBase, IndexOf);
+            RemoveFromInventory(inventoryBase, IndexOf);
 
         }
         public abstract void Use(InventoryBase inventoryBase, int IndexOf, PlayerCharacter player);
 
+        //How we handle Equip Potions
+        public abstract void Equip(InventoryBase inventoryBase, EquipmentBase Equipment,int IndexOf, PlayerCharacter player);
+        public abstract void Unequip(InventoryBase inventoryBase, EquipmentBase Equipment, PlayerCharacter player, int IndexOf);
+        
         public virtual void AddToInventory(InventoryBase inventory)
         {
             bool addNewSlot = true; ;
@@ -70,7 +76,7 @@ namespace Dreamers.InventorySystem
 
         }
 
-        public void RemoveFromInvertory(InventoryBase inventory, int IndexOf) // consider having inventory
+        public void RemoveFromInventory(InventoryBase inventory, int IndexOf) // consider having inventory
         {
             ItemSlot updateItem = inventory.ItemsInInventory[IndexOf];
             if (Stackable && updateItem.Count > 1)
@@ -83,6 +89,6 @@ namespace Dreamers.InventorySystem
     }
     public enum ItemType
     {
-        Weapon, Potion, Armor
+        None, Weapon, Potion, Armor
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 using Dreamers.InventorySystem;
 using Unity.Entities;
 using Test.CharacterStats;
+using Dreamers.InventorySystem.Base;
 
 public class Testadder : MonoBehaviour,IConvertGameObjectToEntity
 {
