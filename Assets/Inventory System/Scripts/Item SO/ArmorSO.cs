@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Test.CharacterStats;
+using Stats;
 using Dreamers.InventorySystem.Base;
 using Dreamers.InventorySystem.Interfaces;
 namespace Dreamers.InventorySystem
@@ -27,18 +27,19 @@ namespace Dreamers.InventorySystem
             RemoveFromInventory(inventoryBase, IndexOf);
             if (player.Level >= LevelRqd)
             {
+                GameObject armorModel = Instantiate(Model);
                 switch (ArmorType)
                 {
                     case ArmorType.Arms:
                         Equipment.Arms.Unequip(inventoryBase, Equipment, player, 0);
                         Equipment.Arms = this;
-                        GameObject armPiece = Instantiate(Model);
+                        armorModel.transform.SetParent(player.transform);
                         RemoveFromInventory(inventoryBase, IndexOf);
                         break;
                     case ArmorType.Chest:
                         Equipment.Chest.Unequip(inventoryBase, Equipment, player, 0);
                         Equipment.Chest = this;
-                        GameObject chestPiece = Instantiate(Model);
+                        armorModel.transform.SetParent(player.transform);
 
                         RemoveFromInventory(inventoryBase, IndexOf);
 
@@ -46,7 +47,7 @@ namespace Dreamers.InventorySystem
                     case ArmorType.Helmet:
                         Equipment.Helmet.Unequip(inventoryBase, Equipment, player, 0);
                         Equipment.Helmet = this;
-                        GameObject HelmetPiece = Instantiate(Model);
+                        armorModel.transform.SetParent(player.transform);
 
                         RemoveFromInventory(inventoryBase, IndexOf);
 
@@ -54,14 +55,14 @@ namespace Dreamers.InventorySystem
                     case ArmorType.Legs:
                         Equipment.Legs.Unequip(inventoryBase, Equipment, player, 0);
                         Equipment.Legs = this;
-                        GameObject legPiece = Instantiate(Model);
+                        armorModel.transform.SetParent(player.transform);
                         RemoveFromInventory(inventoryBase, IndexOf);
 
                         break;
                     case ArmorType.Signature:
                         Equipment.Signature.Unequip(inventoryBase, Equipment, player, 0);
                         Equipment.Signature = this;
-                        GameObject signaturePiece = Instantiate(Model);
+                        armorModel.transform.SetParent(player.transform);
                         RemoveFromInventory(inventoryBase, IndexOf);
 
                         break;

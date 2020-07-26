@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Dreamers.InventorySystem;
 using Unity.Entities;
-using Test.CharacterStats;
+using Stats;
 using Dreamers.InventorySystem.Base;
 
 public class Testadder : MonoBehaviour,IConvertGameObjectToEntity
@@ -11,6 +11,7 @@ public class Testadder : MonoBehaviour,IConvertGameObjectToEntity
     public uint ChangeValue;
     public List<ItemBaseSO> addering;
     public InventoryBase Inventory;
+    private PlayerCharacter PC;
     public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
     {
         dstManager.AddComponentData(entity, new SubtractWalletValue() { Change = ChangeValue });
@@ -20,17 +21,34 @@ public class Testadder : MonoBehaviour,IConvertGameObjectToEntity
     // Start is called before the first frame update
     void Start()
     {
+        PC = this.GetComponent<PlayerCharacter>();
         Inventory = this.GetComponent<CharacterInventory>().Inventory;
         addering[0].AddToInventory(Inventory);
         addering[0].AddToInventory(Inventory);
         addering[0].AddToInventory(Inventory);
 
-        Inventory.ItemsInInventory[0].Item.Use(Inventory, 0, this.GetComponent<PlayerCharacter>());
+        SetupPC();
+       
+         Inventory.ItemsInInventory[0].Item.Use(Inventory, 0, this.GetComponent<PlayerCharacter>());
     }
+    void SetupPC() {
+        PC.Name = "Test";
+        PC.Level = 5;
+        PC.GetPrimaryAttribute((int)AttributeName.Level).BaseValue = 5;
+        PC.GetPrimaryAttribute((int)AttributeName.Vitality).BaseValue = 50;
+        PC.GetPrimaryAttribute((int)AttributeName.WillPower).BaseValue = 11;
+        PC.GetPrimaryAttribute((int)AttributeName.Concentration).BaseValue = 10;
+        PC.GetPrimaryAttribute((int)AttributeName.Strength).BaseValue = 14;
+        PC.GetPrimaryAttribute((int)AttributeName.Charisma).BaseValue = 13;
+        PC.GetPrimaryAttribute((int)AttributeName.Luck).BaseValue = 12;
+        PC.GetPrimaryAttribute((int)AttributeName.Awareness).BaseValue = 12;
+        PC.GetPrimaryAttribute((int)AttributeName.Speed).BaseValue = 17;
+        PC.GetPrimaryAttribute((int)AttributeName.Skill).BaseValue = 20;
+        PC.GetPrimaryAttribute((int)AttributeName.Resistance).BaseValue = 12;
+        PC.GetVital((int)VitalName.Health).BaseValue = 360;
+        PC.GetVital((int)VitalName.Mana).BaseValue = 40;
+        PC.SetupStatsModifiers(); 
+        PC.StatUpdate();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

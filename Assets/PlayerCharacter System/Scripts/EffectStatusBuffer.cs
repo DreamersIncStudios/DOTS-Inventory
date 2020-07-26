@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Entities;
 
-namespace Test.CharacterStats
+namespace Stats
 {
     public struct EffectStatusBuffer : IBufferElementData
     {

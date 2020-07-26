@@ -1,5 +1,5 @@
 ﻿
-namespace Test.CharacterStats
+namespace Stats
 {
     public enum EffectStatus 
     {

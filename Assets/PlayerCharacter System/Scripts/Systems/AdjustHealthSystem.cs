@@ -4,7 +4,7 @@ using UnityEngine;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Collections;
-namespace Test.CharacterStats
+namespace Stats
 {
     public class AdjustHealthSystem : SystemBase
     {
@@ -23,19 +23,19 @@ namespace Test.CharacterStats
             base.OnCreate();
             _increaseHealth = GetEntityQuery(new EntityQueryDesc()
             {
-                All = new ComponentType[] { ComponentType.ReadWrite(typeof(Stats)), ComponentType.ReadWrite(typeof(IncreaseHealthTag)) }
+                All = new ComponentType[] { ComponentType.ReadWrite(typeof(PlayerStatComponent)), ComponentType.ReadWrite(typeof(IncreaseHealthTag)) }
             });
             _decreaseHealth = GetEntityQuery(new EntityQueryDesc()
             {
-                All = new ComponentType[] { ComponentType.ReadWrite(typeof(Stats)), ComponentType.ReadWrite(typeof(DecreaseHealthTag)) }
+                All = new ComponentType[] { ComponentType.ReadWrite(typeof(PlayerStatComponent)), ComponentType.ReadWrite(typeof(DecreaseHealthTag)) }
             });
             _increaseMana = GetEntityQuery(new EntityQueryDesc()
             {
-                All = new ComponentType[] { ComponentType.ReadWrite(typeof(Stats)), ComponentType.ReadWrite(typeof(IncreaseManaTag)) }
+                All = new ComponentType[] { ComponentType.ReadWrite(typeof(PlayerStatComponent)), ComponentType.ReadWrite(typeof(IncreaseManaTag)) }
             });
             _decreaseMana = GetEntityQuery(new EntityQueryDesc()
             {
-                All = new ComponentType[] { ComponentType.ReadWrite(typeof(Stats)), ComponentType.ReadWrite(typeof(DecreaseManaTag)) }
+                All = new ComponentType[] { ComponentType.ReadWrite(typeof(PlayerStatComponent)), ComponentType.ReadWrite(typeof(DecreaseManaTag)) }
             });
             _entityCommandBufferSystem = GetCommandBufferSystem();
         }
@@ -47,7 +47,7 @@ namespace Test.CharacterStats
             {
                 DeltaTime = Time.DeltaTime,
                 IncreaseChunk = GetArchetypeChunkComponentType<IncreaseHealthTag>(false),
-                StatsChunk = GetArchetypeChunkComponentType<Stats>(false),
+                StatsChunk = GetArchetypeChunkComponentType<PlayerStatComponent>(false),
                 EntityChunk = GetArchetypeChunkEntityType(),
                 entityCommandBuffer = _entityCommandBufferSystem.CreateCommandBuffer().ToConcurrent()
             }.Schedule(_increaseHealth, systemDeps);
@@ -56,7 +56,7 @@ namespace Test.CharacterStats
             {
                 DeltaTime = Time.DeltaTime,
                 DecreaseChunk = GetArchetypeChunkComponentType<DecreaseHealthTag>(false),
-                StatsChunk = GetArchetypeChunkComponentType<Stats>(false),
+                StatsChunk = GetArchetypeChunkComponentType<PlayerStatComponent>(false),
                 EntityChunk = GetArchetypeChunkEntityType(),
                 entityCommandBuffer = _entityCommandBufferSystem.CreateCommandBuffer().ToConcurrent()
             }.ScheduleParallel(_decreaseHealth, systemDeps);
@@ -66,7 +66,7 @@ namespace Test.CharacterStats
             {
                 DeltaTime = Time.DeltaTime,
                 IncreaseChunk = GetArchetypeChunkComponentType<IncreaseManaTag>(false),
-                StatsChunk = GetArchetypeChunkComponentType<Stats>(false),
+                StatsChunk = GetArchetypeChunkComponentType<PlayerStatComponent>(false),
                 EntityChunk = GetArchetypeChunkEntityType(),
                 entityCommandBuffer = _entityCommandBufferSystem.CreateCommandBuffer().ToConcurrent()
             }.ScheduleParallel(_increaseMana, systemDeps);
@@ -76,7 +76,7 @@ namespace Test.CharacterStats
             {
                 DeltaTime = Time.DeltaTime,
                 DecreaseChunk = GetArchetypeChunkComponentType<DecreaseManaTag>(false),
-                StatsChunk = GetArchetypeChunkComponentType<Stats>(false),
+                StatsChunk = GetArchetypeChunkComponentType<PlayerStatComponent>(false),
                 EntityChunk = GetArchetypeChunkEntityType(),
                 entityCommandBuffer = _entityCommandBufferSystem.CreateCommandBuffer().ToConcurrent()
             }.ScheduleParallel(_decreaseMana, systemDeps);
@@ -91,7 +91,7 @@ namespace Test.CharacterStats
 
     public struct IncreaseHealthJob : IJobChunk
     {
-        public ArchetypeChunkComponentType<Stats> StatsChunk;
+        public ArchetypeChunkComponentType<PlayerStatComponent> StatsChunk;
         public ArchetypeChunkComponentType<IncreaseHealthTag> IncreaseChunk;
         public float DeltaTime;
         [ReadOnly] public ArchetypeChunkEntityType EntityChunk;
@@ -99,12 +99,12 @@ namespace Test.CharacterStats
 
         public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
         {
-            NativeArray<Stats> stats = chunk.GetNativeArray<Stats>(StatsChunk);
+            NativeArray<PlayerStatComponent> stats = chunk.GetNativeArray<PlayerStatComponent>(StatsChunk);
             NativeArray<IncreaseHealthTag> healthChanges = chunk.GetNativeArray<IncreaseHealthTag>(IncreaseChunk);
             NativeArray<Entity> entities = chunk.GetNativeArray(EntityChunk);
             for (int i = 0; i < chunk.Count; i++)
             {
-                Stats stat = stats[i];
+                PlayerStatComponent stat = stats[i];
                 Entity entity = entities[i];
                 IncreaseHealthTag healthChange = healthChanges[i];
 
@@ -134,7 +134,7 @@ namespace Test.CharacterStats
 
     public struct DecreaseHealthJob : IJobChunk
     {
-        public ArchetypeChunkComponentType<Stats> StatsChunk;
+        public ArchetypeChunkComponentType<PlayerStatComponent> StatsChunk;
         public ArchetypeChunkComponentType<DecreaseHealthTag> DecreaseChunk;
         public float DeltaTime;
         [ReadOnly] public ArchetypeChunkEntityType EntityChunk;
@@ -142,13 +142,13 @@ namespace Test.CharacterStats
 
         public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
         {
-            NativeArray<Stats> stats = chunk.GetNativeArray<Stats>(StatsChunk);
+            NativeArray<PlayerStatComponent> stats = chunk.GetNativeArray<PlayerStatComponent>(StatsChunk);
             NativeArray<DecreaseHealthTag> healthChanges = chunk.GetNativeArray<DecreaseHealthTag>(DecreaseChunk);
             NativeArray<Entity> entities = chunk.GetNativeArray(EntityChunk);
 
             for (int i = 0; i < chunk.Count; i++)
             {
-                Stats stat = stats[i];
+                PlayerStatComponent stat = stats[i];
                 Entity entity = entities[i];
                 DecreaseHealthTag healthChange = healthChanges[i];
                 if (healthChange.Iterations > 0)
@@ -176,7 +176,7 @@ namespace Test.CharacterStats
 
     public struct IncreaseManaJob : IJobChunk
     {
-        public ArchetypeChunkComponentType<Stats> StatsChunk;
+        public ArchetypeChunkComponentType<PlayerStatComponent> StatsChunk;
         public ArchetypeChunkComponentType<IncreaseManaTag> IncreaseChunk;
         public float DeltaTime;
         [ReadOnly] public ArchetypeChunkEntityType EntityChunk;
@@ -184,13 +184,13 @@ namespace Test.CharacterStats
 
         public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
         {
-            NativeArray<Stats> stats = chunk.GetNativeArray<Stats>(StatsChunk);
+            NativeArray<PlayerStatComponent> stats = chunk.GetNativeArray<PlayerStatComponent>(StatsChunk);
             NativeArray<IncreaseManaTag> manaChanges = chunk.GetNativeArray<IncreaseManaTag>(IncreaseChunk);
             NativeArray<Entity> entities = chunk.GetNativeArray(EntityChunk);
 
             for (int i = 0; i < chunk.Count; i++)
             {
-                Stats stat = stats[i];
+                PlayerStatComponent stat = stats[i];
                 Entity entity = entities[i];
                 IncreaseManaTag manaChange = manaChanges[i];
                 if (manaChange.Iterations > 0)
@@ -217,7 +217,7 @@ namespace Test.CharacterStats
     }
     public struct DecreaseManaJob : IJobChunk
     {
-        public ArchetypeChunkComponentType<Stats> StatsChunk;
+        public ArchetypeChunkComponentType<PlayerStatComponent> StatsChunk;
         public ArchetypeChunkComponentType<DecreaseManaTag> DecreaseChunk;
         public float DeltaTime;
         [ReadOnly] public ArchetypeChunkEntityType EntityChunk;
@@ -225,13 +225,13 @@ namespace Test.CharacterStats
 
         public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
         {
-            NativeArray<Stats> stats = chunk.GetNativeArray<Stats>(StatsChunk);
+            NativeArray<PlayerStatComponent> stats = chunk.GetNativeArray<PlayerStatComponent>(StatsChunk);
             NativeArray<DecreaseManaTag> manaChanges = chunk.GetNativeArray<DecreaseManaTag>(DecreaseChunk);
             NativeArray<Entity> entities = chunk.GetNativeArray(EntityChunk);
 
             for (int i = 0; i < chunk.Count; i++)
             {
-                Stats stat = stats[i];
+                PlayerStatComponent stat = stats[i];
                 Entity entity = entities[i];
                 DecreaseManaTag manaChange = manaChanges[i];
                 if (manaChange.Iterations > 0)

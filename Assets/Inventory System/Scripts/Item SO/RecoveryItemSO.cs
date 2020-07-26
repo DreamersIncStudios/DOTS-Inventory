@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Test.CharacterStats;
+using Stats;
 using Dreamers.InventorySystem.Base;
 
 namespace Dreamers.InventorySystem {

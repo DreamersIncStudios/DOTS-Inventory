@@ -1,6 +1,6 @@
 ﻿using Unity.Entities;
 using UnityEngine;
-using Test.CharacterStats;
+using Stats;
 using Dreamers.InventorySystem.Base;
 
 namespace Dreamers.InventorySystem
