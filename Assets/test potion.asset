@@ -16,11 +16,10 @@ MonoBehaviour:
   _itemName: Health Potion
   _desc: 
   _value: 0
-  _type: 0
+  _type: 2
   _stackable: 1
-  _disposible: 1
   _questItem: 0
   _recoverAmount: 10
   _iterations: 10
-  _freq: 5
+  _freq: 10
   _recoverWhat: 0

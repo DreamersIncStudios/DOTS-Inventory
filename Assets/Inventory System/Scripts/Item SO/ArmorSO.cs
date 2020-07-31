@@ -6,70 +6,84 @@ using Dreamers.InventorySystem.Base;
 using Dreamers.InventorySystem.Interfaces;
 namespace Dreamers.InventorySystem
 {
+    [CreateAssetMenu(fileName = "Armor Item Data", menuName = "Item System/Armor Item", order = 1)]
+
     public class ArmorSO : ItemBaseSO, IEquipable, IArmor
     {
-        public new ItemType Type { get { return ItemType.Armor; } }
+
         public EquipmentType Equipment { get { return EquipmentType.Armor; } }
 
-        [SerializeField] GameObject _model;
+        [SerializeField] private GameObject _model;
         public GameObject Model { get { return _model; } }
-        [SerializeField] ArmorType _armorType;
+        [SerializeField] private bool _equipToHuman;
+        public bool EquipToHuman { get { return _equipToHuman; } }
+
+        [SerializeField] private HumanBodyBones _equipBone;
+        public HumanBodyBones EquipBone { get { return _equipBone; } }
+        [SerializeField] private ArmorType _armorType;
         public ArmorType ArmorType { get { return _armorType; } }
-        [SerializeField] uint _levelRqd;
+        [SerializeField] private uint _levelRqd;
         public uint LevelRqd { get { return _levelRqd; } }
-        [SerializeField] int _healthIncrease;
-        public int HealthIncrease { get { return _healthIncrease; } }
-        [SerializeField] int _manaIncrease;
-        public int ManaIncrease { get { return _manaIncrease; } }
+
+        [SerializeField] private List<StatModifier> _modifiers;
+        public List<StatModifier> Modifiers { get { return _modifiers; } }
 
         public override void Equip(InventoryBase inventoryBase, EquipmentBase Equipment, int IndexOf, PlayerCharacter player)
         {
-            RemoveFromInventory(inventoryBase, IndexOf);
             if (player.Level >= LevelRqd)
             {
-                GameObject armorModel = Instantiate(Model);
+                if (Model != null)
+                {
+                    GameObject armorModel = Instantiate(Model);
+                    // Consider adding and enum as all character maybe not be human 
+                    if (EquipToHuman)
+                    {
+                        Transform bone = player.GetComponent<Animator>().GetBoneTransform(EquipBone);
+                        if (bone)
+                        {
+                            armorModel.transform.SetParent(bone);
+                        }
+
+                    }
+                }
                 switch (ArmorType)
                 {
                     case ArmorType.Arms:
+                        ModCharacterStats((BaseCharacter)player, Equipment.Arms);
                         Equipment.Arms.Unequip(inventoryBase, Equipment, player, 0);
                         Equipment.Arms = this;
-                        armorModel.transform.SetParent(player.transform);
+                        if (Model != null)
                         RemoveFromInventory(inventoryBase, IndexOf);
                         break;
                     case ArmorType.Chest:
+                        ModCharacterStats((BaseCharacter)player, Equipment.Chest);
                         Equipment.Chest.Unequip(inventoryBase, Equipment, player, 0);
                         Equipment.Chest = this;
-                        armorModel.transform.SetParent(player.transform);
-
                         RemoveFromInventory(inventoryBase, IndexOf);
-
                         break;
                     case ArmorType.Helmet:
+                        ModCharacterStats((BaseCharacter)player, Equipment.Helmet);
                         Equipment.Helmet.Unequip(inventoryBase, Equipment, player, 0);
                         Equipment.Helmet = this;
-                        armorModel.transform.SetParent(player.transform);
-
                         RemoveFromInventory(inventoryBase, IndexOf);
-
                         break;
                     case ArmorType.Legs:
+                        ModCharacterStats((BaseCharacter)player, Equipment.Legs);
                         Equipment.Legs.Unequip(inventoryBase, Equipment, player, 0);
                         Equipment.Legs = this;
-                        armorModel.transform.SetParent(player.transform);
                         RemoveFromInventory(inventoryBase, IndexOf);
-
                         break;
                     case ArmorType.Signature:
+                        ModCharacterStats((BaseCharacter)player, Equipment.Signature);
                         Equipment.Signature.Unequip(inventoryBase, Equipment, player, 0);
                         Equipment.Signature = this;
-                        armorModel.transform.SetParent(player.transform);
                         RemoveFromInventory(inventoryBase, IndexOf);
 
                         break;
                 }
-
+                player.StatUpdate();
             }
-            else { Debug.LogWarning("Level required to Equip is " + LevelRqd); }
+            else { Debug.LogWarning("Level required to Equip is " + LevelRqd +". Character is currently level "+ player.Level); }
         }
 
         public override void Unequip(InventoryBase inventoryBase, EquipmentBase Equipment, PlayerCharacter player, int IndexOf)
@@ -96,7 +110,94 @@ namespace Dreamers.InventorySystem
             }
 
         }
-        void Unequip() { }
+        void ModCharacterStats(BaseCharacter character, ArmorSO PreviousMod) {
+            //Remove Old Mods
+            if (PreviousMod != null)
+            {
+                foreach (StatModifier mod in PreviousMod.Modifiers)
+                {
+                    switch (mod.Stat)
+                    {
+                        case AttributeName.Level:
+                            Debug.LogWarning("Level Modding is not allowed at this time. Please contact Programming is needed");
+                            break;
+                        case AttributeName.Strength:
+                            character.GetPrimaryAttribute((int)AttributeName.Strength).BuffValue -= mod.BuffValue;
+                            break;
+                        case AttributeName.Vitality:
+                            character.GetPrimaryAttribute((int)AttributeName.Vitality).BuffValue -= mod.BuffValue;
+                            break;
+                        case AttributeName.Awareness:
+                            character.GetPrimaryAttribute((int)AttributeName.Awareness).BuffValue -= mod.BuffValue;
+                            break;
+                        case AttributeName.Speed:
+                            character.GetPrimaryAttribute((int)AttributeName.Speed).BuffValue -= mod.BuffValue;
+                            break;
+                        case AttributeName.Skill:
+                            character.GetPrimaryAttribute((int)AttributeName.Skill).BuffValue -= mod.BuffValue;
+                            break;
+                        case AttributeName.Resistance:
+                            character.GetPrimaryAttribute((int)AttributeName.Resistance).BuffValue -= mod.BuffValue;
+                            break;
+                        case AttributeName.Concentration:
+                            character.GetPrimaryAttribute((int)AttributeName.Concentration).BuffValue -= mod.BuffValue;
+                            break;
+                        case AttributeName.WillPower:
+                            character.GetPrimaryAttribute((int)AttributeName.WillPower).BuffValue -= mod.BuffValue;
+                            break;
+                        case AttributeName.Charisma:
+                            character.GetPrimaryAttribute((int)AttributeName.Charisma).BuffValue -= mod.BuffValue;
+                            break;
+                        case AttributeName.Luck:
+                            character.GetPrimaryAttribute((int)AttributeName.Luck).BuffValue -= mod.BuffValue;
+                            break;
+                    }
+                }
+            }
+            // Add new Mods
+            foreach (StatModifier mod in Modifiers)
+            {
+                switch (mod.Stat)
+                {
+                    case AttributeName.Level:
+                        Debug.LogWarning("Level Modding is not allowed at this time. Please contact Programming is needed");
+                        break;
+                    case AttributeName.Strength:
+                        character.GetPrimaryAttribute((int)AttributeName.Strength).BuffValue += mod.BuffValue;
+                        character.GetPrimaryAttribute((int)AttributeName.Strength).BuffValue += mod.BuffValue;
+                        break;
+                    case AttributeName.Vitality:
+                        character.GetPrimaryAttribute((int)AttributeName.Vitality).BuffValue += mod.BuffValue;
+                        break;
+                    case AttributeName.Awareness:
+                        character.GetPrimaryAttribute((int)AttributeName.Awareness).BuffValue += mod.BuffValue;
+                        break;
+                    case AttributeName.Speed:
+                        character.GetPrimaryAttribute((int)AttributeName.Speed).BuffValue += mod.BuffValue;
+                        break;
+                    case AttributeName.Skill:
+                        character.GetPrimaryAttribute((int)AttributeName.Skill).BuffValue += mod.BuffValue;
+                        break;
+                    case AttributeName.Resistance:
+                        character.GetPrimaryAttribute((int)AttributeName.Resistance).BuffValue += mod.BuffValue;
+                        break;
+                    case AttributeName.Concentration:
+                        character.GetPrimaryAttribute((int)AttributeName.Concentration).BuffValue += mod.BuffValue;
+                        break;
+                    case AttributeName.WillPower:
+                        character.GetPrimaryAttribute((int)AttributeName.WillPower).BuffValue += mod.BuffValue;
+                        break;
+                    case AttributeName.Charisma:
+                        character.GetPrimaryAttribute((int)AttributeName.Charisma).BuffValue += mod.BuffValue;
+                        break;
+                    case AttributeName.Luck:
+                        character.GetPrimaryAttribute((int)AttributeName.Luck).BuffValue += mod.BuffValue;
+                        break;
+                }
+            }
+        
+        }
+
         public override void Use(InventoryBase inventoryBase, int IndexOf, PlayerCharacter player)
         {
             throw new System.NotImplementedException();

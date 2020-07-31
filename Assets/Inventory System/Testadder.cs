@@ -5,13 +5,19 @@ using Dreamers.InventorySystem;
 using Unity.Entities;
 using Stats;
 using Dreamers.InventorySystem.Base;
+using Dreamers.InventorySystem.UISystem;
 
 public class Testadder : MonoBehaviour,IConvertGameObjectToEntity
 {
     public uint ChangeValue;
     public List<ItemBaseSO> addering;
     public InventoryBase Inventory;
+    public EquipmentBase Equip;
     private PlayerCharacter PC;
+
+    Vector2 PanelSize = new Vector2(500, 850);
+    Vector2 PanelPosition = new Vector2(300, -525);
+
     public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
     {
         dstManager.AddComponentData(entity, new SubtractWalletValue() { Change = ChangeValue });
@@ -23,13 +29,20 @@ public class Testadder : MonoBehaviour,IConvertGameObjectToEntity
     {
         PC = this.GetComponent<PlayerCharacter>();
         Inventory = this.GetComponent<CharacterInventory>().Inventory;
-        addering[0].AddToInventory(Inventory);
-        addering[0].AddToInventory(Inventory);
-        addering[0].AddToInventory(Inventory);
+        Equip = this.GetComponent<CharacterInventory>().Equipment;
+     SetupPC();
 
-        SetupPC();
+        addering[0].AddToInventory(Inventory);
+        addering[0].AddToInventory(Inventory);
+        addering[0].AddToInventory(Inventory);
+        addering[1].AddToInventory(Inventory);
+        addering[1].AddToInventory(Inventory);
+        addering[1].AddToInventory(Inventory);
+       Inventory.ItemsInInventory[1].Item.Equip(Inventory, Equip, 1, PC);
+
        
-         Inventory.ItemsInInventory[0].Item.Use(Inventory, 0, this.GetComponent<PlayerCharacter>());
+         Inventory.ItemsInInventory[0].Item.Use(Inventory, 0, PC);
+      DisplayInventory displaUI = new DisplayInventory(Inventory, PanelSize, PanelPosition);
     }
     void SetupPC() {
         PC.Name = "Test";

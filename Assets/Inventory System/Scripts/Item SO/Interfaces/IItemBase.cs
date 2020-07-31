@@ -28,15 +28,15 @@ namespace Dreamers.InventorySystem
     {
         [SerializeField] uint _itemID;
         public uint ItemID { get { return _itemID; } } // To be implemented with Database system/CSV Editor creator 
-        [SerializeField] string _itemName;
+        [SerializeField] private string _itemName;
         public string ItemName { get { return _itemName; } }
-        [SerializeField] string _desc;
+        [SerializeField] private string _desc;
         public string Description { get { return _desc; } }
-        [SerializeField] int _value;
+        [SerializeField] private int _value;
         public int Value { get { return _value; } }
-       
-        public ItemType Type { get { return ItemType.None; } }
-        [SerializeField] bool _stackable;
+        [SerializeField] private ItemType _type;
+        public ItemType Type { get { return _type; } }
+        [SerializeField]  private bool _stackable;
         public bool Stackable { get { return _stackable; } }
         //[SerializeField] bool _disposible;
         public bool Disposible { get { return !QuestItem; } }
@@ -60,7 +60,7 @@ namespace Dreamers.InventorySystem
             for (int i = 0; i < inventory.ItemsInInventory.Count; i++)
             {
                 ItemSlot itemInInventory = inventory.ItemsInInventory[i];
-                if (itemInInventory.Item.ItemID == ItemID && itemInInventory.Count < 99)
+                if (Stackable && itemInInventory.Item.ItemID == ItemID && itemInInventory.Count < 99)
                 {
                     itemInInventory.Count++;
                     addNewSlot = false;

@@ -7,9 +7,8 @@ namespace Dreamers.InventorySystem.Interfaces {
 
         ArmorType ArmorType { get; }
         
-        uint LevelRqd { get; }
-        int HealthIncrease { get; }
-        int ManaIncrease { get; }
+
+
          
     }
 

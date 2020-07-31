@@ -6,12 +6,9 @@ using Dreamers.InventorySystem.Base;
 
 namespace Dreamers.InventorySystem {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/SpawnManagerScriptableObject", order = 1)]
+    [CreateAssetMenu(fileName = "Recovery Item Data", menuName = "Item System/Recovery Item", order = 1)]
     public class RecoveryItemSO : ItemBaseSO, IRecoverItems
     {
-
-        public new ItemType Type { get { return ItemType.Potion; } }
-
         [SerializeField]uint _recoverAmount;
         public uint RecoverAmount { get { return _recoverAmount; } }
         [SerializeField] uint _iterations;
