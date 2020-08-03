@@ -28,7 +28,7 @@ namespace Dreamers.InventorySystem
         [SerializeField] private List<StatModifier> _modifiers;
         public List<StatModifier> Modifiers { get { return _modifiers; } }
 
-        public override void Equip(InventoryBase inventoryBase, EquipmentBase Equipment, int IndexOf, PlayerCharacter player)
+        public override void Equip(InventoryBase inventoryBase, EquipmentBase Equipment, int IndexOf, BaseCharacter player)
         {
             if (player.Level >= LevelRqd)
             {
@@ -49,20 +49,20 @@ namespace Dreamers.InventorySystem
                 switch (ArmorType)
                 {
                     case ArmorType.Arms:
-                        ModCharacterStats((BaseCharacter)player, Equipment.Arms);
+                        ModCharacterStats(player, Equipment.Arms);
                         Equipment.Arms.Unequip(inventoryBase, Equipment, player, 0);
                         Equipment.Arms = this;
                         if (Model != null)
                         RemoveFromInventory(inventoryBase, IndexOf);
                         break;
                     case ArmorType.Chest:
-                        ModCharacterStats((BaseCharacter)player, Equipment.Chest);
+                        ModCharacterStats(player, Equipment.Chest);
                         Equipment.Chest.Unequip(inventoryBase, Equipment, player, 0);
                         Equipment.Chest = this;
                         RemoveFromInventory(inventoryBase, IndexOf);
                         break;
                     case ArmorType.Helmet:
-                        ModCharacterStats((BaseCharacter)player, Equipment.Helmet);
+                        ModCharacterStats(player, Equipment.Helmet);
                         Equipment.Helmet.Unequip(inventoryBase, Equipment, player, 0);
                         Equipment.Helmet = this;
                         RemoveFromInventory(inventoryBase, IndexOf);
@@ -86,7 +86,7 @@ namespace Dreamers.InventorySystem
             else { Debug.LogWarning("Level required to Equip is " + LevelRqd +". Character is currently level "+ player.Level); }
         }
 
-        public override void Unequip(InventoryBase inventoryBase, EquipmentBase Equipment, PlayerCharacter player, int IndexOf)
+        public override void Unequip(InventoryBase inventoryBase, EquipmentBase Equipment, BaseCharacter player, int IndexOf)
         {
             AddToInventory(inventoryBase);
             switch (ArmorType)
@@ -198,7 +198,7 @@ namespace Dreamers.InventorySystem
         
         }
 
-        public override void Use(InventoryBase inventoryBase, int IndexOf, PlayerCharacter player)
+        public override void Use(InventoryBase inventoryBase, int IndexOf, BaseCharacter player)
         {
             throw new System.NotImplementedException();
         }

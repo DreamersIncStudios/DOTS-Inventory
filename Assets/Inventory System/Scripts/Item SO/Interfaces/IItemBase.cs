@@ -11,6 +11,7 @@ namespace Dreamers.InventorySystem
         uint ItemID { get; }
         string ItemName { get; }
         string Description {get;}
+        Sprite Icon { get; }
         int Value { get; }
         ItemType Type { get; }
         bool Stackable { get; }
@@ -32,6 +33,9 @@ namespace Dreamers.InventorySystem
         public string ItemName { get { return _itemName; } }
         [SerializeField] private string _desc;
         public string Description { get { return _desc; } }
+        [SerializeField] private Sprite _icon;
+        public Sprite Icon { get { return _icon; } }
+
         [SerializeField] private int _value;
         public int Value { get { return _value; } }
         [SerializeField] private ItemType _type;
@@ -48,11 +52,11 @@ namespace Dreamers.InventorySystem
             RemoveFromInventory(inventoryBase, IndexOf);
 
         }
-        public abstract void Use(InventoryBase inventoryBase, int IndexOf, PlayerCharacter player);
+        public abstract void Use(InventoryBase inventoryBase, int IndexOf, BaseCharacter player);
 
         //How we handle Equip Potions
-        public abstract void Equip(InventoryBase inventoryBase, EquipmentBase Equipment,int IndexOf, PlayerCharacter player);
-        public abstract void Unequip(InventoryBase inventoryBase, EquipmentBase Equipment, PlayerCharacter player, int IndexOf);
+        public abstract void Equip(InventoryBase inventoryBase, EquipmentBase Equipment,int IndexOf, BaseCharacter player);
+        public abstract void Unequip(InventoryBase inventoryBase, EquipmentBase Equipment, BaseCharacter player, int IndexOf);
         
         public virtual void AddToInventory(InventoryBase inventory)
         {

@@ -15,6 +15,7 @@ MonoBehaviour:
   _itemID: 0
   _itemName: Shield Teste
   _desc: ardpjqwerd
+  _icon: {fileID: 21300000, guid: ef9a6168b9cc80a45a74d255f3bb1abf, type: 3}
   _value: 20
   _type: 3
   _stackable: 0

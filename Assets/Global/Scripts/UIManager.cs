@@ -74,9 +74,10 @@ namespace Dreamers.Global
             PanelRect.sizeDelta = Size;
             return temp;
         }
-        public GameObject UIButton(Transform Parent)
+        public GameObject UIButton(Transform Parent, string TextToDisplay)
         {
             GameObject temp = Instantiate(Button);
+            temp.GetComponentInChildren<Text>().text = TextToDisplay;
             temp.transform.SetParent(Parent);
             RectTransform PanelRect = temp.GetComponent<RectTransform>();
             PanelRect.pivot = new Vector2(0.5f, .5f);

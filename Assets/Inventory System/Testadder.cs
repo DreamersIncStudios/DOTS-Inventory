@@ -42,7 +42,7 @@ public class Testadder : MonoBehaviour,IConvertGameObjectToEntity
 
        
          Inventory.ItemsInInventory[0].Item.Use(Inventory, 0, PC);
-      DisplayInventory displaUI = new DisplayInventory(Inventory, PanelSize, PanelPosition);
+      DisplayInventory displaUI = new DisplayInventory(Inventory, Equip, (BaseCharacter)PC ,PanelSize, PanelPosition);
     }
     void SetupPC() {
         PC.Name = "Test";

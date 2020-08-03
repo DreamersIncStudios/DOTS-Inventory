@@ -15,10 +15,12 @@ MonoBehaviour:
   _itemID: 1
   _itemName: Health Potion
   _desc: 
+  _icon: {fileID: 21300000, guid: c4a65558575f5dc44b9bebfa433fd80a, type: 3}
   _value: 0
   _type: 2
   _stackable: 1
   _questItem: 0
+  Ibase: {fileID: 0}
   _recoverAmount: 10
   _iterations: 10
   _freq: 10

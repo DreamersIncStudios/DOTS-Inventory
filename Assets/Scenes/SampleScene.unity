@@ -477,4 +477,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UIPanelPrefab: {fileID: 8819059375951432230, guid: 1cd7a7bba569e5e4baca7fc2566c63fb,
     type: 3}
-  UIButton: {fileID: 0}
+  TextBoxPrefab: {fileID: 1517078347903538409, guid: e218fceb333034947bbee96d139a9c9e,
+    type: 3}
+  Button: {fileID: 2757070062215172664, guid: 37fd4ae65a46de049b980d86bd4ae05c, type: 3}

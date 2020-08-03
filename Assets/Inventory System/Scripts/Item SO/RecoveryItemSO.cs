@@ -9,6 +9,8 @@ namespace Dreamers.InventorySystem {
     [CreateAssetMenu(fileName = "Recovery Item Data", menuName = "Item System/Recovery Item", order = 1)]
     public class RecoveryItemSO : ItemBaseSO, IRecoverItems
     {
+        [SerializeField]
+        public Testadder Ibase;
         [SerializeField]uint _recoverAmount;
         public uint RecoverAmount { get { return _recoverAmount; } }
         [SerializeField] uint _iterations;
@@ -19,7 +21,7 @@ namespace Dreamers.InventorySystem {
         public RecoverType RecoverWhat { get { return _recoverWhat; } }
         [SerializeField] StatusEffect _removeStatus;
         public StatusEffect RemoveStatus { get { return _removeStatus; } }
-        public override void Use(InventoryBase inventoryBase, int IndexOf, PlayerCharacter player) {
+        public override void Use(InventoryBase inventoryBase, int IndexOf, BaseCharacter player) {
             Use(inventoryBase, IndexOf);
             switch (RecoverWhat) {
                 case RecoverType.Health:
@@ -54,9 +56,10 @@ namespace Dreamers.InventorySystem {
             }
         }
 
-        public override void Equip(InventoryBase InventoryBase, EquipmentBase Equipment, int IndexOf, PlayerCharacter player)
+        public override void Equip(InventoryBase InventoryBase, EquipmentBase Equipment, int IndexOf, BaseCharacter player)
         {
-            RemoveFromInventory(InventoryBase, IndexOf);
+
+            Debug.Log("I am here");
 
             bool addNewSlot = true; ;
             for (int i = 0; i < Equipment.QuickAccessItems.Count; i++)
@@ -66,22 +69,25 @@ namespace Dreamers.InventorySystem {
                 {
                     itemInInventory.Count++;
                     addNewSlot = false;
+                    RemoveFromInventory(InventoryBase, IndexOf);
                 }
                 Equipment.QuickAccessItems[i] = itemInInventory;
             }
-
             if (Equipment.OpenSlots && addNewSlot)
+            {
                 Equipment.QuickAccessItems.Add(
                     new ItemSlot()
                     {
                         Item = Instantiate(this),
                         Count = 1
                     });
+                RemoveFromInventory(InventoryBase, IndexOf);
 
-
+            }
+            else { Debug.LogWarning("Can't add item to Quick slot"); }
         }
 
-        public override void Unequip(InventoryBase Inventory, EquipmentBase Equipment, PlayerCharacter player, int IndexOf)
+        public override void Unequip(InventoryBase Inventory, EquipmentBase Equipment, BaseCharacter player, int IndexOf)
         {
             ItemSlot updateItem = Equipment.QuickAccessItems[IndexOf];
             if (Stackable && updateItem.Count > 1)
