@@ -26,10 +26,14 @@ namespace Dreamers.Global
             GameObject Instance;
             if (!_uICanvas)
             {
-                Instance = new GameObject();
-                Instance.name = "Canvas";
-                GameObject EventInstance = new GameObject();
-                EventInstance.name = "Event System";
+                Instance = new GameObject
+                {
+                    name = "Canvas"
+                };
+                GameObject EventInstance = new GameObject
+                {
+                    name = "Event System"
+                };
                 Instance.AddComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
                 EventInstance.AddComponent<StandaloneInputModule>();
                 CanvasScaler scaler = Instance.AddComponent<CanvasScaler>();
@@ -77,7 +81,7 @@ namespace Dreamers.Global
         public GameObject UIButton(Transform Parent, string TextToDisplay)
         {
             GameObject temp = Instantiate(Button);
-            temp.GetComponentInChildren<Text>().text = TextToDisplay;
+            temp.GetComponentInChildren<Text>().text= TextToDisplay;
             temp.transform.SetParent(Parent);
             RectTransform PanelRect = temp.GetComponent<RectTransform>();
             PanelRect.pivot = new Vector2(0.5f, .5f);

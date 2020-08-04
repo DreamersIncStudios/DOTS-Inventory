@@ -8,11 +8,11 @@ namespace Stats
 {
     public class AdjustHealthSystem : SystemBase
     {
-        EntityQuery _increaseHealth;
-        EntityQuery _decreaseHealth;
 
-        EntityQuery _increaseMana;
-        EntityQuery _decreaseMana;
+
+        EntityQuery _ChangeVitals;
+
+
         EntityCommandBufferSystem _entityCommandBufferSystem;
         protected EntityCommandBufferSystem GetCommandBufferSystem()
         {
@@ -21,65 +21,27 @@ namespace Stats
         protected override void OnCreate()
         {
             base.OnCreate();
-            _increaseHealth = GetEntityQuery(new EntityQueryDesc()
+            _ChangeVitals = GetEntityQuery(new EntityQueryDesc()
             {
-                All = new ComponentType[] { ComponentType.ReadWrite(typeof(PlayerStatComponent)), ComponentType.ReadWrite(typeof(IncreaseHealthTag)) }
+                All = new ComponentType[] { ComponentType.ReadWrite(typeof(PlayerStatComponent)), ComponentType.ReadWrite(typeof(ChangeVitalBuffer)) }
             });
-            _decreaseHealth = GetEntityQuery(new EntityQueryDesc()
-            {
-                All = new ComponentType[] { ComponentType.ReadWrite(typeof(PlayerStatComponent)), ComponentType.ReadWrite(typeof(DecreaseHealthTag)) }
-            });
-            _increaseMana = GetEntityQuery(new EntityQueryDesc()
-            {
-                All = new ComponentType[] { ComponentType.ReadWrite(typeof(PlayerStatComponent)), ComponentType.ReadWrite(typeof(IncreaseManaTag)) }
-            });
-            _decreaseMana = GetEntityQuery(new EntityQueryDesc()
-            {
-                All = new ComponentType[] { ComponentType.ReadWrite(typeof(PlayerStatComponent)), ComponentType.ReadWrite(typeof(DecreaseManaTag)) }
-            });
+          
             _entityCommandBufferSystem = GetCommandBufferSystem();
         }
 
         protected override void OnUpdate()
         {
             JobHandle systemDeps = Dependency;
-            systemDeps = new IncreaseHealthJob()
+            systemDeps = new IncreaseVitalJob()
             {
                 DeltaTime = Time.DeltaTime,
-                IncreaseChunk = GetArchetypeChunkComponentType<IncreaseHealthTag>(false),
+                IncreaseChunk = GetArchetypeChunkBufferType<ChangeVitalBuffer>(false),
                 StatsChunk = GetArchetypeChunkComponentType<PlayerStatComponent>(false),
                 EntityChunk = GetArchetypeChunkEntityType(),
                 entityCommandBuffer = _entityCommandBufferSystem.CreateCommandBuffer().ToConcurrent()
-            }.Schedule(_increaseHealth, systemDeps);
+            }.Schedule(_ChangeVitals, systemDeps);
 
-            systemDeps = new DecreaseHealthJob()
-            {
-                DeltaTime = Time.DeltaTime,
-                DecreaseChunk = GetArchetypeChunkComponentType<DecreaseHealthTag>(false),
-                StatsChunk = GetArchetypeChunkComponentType<PlayerStatComponent>(false),
-                EntityChunk = GetArchetypeChunkEntityType(),
-                entityCommandBuffer = _entityCommandBufferSystem.CreateCommandBuffer().ToConcurrent()
-            }.ScheduleParallel(_decreaseHealth, systemDeps);
-            _entityCommandBufferSystem.AddJobHandleForProducer(systemDeps);
 
-            systemDeps = new IncreaseManaJob()
-            {
-                DeltaTime = Time.DeltaTime,
-                IncreaseChunk = GetArchetypeChunkComponentType<IncreaseManaTag>(false),
-                StatsChunk = GetArchetypeChunkComponentType<PlayerStatComponent>(false),
-                EntityChunk = GetArchetypeChunkEntityType(),
-                entityCommandBuffer = _entityCommandBufferSystem.CreateCommandBuffer().ToConcurrent()
-            }.ScheduleParallel(_increaseMana, systemDeps);
-            _entityCommandBufferSystem.AddJobHandleForProducer(systemDeps);
-
-            systemDeps = new DecreaseManaJob()
-            {
-                DeltaTime = Time.DeltaTime,
-                DecreaseChunk = GetArchetypeChunkComponentType<DecreaseManaTag>(false),
-                StatsChunk = GetArchetypeChunkComponentType<PlayerStatComponent>(false),
-                EntityChunk = GetArchetypeChunkEntityType(),
-                entityCommandBuffer = _entityCommandBufferSystem.CreateCommandBuffer().ToConcurrent()
-            }.ScheduleParallel(_decreaseMana, systemDeps);
             _entityCommandBufferSystem.AddJobHandleForProducer(systemDeps);
 
             Dependency = systemDeps;
@@ -89,10 +51,10 @@ namespace Stats
     }
 
 
-    public struct IncreaseHealthJob : IJobChunk
+    public struct IncreaseVitalJob : IJobChunk
     {
         public ArchetypeChunkComponentType<PlayerStatComponent> StatsChunk;
-        public ArchetypeChunkComponentType<IncreaseHealthTag> IncreaseChunk;
+        public ArchetypeChunkBufferType<ChangeVitalBuffer> IncreaseChunk;
         public float DeltaTime;
         [ReadOnly] public ArchetypeChunkEntityType EntityChunk;
         public EntityCommandBuffer.Concurrent entityCommandBuffer;
@@ -100,160 +62,60 @@ namespace Stats
         public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
         {
             NativeArray<PlayerStatComponent> stats = chunk.GetNativeArray<PlayerStatComponent>(StatsChunk);
-            NativeArray<IncreaseHealthTag> healthChanges = chunk.GetNativeArray<IncreaseHealthTag>(IncreaseChunk);
+            BufferAccessor<ChangeVitalBuffer> VitalChanges = chunk.GetBufferAccessor<ChangeVitalBuffer>(IncreaseChunk);
             NativeArray<Entity> entities = chunk.GetNativeArray(EntityChunk);
             for (int i = 0; i < chunk.Count; i++)
             {
                 PlayerStatComponent stat = stats[i];
                 Entity entity = entities[i];
-                IncreaseHealthTag healthChange = healthChanges[i];
-
-                if (healthChange.Iterations > 0)
+                DynamicBuffer<ChangeVitalBuffer> buffer = VitalChanges[i];
+                for (int j = 0; j < buffer.Length; j++)
                 {
-                    if (healthChange.Timer > 0.0f)
+                    VitalChange change = buffer[j];
+                    if (change.Iterations > 0)
                     {
-                        healthChange.Timer -= DeltaTime;
+                        if (change.Timer > 0.0f)
+                        {
+                            change.Timer -= DeltaTime;
+                            buffer[j] = change;
+                        }
+                        else
+                        {
+                            switch (change.type)
+                            {
+                                case VitalType.Health:
+                                    if (change.Increase)
+                                    {
+                                        stat.CurHealth += change.value;
+                                    }
+                                    else
+                                        stat.CurHealth -= change.value;
+                                    break;
+                                case VitalType.Mana:
+                                    if (change.Increase)
+                                    {
+                                        stat.CurMana += change.value;
+                                    }
+                                    else
+                                        stat.CurMana -= change.value;
+                                    break;
+                            }
+
+                            change.Timer = change.Frequency;
+                            change.Iterations--;
+
+                            stats[i] = stat;
+                            buffer[j] = change;
+
+                        }
                     }
                     else
-                    {
-                        stat.CurHealth += healthChange.value;
-                        healthChange.Timer = healthChange.Frequency;
-                        healthChange.Iterations--;
-                    }
-                    stats[i] = stat;
-                    healthChanges[i] = healthChange;
-                }
-                else
-                {
-                    entityCommandBuffer.RemoveComponent<IncreaseHealthTag>(chunkIndex, entity);
-                }
-            }
-            
-        }
-    }
+                        buffer.RemoveAt(j);
 
-    public struct DecreaseHealthJob : IJobChunk
-    {
-        public ArchetypeChunkComponentType<PlayerStatComponent> StatsChunk;
-        public ArchetypeChunkComponentType<DecreaseHealthTag> DecreaseChunk;
-        public float DeltaTime;
-        [ReadOnly] public ArchetypeChunkEntityType EntityChunk;
-        public EntityCommandBuffer.Concurrent entityCommandBuffer;
-
-        public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
-        {
-            NativeArray<PlayerStatComponent> stats = chunk.GetNativeArray<PlayerStatComponent>(StatsChunk);
-            NativeArray<DecreaseHealthTag> healthChanges = chunk.GetNativeArray<DecreaseHealthTag>(DecreaseChunk);
-            NativeArray<Entity> entities = chunk.GetNativeArray(EntityChunk);
-
-            for (int i = 0; i < chunk.Count; i++)
-            {
-                PlayerStatComponent stat = stats[i];
-                Entity entity = entities[i];
-                DecreaseHealthTag healthChange = healthChanges[i];
-                if (healthChange.Iterations > 0)
-                {
-                    if (healthChange.Timer > 0.0f)
-                    {
-                        healthChange.Timer -= DeltaTime;
-                    }
-                    else
-                    {
-                        stat.CurHealth -= healthChange.value;
-                        healthChange.Timer = healthChange.Frequency;
-                        healthChange.Iterations--;
-                    }
-                    stats[i] = stat;
-                    healthChanges[i] = healthChange;
                 }
-                else
-                {
-                    entityCommandBuffer.RemoveComponent<DecreaseHealthTag>(chunkIndex, entity);
-                }
+
             }
         }
-    }
 
-    public struct IncreaseManaJob : IJobChunk
-    {
-        public ArchetypeChunkComponentType<PlayerStatComponent> StatsChunk;
-        public ArchetypeChunkComponentType<IncreaseManaTag> IncreaseChunk;
-        public float DeltaTime;
-        [ReadOnly] public ArchetypeChunkEntityType EntityChunk;
-        public EntityCommandBuffer.Concurrent entityCommandBuffer;
-
-        public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
-        {
-            NativeArray<PlayerStatComponent> stats = chunk.GetNativeArray<PlayerStatComponent>(StatsChunk);
-            NativeArray<IncreaseManaTag> manaChanges = chunk.GetNativeArray<IncreaseManaTag>(IncreaseChunk);
-            NativeArray<Entity> entities = chunk.GetNativeArray(EntityChunk);
-
-            for (int i = 0; i < chunk.Count; i++)
-            {
-                PlayerStatComponent stat = stats[i];
-                Entity entity = entities[i];
-                IncreaseManaTag manaChange = manaChanges[i];
-                if (manaChange.Iterations > 0)
-                {
-                    if (manaChange.Timer > 0.0f)
-                    {
-                        manaChange.Timer -= DeltaTime;
-                    }
-                    else
-                    {
-                        stat.CurMana += manaChange.value;
-                        manaChange.Timer = manaChange.Frequency;
-                        manaChange.Iterations--;
-                    }
-                    stats[i] = stat;
-                    manaChanges[i] = manaChange;
-                }
-                else
-                {
-                    entityCommandBuffer.RemoveComponent<DecreaseHealthTag>(chunkIndex, entity);
-                }
-            }
-        }
-    }
-    public struct DecreaseManaJob : IJobChunk
-    {
-        public ArchetypeChunkComponentType<PlayerStatComponent> StatsChunk;
-        public ArchetypeChunkComponentType<DecreaseManaTag> DecreaseChunk;
-        public float DeltaTime;
-        [ReadOnly] public ArchetypeChunkEntityType EntityChunk;
-        public EntityCommandBuffer.Concurrent entityCommandBuffer;
-
-        public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
-        {
-            NativeArray<PlayerStatComponent> stats = chunk.GetNativeArray<PlayerStatComponent>(StatsChunk);
-            NativeArray<DecreaseManaTag> manaChanges = chunk.GetNativeArray<DecreaseManaTag>(DecreaseChunk);
-            NativeArray<Entity> entities = chunk.GetNativeArray(EntityChunk);
-
-            for (int i = 0; i < chunk.Count; i++)
-            {
-                PlayerStatComponent stat = stats[i];
-                Entity entity = entities[i];
-                DecreaseManaTag manaChange = manaChanges[i];
-                if (manaChange.Iterations > 0)
-                {
-                    if (manaChange.Timer > 0.0f)
-                    {
-                        manaChange.Timer -= DeltaTime;
-                    }
-                    else
-                    {
-                        stat.CurMana -= manaChange.value;
-                        manaChange.Timer = manaChange.Frequency;
-                        manaChange.Iterations--;
-                    }
-                    stats[i] = stat;
-                    manaChanges[i] = manaChange;
-                }
-                else
-                {
-                    entityCommandBuffer.RemoveComponent<DecreaseHealthTag>(chunkIndex, entity);
-                }
-            }
-        }
     }
 }

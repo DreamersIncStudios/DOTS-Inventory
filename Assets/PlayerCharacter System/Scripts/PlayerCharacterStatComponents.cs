@@ -9,37 +9,31 @@ using Unity.Entities;
 namespace Stats
 {
 
+    //Should this be Buffer? Adding new ComponentData Overwrites existing Data
+    public struct ChangeVitalBuffer : IBufferElementData 
+    {
+        public VitalChange recover;
 
-    public struct IncreaseHealthTag : IComponentData {
+        public static implicit operator VitalChange(ChangeVitalBuffer e) { return e.recover; }
+        public static implicit operator ChangeVitalBuffer(VitalChange e) { return new ChangeVitalBuffer { recover = e }; }
+
+    }
+
+
+
+    public enum VitalType {
+        Health, Mana, Both
+    }
+    public struct VitalChange 
+    {
+        public VitalType type;
+        public bool Increase;
         public int value;
         public uint Iterations;
         public float Frequency;
         public float Timer;
     }
-    public struct IncreaseManaTag : IComponentData
-    {
-        public int value;
-        public uint Iterations;
-        public float Frequency;
-        public float Timer;
-
-    }
-    public struct DecreaseHealthTag : IComponentData
-    {
-        public int value;
-        public uint Iterations; // consider -1 to be until release ??
-        public float Frequency;
-        public float Timer;
-
-    }
-    public struct DecreaseManaTag : IComponentData
-    {
-        public int value;
-        public uint Iterations;
-        public float Frequency;
-        public float Timer;
-
-    }
+ 
 
     // add safe checks
     public struct PlayerStatComponent: IComponentData {

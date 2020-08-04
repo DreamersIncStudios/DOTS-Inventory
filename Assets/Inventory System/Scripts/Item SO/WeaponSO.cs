@@ -21,7 +21,7 @@ namespace Dreamers.InventorySystem
 
         public uint LevelRqd => throw new System.NotImplementedException();
 
-        public override void Equip(InventoryBase inventoryBase, EquipmentBase Equipment, int IndexOf,BaseCharacter player)
+        public override void EquipItem(InventoryBase inventoryBase, EquipmentBase Equipment, int IndexOf,BaseCharacter player)
         {
             RemoveFromInventory(inventoryBase, IndexOf);
         }

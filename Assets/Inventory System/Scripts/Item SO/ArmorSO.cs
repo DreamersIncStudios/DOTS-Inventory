@@ -28,7 +28,7 @@ namespace Dreamers.InventorySystem
         [SerializeField] private List<StatModifier> _modifiers;
         public List<StatModifier> Modifiers { get { return _modifiers; } }
 
-        public override void Equip(InventoryBase inventoryBase, EquipmentBase Equipment, int IndexOf, BaseCharacter player)
+        public override void EquipItem(InventoryBase inventoryBase, EquipmentBase Equipment, int IndexOf, BaseCharacter player)
         {
             if (player.Level >= LevelRqd)
             {

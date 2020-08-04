@@ -44,8 +44,10 @@ namespace Stats
             _name = string.Empty;
             _level = 0;
             _freeExp = 0;
-            _class = new  Profession(); _class.Class = Professions.Dragoon;
-            _primaryAttribute = new Attributes[Enum.GetValues(typeof(AttributeName)).Length];
+            _class = new Profession
+            {
+                Class = Professions.Dragoon
+            }; _primaryAttribute = new Attributes[Enum.GetValues(typeof(AttributeName)).Length];
             _vital = new Vital[Enum.GetValues(typeof(VitalName)).Length];
             _stats = new Stat[Enum.GetValues(typeof(StatName)).Length];
             _ability = new Abilities[Enum.GetValues(typeof(AbilityName)).Length];
@@ -64,23 +66,17 @@ namespace Stats
             // SetupElementalMods();
         }
 
-        public void Start()
-        {
-        //    StatUpdate();
-        }
 
-        Entity selfEntityRef;
-        EntityManager _dstManager;
+        public Entity selfEntityRef { get; private set; }
         public DynamicBuffer<EffectStatusBuffer> StatusBuffers;
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
             var data = new PlayerStatComponent() { CurHealth = CurHealth, CurMana = CurMana, MaxHealth = MaxHealth, MaxMana = MaxMana };
             dstManager.AddComponentData(entity, data);
             dstManager.AddComponent<Unity.Transforms.CopyTransformFromGameObject>(entity);
+            dstManager.AddBuffer<ChangeVitalBuffer>(entity);
             StatusBuffers = dstManager.AddBuffer<EffectStatusBuffer>(entity);
             selfEntityRef = entity;
-            _dstManager = dstManager;
-
         }
 
         public string Name
@@ -349,25 +345,58 @@ namespace Stats
         }
         public void IncreaseHealth(int Change, uint Iterations, float Frequency)
         {
-
-
-            World.DefaultGameObjectInjectionWorld.EntityManager.AddComponentData(selfEntityRef, new IncreaseHealthTag() { value = Change, Frequency = Frequency, Iterations = Iterations });
+            World.DefaultGameObjectInjectionWorld.EntityManager.GetBuffer<ChangeVitalBuffer>(selfEntityRef).Add(new ChangeVitalBuffer()
+            { recover = new VitalChange()
+            { type = VitalType.Health,
+                Increase = true,
+                value = Change,
+                Frequency = Frequency,
+                Iterations = Iterations
+            } }) ;
         }
 
         public void IncreaseMana(int Change, uint Iterations, float Frequency)
         {
-            World.DefaultGameObjectInjectionWorld.EntityManager.AddComponentData(selfEntityRef, new IncreaseManaTag() { value = Change, Frequency = Frequency, Iterations = Iterations });
-
+            World.DefaultGameObjectInjectionWorld.EntityManager.GetBuffer<ChangeVitalBuffer>(selfEntityRef).Add(new ChangeVitalBuffer()
+            {
+                recover = new VitalChange()
+                {
+                    type = VitalType.Mana,
+                    Increase = true,
+                    value = Change,
+                    Frequency = Frequency,
+                    Iterations = Iterations
+                }
+            });
         }
         public void DecreaseHealth(int Change, uint Iterations, float Frequency)
         {
-            World.DefaultGameObjectInjectionWorld.EntityManager.AddComponentData(selfEntityRef, new DecreaseHealthTag() { value = Change, Frequency = Frequency, Iterations = Iterations });
+            World.DefaultGameObjectInjectionWorld.EntityManager.GetBuffer<ChangeVitalBuffer>(selfEntityRef).Add(new ChangeVitalBuffer()
+            {
+                recover = new VitalChange()
+                {
+                    type = VitalType.Health,
+                    Increase = false,
+                    value = Change,
+                    Frequency = Frequency,
+                    Iterations = Iterations
+                }
+            });
         }
 
         public void DecreaseMana(int Change, uint Iterations, float Frequency)
         {
-            World.DefaultGameObjectInjectionWorld.EntityManager.AddComponentData(selfEntityRef, new DecreaseManaTag() { value = Change, Frequency = Frequency, Iterations = Iterations });
-
+            World.DefaultGameObjectInjectionWorld.EntityManager.GetBuffer<ChangeVitalBuffer>(selfEntityRef).Add(new ChangeVitalBuffer()
+            {
+                recover = new VitalChange()
+                {
+                    type = VitalType.Mana,
+                    Increase = false,
+                    value = Change,
+                    Frequency = Frequency,
+                    Iterations = Iterations
+                }
+            });
         }
         public void AddStatus(StatusEffect StatusToAdd) { }
         public void RemoveStatus(StatusEffect StatusToAdd) { }

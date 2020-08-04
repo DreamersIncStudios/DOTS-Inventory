@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Entities;
 using UnityEngine;
 using Stats;
 using Dreamers.InventorySystem.Base;
@@ -9,8 +10,7 @@ namespace Dreamers.InventorySystem {
     [CreateAssetMenu(fileName = "Recovery Item Data", menuName = "Item System/Recovery Item", order = 1)]
     public class RecoveryItemSO : ItemBaseSO, IRecoverItems
     {
-        [SerializeField]
-        public Testadder Ibase;
+  
         [SerializeField]uint _recoverAmount;
         public uint RecoverAmount { get { return _recoverAmount; } }
         [SerializeField] uint _iterations;
@@ -21,11 +21,14 @@ namespace Dreamers.InventorySystem {
         public RecoverType RecoverWhat { get { return _recoverWhat; } }
         [SerializeField] StatusEffect _removeStatus;
         public StatusEffect RemoveStatus { get { return _removeStatus; } }
-        public override void Use(InventoryBase inventoryBase, int IndexOf, BaseCharacter player) {
+        public override void Use(InventoryBase inventoryBase, int IndexOf, BaseCharacter player)
+        {
             Use(inventoryBase, IndexOf);
-            switch (RecoverWhat) {
+            switch (RecoverWhat)
+            {
                 case RecoverType.Health:
-                player.IncreaseHealth((int)RecoverAmount, Iterations, Frequency);
+         
+                    player.IncreaseHealth((int)RecoverAmount, Iterations, Frequency);
 
                     break;
                 case RecoverType.Mana:
@@ -55,11 +58,12 @@ namespace Dreamers.InventorySystem {
                     break;
             }
         }
+          
 
-        public override void Equip(InventoryBase InventoryBase, EquipmentBase Equipment, int IndexOf, BaseCharacter player)
+        
+
+        public override void EquipItem(InventoryBase InventoryBase, EquipmentBase Equipment, int IndexOf, BaseCharacter player)
         {
-
-            Debug.Log("I am here");
 
             bool addNewSlot = true; ;
             for (int i = 0; i < Equipment.QuickAccessItems.Count; i++)
@@ -84,7 +88,9 @@ namespace Dreamers.InventorySystem {
                 RemoveFromInventory(InventoryBase, IndexOf);
 
             }
-            else { Debug.LogWarning("Can't add item to Quick slot"); }
+            else
+            if(addNewSlot)
+            { Debug.LogWarning("Can't add item to Quick slot"); }
         }
 
         public override void Unequip(InventoryBase Inventory, EquipmentBase Equipment, BaseCharacter player, int IndexOf)

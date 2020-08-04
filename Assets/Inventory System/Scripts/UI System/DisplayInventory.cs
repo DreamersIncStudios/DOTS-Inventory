@@ -9,7 +9,7 @@ namespace Dreamers.InventorySystem.UISystem
 {
     public class DisplayInventory
     {
-        UIManager Manager;
+        readonly UIManager Manager;
 
         public DisplayInventory(InventoryBase inventory, EquipmentBase equipment, BaseCharacter character, Vector2 Size, Vector2 Position)
         {
@@ -149,7 +149,7 @@ namespace Dreamers.InventorySystem.UISystem
 
             Button Equip = Manager.UIButton(ButtonGroup.transform ,"Equip Item").GetComponent<Button>();
             Equip.onClick.AddListener(() => {
-                Item.Equip(Inventory, Equipment, IndexOf, BC);
+                Item.EquipItem(Inventory, Equipment, IndexOf, BC);
                 InventoryGrid(inventoryPanel);
                 Object.Destroy(VLG);
             });
