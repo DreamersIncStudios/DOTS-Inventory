@@ -75,7 +75,7 @@ namespace Dreamers.InventorySystem
             if (inventory.OpenSlots && addNewSlot) 
                 inventory.ItemsInInventory.Add(
                     new ItemSlot() {
-                    Item = Instantiate(this),
+                    Item = this,
                     Count=1});
 
         }

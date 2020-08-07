@@ -37,7 +37,6 @@ namespace Stats
                 DeltaTime = Time.DeltaTime,
                 IncreaseChunk = GetArchetypeChunkBufferType<ChangeVitalBuffer>(false),
                 StatsChunk = GetArchetypeChunkComponentType<PlayerStatComponent>(false),
-                EntityChunk = GetArchetypeChunkEntityType(),
                 entityCommandBuffer = _entityCommandBufferSystem.CreateCommandBuffer().ToConcurrent()
             }.Schedule(_ChangeVitals, systemDeps);
 
@@ -56,18 +55,15 @@ namespace Stats
         public ArchetypeChunkComponentType<PlayerStatComponent> StatsChunk;
         public ArchetypeChunkBufferType<ChangeVitalBuffer> IncreaseChunk;
         public float DeltaTime;
-        [ReadOnly] public ArchetypeChunkEntityType EntityChunk;
         public EntityCommandBuffer.Concurrent entityCommandBuffer;
 
         public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
         {
             NativeArray<PlayerStatComponent> stats = chunk.GetNativeArray<PlayerStatComponent>(StatsChunk);
             BufferAccessor<ChangeVitalBuffer> VitalChanges = chunk.GetBufferAccessor<ChangeVitalBuffer>(IncreaseChunk);
-            NativeArray<Entity> entities = chunk.GetNativeArray(EntityChunk);
             for (int i = 0; i < chunk.Count; i++)
             {
                 PlayerStatComponent stat = stats[i];
-                Entity entity = entities[i];
                 DynamicBuffer<ChangeVitalBuffer> buffer = VitalChanges[i];
                 for (int j = 0; j < buffer.Length; j++)
                 {

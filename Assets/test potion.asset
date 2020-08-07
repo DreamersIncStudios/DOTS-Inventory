@@ -21,6 +21,6 @@ MonoBehaviour:
   _stackable: 1
   _questItem: 0
   _recoverAmount: 10
-  _iterations: 10
-  _freq: 10
+  _iterations: 2
+  _freq: 3
   _recoverWhat: 0

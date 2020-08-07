@@ -24,7 +24,7 @@ MonoBehaviour:
   _equipToHuman: 0
   _equipBone: 0
   _armorType: 0
-  _levelRqd: 3
+  _levelRqd: 1
   _modifiers:
   - Stat: 1
     BuffValue: 10

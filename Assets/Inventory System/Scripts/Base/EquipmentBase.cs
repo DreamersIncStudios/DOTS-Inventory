@@ -5,9 +5,9 @@ namespace Dreamers.InventorySystem.Base {
     [System.Serializable]
 public class EquipmentBase
     {
-        public ScriptableObject PrimaryWeopon;
-        public ScriptableObject SecondaryWeopon;
-        public ScriptableObject ProjectileWeopon;
+        public WeaponSO PrimaryWeapon;
+        public WeaponSO SecondaryWeapon;
+        public WeaponSO ProjectileWeopon;
 
         public ArmorSO Shield;
         public ArmorSO Helmet;

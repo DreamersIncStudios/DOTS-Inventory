@@ -38,10 +38,14 @@ public class Testadder : MonoBehaviour,IConvertGameObjectToEntity
         addering[1].AddToInventory(Inventory);
         addering[1].AddToInventory(Inventory);
         addering[1].AddToInventory(Inventory);
+        addering[2].AddToInventory(Inventory);
+        addering[2].AddToInventory(Inventory);
+        addering[2].AddToInventory(Inventory);
+        addering[2].AddToInventory(Inventory);
 
-       
-         Inventory.ItemsInInventory[0].Item.Use(Inventory, 0, PC);
-         new DisplayInventory(Inventory, Equip, (BaseCharacter)PC ,PanelSize, PanelPosition);
+        Inventory.ItemsInInventory[0].Item.Use(Inventory, 0, PC);
+        //new DisplayInventory(Inventory, Equip, (BaseCharacter)PC ,PanelSize, PanelPosition);
+        new DisplayMenu(PC, Equip);
     }
     void SetupPC() {
         PC.Name = "Test";

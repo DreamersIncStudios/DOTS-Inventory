@@ -57,7 +57,7 @@ namespace Dreamers.Global
         public GameObject Panel(Transform Parent, Vector2 Size, Vector2 Position) 
         {
             GameObject temp = Instantiate(UIPanelPrefab);
-            temp.transform.SetParent(Parent);
+            temp.transform.SetParent(Parent,false);
             RectTransform PanelRect = temp.GetComponent<RectTransform>();
             PanelRect.pivot = new Vector2(0.5f, .5f);
             PanelRect.anchorMax = new Vector2(0, 1);
@@ -70,7 +70,7 @@ namespace Dreamers.Global
         public GameObject TextBox(Transform Parent, Vector2 Size) {
 
             GameObject temp = Instantiate(TextBoxPrefab);
-            temp.transform.SetParent(Parent);
+            temp.transform.SetParent(Parent,false);
             RectTransform PanelRect = temp.GetComponent<RectTransform>();
             PanelRect.pivot = new Vector2(0.5f, .5f);
             PanelRect.anchorMax = new Vector2(0, 1);
@@ -82,7 +82,7 @@ namespace Dreamers.Global
         {
             GameObject temp = Instantiate(Button);
             temp.GetComponentInChildren<Text>().text= TextToDisplay;
-            temp.transform.SetParent(Parent);
+            temp.transform.SetParent(Parent,false);
             RectTransform PanelRect = temp.GetComponent<RectTransform>();
             PanelRect.pivot = new Vector2(0.5f, .5f);
             PanelRect.anchorMax = new Vector2(0, 1);
