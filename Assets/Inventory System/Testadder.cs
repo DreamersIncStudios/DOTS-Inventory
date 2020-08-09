@@ -15,9 +15,6 @@ public class Testadder : MonoBehaviour,IConvertGameObjectToEntity
     public EquipmentBase Equip;
     private PlayerCharacter PC;
 
-    Vector2 PanelSize = new Vector2(500, 850);
-    Vector2 PanelPosition = new Vector2(300, -525);
-
     public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
     {
         dstManager.AddComponentData(entity, new SubtractWalletValue() { Change = ChangeValue });
@@ -45,7 +42,7 @@ public class Testadder : MonoBehaviour,IConvertGameObjectToEntity
 
         Inventory.ItemsInInventory[0].Item.Use(Inventory, 0, PC);
         //new DisplayInventory(Inventory, Equip, (BaseCharacter)PC ,PanelSize, PanelPosition);
-        new DisplayMenu(PC, Equip);
+        new DisplayMenu(PC, Equip,Inventory);
     }
     void SetupPC() {
         PC.Name = "Test";

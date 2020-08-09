@@ -78,9 +78,9 @@ namespace Dreamers.Global
             PanelRect.sizeDelta = Size;
             return temp;
         }
-        public GameObject UIButton(Transform Parent, string TextToDisplay)
+        public Button UIButton(Transform Parent, string TextToDisplay)
         {
-            GameObject temp = Instantiate(Button);
+            Button temp = Instantiate(Button).GetComponent<Button>();
             temp.GetComponentInChildren<Text>().text= TextToDisplay;
             temp.transform.SetParent(Parent,false);
             RectTransform PanelRect = temp.GetComponent<RectTransform>();

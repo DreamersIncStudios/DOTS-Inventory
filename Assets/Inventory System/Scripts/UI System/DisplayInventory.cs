@@ -17,7 +17,7 @@ namespace Dreamers.InventorySystem.UISystem
             Equipment = equipment;
             BC = character;
             Inventory = inventory;
-            inventoryPanel = CreateUI(Size, Position);
+            InventoryPanel = CreateUI(Size, Position);
 
 
         }
@@ -27,11 +27,11 @@ namespace Dreamers.InventorySystem.UISystem
         BaseCharacter BC { get; set; }
         
       //  Vector2 Position = new Vector2(200, -600);
-        GameObject inventoryPanel { get; set; }
+        GameObject InventoryPanel { get; set; }
 
        GameObject CreateUI(Vector2 Size, Vector2 Position)
         {
-            if (inventoryPanel) { Object.Destroy(inventoryPanel); }
+            if (InventoryPanel) { Object.Destroy(InventoryPanel); }
 
             GameObject Parent = Manager.UICanvas();
             GameObject MainPanel = Manager.Panel(Parent.transform, Size, Position);
@@ -51,7 +51,7 @@ namespace Dreamers.InventorySystem.UISystem
             return MainPanel;
         }
         
-        GameObject inventoryGrid { get; set; }
+        private GameObject inventoryGrid { get; set; }
         GameObject InventoryGrid(GameObject Parent) {
             if (inventoryGrid) {
                 Object.Destroy(inventoryGrid);
@@ -87,7 +87,7 @@ namespace Dreamers.InventorySystem.UISystem
             }
             switch (SO.Type)
             {
-                case ItemType.Potion:
+                case ItemType.General:
                     activeWindow = ModalWindowItem((RecoveryItemSO)SO , IndexOf);
                     break;
                 case ItemType.Weapon:
@@ -142,14 +142,14 @@ namespace Dreamers.InventorySystem.UISystem
             Button use = Manager.UIButton(ButtonGroup.transform, "Use").GetComponent<Button>();
             use.onClick.AddListener(() => {
                 Item.Use(Inventory, IndexOf, BC);
-                InventoryGrid(inventoryPanel);
+                InventoryGrid(InventoryPanel);
                 Object.Destroy(VLG);
             });
 
             Button Equip = Manager.UIButton(ButtonGroup.transform ,"Equip Item").GetComponent<Button>();
             Equip.onClick.AddListener(() => {
                 Item.EquipItem(Inventory, Equipment, IndexOf, BC);
-                InventoryGrid(inventoryPanel);
+                InventoryGrid(InventoryPanel);
                 Object.Destroy(VLG);
             });
             Button Drop = Manager.UIButton(ButtonGroup.transform, "Drop Item").GetComponent<Button>();
@@ -157,7 +157,7 @@ namespace Dreamers.InventorySystem.UISystem
                 //Create a function to put Item on ground in Front of player
                 // Tie into DOTS Spawner System;
                 Item.RemoveFromInventory(Inventory, IndexOf);
-                InventoryGrid(inventoryPanel);
+                InventoryGrid(InventoryPanel);
                 Object.Destroy(VLG);
             });
             Button cancel = Manager.UIButton(ButtonGroup.transform,"Cancel").GetComponent<Button>();
@@ -190,21 +190,21 @@ namespace Dreamers.InventorySystem.UISystem
             Button Equip = Manager.UIButton(ButtonGroup.transform, "Equip Item").GetComponent<Button>();
             Equip.onClick.AddListener(() => {
                 Item.EquipItem(Inventory, Equipment, IndexOf, BC);
-                InventoryGrid(inventoryPanel);
+                InventoryGrid(InventoryPanel);
                 Object.Destroy(VLG);
             });
             Button Drop = Manager.UIButton(ButtonGroup.transform, "Drop Item").GetComponent<Button>();
             Drop.onClick.AddListener(() =>
             {
                 Item.RemoveFromInventory(Inventory, IndexOf);
-                InventoryGrid(inventoryPanel);
+                InventoryGrid(InventoryPanel);
                 Object.Destroy(VLG);
             });
             Button dismantle = Manager.UIButton(ButtonGroup.transform, "Dismante").GetComponent<Button>();
             dismantle.onClick.AddListener(() =>
             {
                 Debug.LogWarning("Dismantle function need to be implemented ");
-                InventoryGrid(inventoryPanel);
+                InventoryGrid(InventoryPanel);
                 Object.Destroy(VLG);
             });
             Button cancel = Manager.UIButton(ButtonGroup.transform, "Cancel").GetComponent<Button>();
@@ -238,14 +238,14 @@ namespace Dreamers.InventorySystem.UISystem
             Button Equip = Manager.UIButton(ButtonGroup.transform, "Equip Item").GetComponent<Button>();
             Equip.onClick.AddListener(() => {
                 Item.EquipItem(Inventory, Equipment, IndexOf, BC);
-                InventoryGrid(inventoryPanel);
+                InventoryGrid(InventoryPanel);
                 Object.Destroy(VLG);
             });
             Button Drop = Manager.UIButton(ButtonGroup.transform, "Drop Item").GetComponent<Button>();
             Drop.onClick.AddListener(() =>
             {
                 Item.RemoveFromInventory(Inventory, IndexOf);
-                InventoryGrid(inventoryPanel);
+                InventoryGrid(InventoryPanel);
                 Object.Destroy(VLG);
             });
 
@@ -253,7 +253,7 @@ namespace Dreamers.InventorySystem.UISystem
             dismantle.onClick.AddListener(() =>
             {
                 Debug.LogWarning("Dismantle function need to be implemented ");
-                InventoryGrid(inventoryPanel);
+                InventoryGrid(InventoryPanel);
                 Object.Destroy(VLG);
             });
             Button cancel = Manager.UIButton(ButtonGroup.transform, "Cancel").GetComponent<Button>();

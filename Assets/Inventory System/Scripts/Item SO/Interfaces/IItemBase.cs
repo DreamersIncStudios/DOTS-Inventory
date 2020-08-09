@@ -93,6 +93,6 @@ namespace Dreamers.InventorySystem
     }
     public enum ItemType
     {
-        None, Weapon, Potion, Armor
+        None, General, Weapon, Armor, Quest, Blueprint_Recipes
     }
 }
