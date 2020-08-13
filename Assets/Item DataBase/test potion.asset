@@ -14,9 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _itemID: 100
   _itemName: Health Potion
-  _desc: 
+  _desc: '"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
+    eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
+    in culpa qui officia deserunt mollit anim id est laborum."'
   _icon: {fileID: 21300000, guid: c4a65558575f5dc44b9bebfa433fd80a, type: 3}
-  _value: 0
+  _value: 20
   _type: 1
   _stackable: 1
   _questItem: 0

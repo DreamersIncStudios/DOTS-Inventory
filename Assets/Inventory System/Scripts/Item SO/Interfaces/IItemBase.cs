@@ -31,6 +31,7 @@ namespace Dreamers.InventorySystem
         public uint ItemID { get { return _itemID; } } // To be implemented with Database system/CSV Editor creator 
         [SerializeField] private string _itemName;
         public string ItemName { get { return _itemName; } }
+        [TextArea(3,6)]
         [SerializeField] private string _desc;
         public string Description { get { return _desc; } }
         [SerializeField] private Sprite _icon;
@@ -72,7 +73,7 @@ namespace Dreamers.InventorySystem
                 inventory.ItemsInInventory[i] = itemInInventory;
             }
 
-            if (inventory.OpenSlots && addNewSlot) 
+            if (inventory.OpenSlot && addNewSlot) 
                 inventory.ItemsInInventory.Add(
                     new ItemSlot() {
                     Item = this,
@@ -93,6 +94,6 @@ namespace Dreamers.InventorySystem
     }
     public enum ItemType
     {
-        None, General, Weapon, Armor, Quest, Blueprint_Recipes
+        None, General, Weapon, Armor,Crafting_Materials, Blueprint_Recipes,Quest
     }
 }

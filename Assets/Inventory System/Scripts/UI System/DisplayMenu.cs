@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 using UnityEngine.UI;
 using Dreamers.Global;
@@ -11,14 +10,24 @@ namespace Dreamers.InventorySystem.UISystem
     public class DisplayMenu 
     {
         readonly UIManager Manager;
-        public DisplayMenu(PlayerCharacter player, EquipmentBase equipment, InventoryBase inventory) {
+        public bool Displayed { get { return (bool)MenuPanelParent; } }
+        public DisplayMenu(BaseCharacter player, EquipmentBase equipment, InventoryBase inventory) {
             Manager = UIManager.instance;
             MenuPanelParent = CreateMenu(
                 new Vector2(0,0),
                 new Vector2(0,0));
-            playerStats = CreatePlayerPanel(player,equipment);
-            CreateItemPanel(inventory);
+            Character = player;
+            Inventory = inventory;
+            Equipment = equipment;
+            playerStats = CreatePlayerPanel();
+             itemPanel =CreateItemPanel();
         }
+        public void CloseInventory() {
+             Object.Destroy(MenuPanelParent); 
+        }
+        private InventoryBase Inventory;
+        private EquipmentBase Equipment;
+        private BaseCharacter Character;
        // PlayerCharacter PC;
 
         GameObject MenuPanelParent { get; set; }
@@ -46,13 +55,13 @@ namespace Dreamers.InventorySystem.UISystem
             return MainPanel;
         }
         GameObject playerStats { get;  set; }
-        GameObject CreatePlayerPanel(PlayerCharacter Player , EquipmentBase equipment) {
+        GameObject CreatePlayerPanel() {
             if (playerStats)
                 Object.Destroy(playerStats);
 
             GameObject MainPanel = Manager.Panel(MenuPanelParent.transform, new Vector2(400, 300), new Vector2(0, 150));
             MainPanel.name = "Player Window";
-
+            MainPanel.transform.SetSiblingIndex(0);
             VerticalLayoutGroup VLG = MainPanel.AddComponent<VerticalLayoutGroup>();
             VLG.padding = new RectOffset() { bottom = 20, top = 20, left = 20, right = 20 };
             VLG.childAlignment = TextAnchor.UpperCenter;
@@ -75,22 +84,26 @@ namespace Dreamers.InventorySystem.UISystem
             statsText.text = " Player";
             statsText.fontSize = 24;
 
-            statsText.text = Player.Name + " Lvl: " + Player.Level;
-            statsText.text += "\nHealth:\t\t" + Player.CurHealth+"/" +Player.MaxHealth;
-            statsText.text += "\nMana:\t\t\t" + Player.CurMana + "/" + Player.MaxMana+"\n";
+            statsText.text = Character.Name + " Lvl: " + Character.Level;
+            statsText.text += "\nHealth:\t\t" + Character.CurHealth+"/" + Character.MaxHealth;
+            statsText.text += "\nMana:\t\t\t" + Character.CurMana + "/" + Character.MaxMana+"\n";
 
             for (int i = 0; i < System.Enum.GetValues(typeof(AttributeName)).Length; i++)
             {
-                statsText.text += "\n"+((AttributeName)i).ToString() + ":\t\t\t\t\t" + Player.GetPrimaryAttribute(i).AdjustBaseValue;
-        }
-            currentEquipWindow = CurrentEquipWindow(MainPanel.transform, equipment);
+                statsText.text += "\n"+((AttributeName)i).ToString() + ":\t\t\t" + Character.GetPrimaryAttribute(i).BaseValue;
+                statsText.text += " + "+ Character.GetPrimaryAttribute(i).BuffValue;
+                statsText.text += " + " + Character.GetPrimaryAttribute(i).AdjustBaseValue;
+
+
+            }
+            currentEquipWindow = CurrentEquipWindow(MainPanel.transform);
 
             return MainPanel;
 
 
         }
         GameObject currentEquipWindow { get; set; }
-        GameObject CurrentEquipWindow(Transform Parent,EquipmentBase equipment) {
+        GameObject CurrentEquipWindow(Transform Parent) {
             if (currentEquipWindow) 
              { Object.Destroy(currentEquipWindow); }
             GridLayoutGroup CurrentEquips = Manager.Panel(Parent, new Vector2(400, 400), new Vector2(0, 150)).AddComponent<GridLayoutGroup>();
@@ -99,73 +112,73 @@ namespace Dreamers.InventorySystem.UISystem
             CurrentEquips.childAlignment = TextAnchor.MiddleCenter;
             CurrentEquips.spacing = new Vector2(10, 10);
 
-            if (equipment.PrimaryWeapon)
+            if (Equipment.PrimaryWeapon)
             {
-                ItemIconDisplay(CurrentEquips.transform, equipment.PrimaryWeapon.Icon);
+                ItemIconDisplay(CurrentEquips.transform, Equipment.PrimaryWeapon.Icon);
             }
             else
             {
                 ItemIconDisplay(CurrentEquips.transform, null);
             }
-            if (equipment.PrimaryWeapon)
+            if (Equipment.SecondaryWeapon)
             {
-                ItemIconDisplay(CurrentEquips.transform, equipment.PrimaryWeapon.Icon);
+                ItemIconDisplay(CurrentEquips.transform, Equipment.SecondaryWeapon.Icon);
             }
             else
             {
                 ItemIconDisplay(CurrentEquips.transform, null);
             }
-            if (equipment.PrimaryWeapon)
+            if (Equipment.ProjectileWeopon)
             {
-                ItemIconDisplay(CurrentEquips.transform, equipment.PrimaryWeapon.Icon);
+                ItemIconDisplay(CurrentEquips.transform, Equipment.ProjectileWeopon.Icon);
             }
             else
             {
                 ItemIconDisplay(CurrentEquips.transform, null);
             }
-            if (equipment.PrimaryWeapon)
+            if (Equipment.Helmet)
             {
-                ItemIconDisplay(CurrentEquips.transform, equipment.PrimaryWeapon.Icon);
+                ItemIconDisplay(CurrentEquips.transform, Equipment.Helmet.Icon);
             }
             else
             {
                 ItemIconDisplay(CurrentEquips.transform, null);
             }
-            if (equipment.PrimaryWeapon)
+            if (Equipment.Arms)
             {
-                ItemIconDisplay(CurrentEquips.transform, equipment.PrimaryWeapon.Icon);
+                ItemIconDisplay(CurrentEquips.transform, Equipment.Arms.Icon);
             }
             else
             {
                 ItemIconDisplay(CurrentEquips.transform, null);
             }
-            if (equipment.PrimaryWeapon)
+            if (Equipment.Chest)
             {
-                ItemIconDisplay(CurrentEquips.transform, equipment.PrimaryWeapon.Icon);
+                ItemIconDisplay(CurrentEquips.transform, Equipment.Chest.Icon);
             }
             else
             {
                 ItemIconDisplay(CurrentEquips.transform, null);
             }
-            if (equipment.PrimaryWeapon)
+            if (Equipment.Legs)
             {
-                ItemIconDisplay(CurrentEquips.transform, equipment.PrimaryWeapon.Icon);
+                ItemIconDisplay(CurrentEquips.transform, Equipment.Legs.Icon);
             }
             else
             {
                 ItemIconDisplay(CurrentEquips.transform, null);
             }
-            if (equipment.PrimaryWeapon)
+            if (Equipment.Shield)
             {
-                ItemIconDisplay(CurrentEquips.transform, equipment.PrimaryWeapon.Icon);
+                ItemIconDisplay(CurrentEquips.transform, Equipment.Shield.Icon);
             }
             else
             {
                 ItemIconDisplay(CurrentEquips.transform, null);
             }
-            if (equipment.PrimaryWeapon)
+            if (Equipment.Signature)
             {
-                ItemIconDisplay(CurrentEquips.transform, equipment.PrimaryWeapon.Icon);
+                ItemIconDisplay(CurrentEquips.transform, Equipment.Signature.Icon);
             }
             else
             {
@@ -184,9 +197,11 @@ namespace Dreamers.InventorySystem.UISystem
             return temp;
         }
         ItemType DisplayItems = (ItemType)1;
-        GameObject CreateItemPanel(InventoryBase inventory)
+        GameObject itemPanel { get; set; }
+        GameObject CreateItemPanel()
         {
             GameObject MainPanel = Manager.Panel(MenuPanelParent.transform, new Vector2(1400, 300), new Vector2(0, 150));
+            MainPanel.transform.SetSiblingIndex(1);
             VerticalLayoutGroup VLG = MainPanel.AddComponent<VerticalLayoutGroup>();
             MainPanel.name = "Item Window";
             VLG.padding = new RectOffset() { bottom = 20, top = 20, left = 20, right = 20 };
@@ -205,39 +220,44 @@ namespace Dreamers.InventorySystem.UISystem
             InventoryPanel.childForceExpandHeight = false;
             MainPanel.name = "Items Window";
 
-            for (int i = 1; i < 6; i++)
+            for (int i = 1; i < 7; i++)
             {
                 int test = i;
                 Button Temp =Manager.UIButton(InventoryPanel.transform, ((ItemType)i).ToString());
                 Temp.name = ((ItemType)i).ToString();
                 Temp.onClick.AddListener(() => {
                     DisplayItems = (ItemType)test;
-            itemsDisplayerPanel = ItemsDisplayPanel(MainPanel.transform, inventory, DisplayItems);
+            itemsDisplayerPanel = ItemsDisplayPanel(MainPanel.transform, Inventory, DisplayItems);
                 });
             }
-            itemsDisplayerPanel = ItemsDisplayPanel(MainPanel.transform, inventory, DisplayItems);
-
+            itemsDisplayerPanel = ItemsDisplayPanel(MainPanel.transform, Inventory, DisplayItems);
+        
             return MainPanel;
         }
 
         GameObject itemsDisplayerPanel { get; set; }
         GameObject ItemsDisplayPanel(Transform Parent, InventoryBase inventory, ItemType Type) {
             if (itemsDisplayerPanel)
+            {
                 Object.Destroy(itemsDisplayerPanel);
+            }
 
             GridLayoutGroup Main = Manager.Panel(Parent, new Vector2(1400, 300), new Vector2(0, 150)).AddComponent<GridLayoutGroup>();
             Main.padding = new RectOffset() { bottom = 20, top = 20, left = 20, right = 20 };
             Main.spacing = new Vector2(20, 20);
-            foreach (ItemSlot Item in inventory.ItemsInInventory)
+            for (int i = 0; i < inventory.ItemsInInventory.Count-1; i++)
             {
-                if (Item.Item.Type == Type)
+                ItemSlot Slot = inventory.ItemsInInventory[i];
+                int IndexOf = i;
+                if (Slot.Item.Type == Type)
                 {
-                    Button temp =ItemButton(Main.transform, Item);
+                    Button temp =ItemButton(Main.transform, Slot);
                     temp.onClick.AddListener(() =>
                     {
                         GameObject pop = PopUpItemPanel(temp.GetComponent<RectTransform>().anchoredPosition
-                             + new Vector2(625, -225));
-                        pop.AddComponent<PopUpMouseControl>();
+                             + new Vector2(575, -175)
+                             , Slot, IndexOf);
+                       // pop.AddComponent<PopUpMouseControl>();
                     });
                       
                 
@@ -260,9 +280,75 @@ namespace Dreamers.InventorySystem.UISystem
                 return temp;
         }
 
-        GameObject PopUpItemPanel(Vector2 Pos)
+        GameObject PopUpItemPanel(Vector2 Pos, ItemSlot Slot, int IndexOf)
         { 
-            GameObject PopUp= Manager.Panel(Manager.UICanvas().transform, new Vector2(400, 400), Pos);
+            GameObject PopUp= Manager.Panel(Manager.UICanvas().transform, new Vector2(300, 300), Pos);
+            HorizontalLayoutGroup group = PopUp.AddComponent<HorizontalLayoutGroup>();
+            PopUp.AddComponent<PopUpMouseControl>();
+
+            group.childControlWidth = false;
+
+            Text info = Manager.TextBox(PopUp.transform, new Vector2(150,300));
+            info.text = Slot.Item.ItemName + "\n";
+            info.text += Slot.Item.Description;
+            
+                VerticalLayoutGroup ButtonPanel= Manager.Panel(PopUp.transform, new Vector2(150, 300), Pos).AddComponent<VerticalLayoutGroup>();
+
+            switch (Slot.Item.Type) {
+                case ItemType.General:
+                    Button use = Manager.UIButton(ButtonPanel.transform, "Use Item");
+                    use.onClick.AddListener(() =>
+                    {
+                        RecoveryItemSO temp = (RecoveryItemSO)Slot.Item;
+                        temp.Use(Inventory, IndexOf, Character);
+                       
+                        itemsDisplayerPanel = ItemsDisplayPanel(itemPanel.transform, Inventory, DisplayItems);
+                        Object.Destroy(PopUp);
+
+                    });
+                    info.text += "\nQuantity: " + Slot.Count;
+                    break;
+                case ItemType.Armor:
+                case ItemType.Weapon:
+                    Button Equip = Manager.UIButton(ButtonPanel.transform, "Equip");
+                    Equip.onClick.AddListener(() => 
+                    {
+                        switch (Slot.Item.Type) {
+                            case ItemType.Armor:
+                                ArmorSO Armor = (ArmorSO)Slot.Item;
+                                Armor.EquipItem(Inventory, Equipment, IndexOf, Character);
+                                break;
+                            case ItemType.Weapon:
+                                WeaponSO weapon = (WeaponSO)Slot.Item;
+                                weapon.EquipItem(Inventory, Equipment, IndexOf, Character);
+
+                                break;
+                        }
+                        itemsDisplayerPanel = ItemsDisplayPanel(itemPanel.transform, Inventory, DisplayItems); 
+                        playerStats = CreatePlayerPanel();
+                        Object.Destroy(PopUp);
+                    });
+                    Button Mod = Manager.UIButton(ButtonPanel.transform, "Modify");
+                    Mod.onClick.AddListener(() => Debug.LogWarning("Implentation to be added once Skill/Magic system designed"));
+                    Button Dismantle = Manager.UIButton(ButtonPanel.transform, "Dismantle");
+
+                    break;
+                case ItemType.Quest:
+                    Button View = Manager.UIButton(ButtonPanel.transform, "View Item");
+
+                    break;
+                case ItemType.Blueprint_Recipes:
+                    break;
+            }
+            if (Slot.Item.Type != ItemType.Quest)
+            {
+                Button Drop = Manager.UIButton(ButtonPanel.transform, "Drop");
+                Drop.onClick.AddListener(() => { 
+                    Slot.Item.RemoveFromInventory(Inventory, IndexOf);
+                    Object.Destroy(PopUp);
+                });
+            }
+           // Button Cancel = Manager.UIButton(ButtonPanel.transform, "Cancel");
 
             return PopUp;
         }

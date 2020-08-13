@@ -51,7 +51,7 @@ namespace Dreamers.Global
 
         [SerializeField] private GameObject UIPanelPrefab;
         [SerializeField] private GameObject TextBoxPrefab;
-        [SerializeField] private GameObject Button;
+        [SerializeField] private GameObject ButtonPrefab;
         // write anchoring system
 
         public GameObject Panel(Transform Parent, Vector2 Size, Vector2 Position) 
@@ -67,7 +67,7 @@ namespace Dreamers.Global
 
             return temp;
         }
-        public GameObject TextBox(Transform Parent, Vector2 Size) {
+        public Text TextBox(Transform Parent, Vector2 Size) {
 
             GameObject temp = Instantiate(TextBoxPrefab);
             temp.transform.SetParent(Parent,false);
@@ -76,11 +76,11 @@ namespace Dreamers.Global
             PanelRect.anchorMax = new Vector2(0, 1);
             PanelRect.anchorMin = new Vector2(0, 1);
             PanelRect.sizeDelta = Size;
-            return temp;
+            return temp.GetComponent<Text>();
         }
         public Button UIButton(Transform Parent, string TextToDisplay)
         {
-            Button temp = Instantiate(Button).GetComponent<Button>();
+            Button temp = Instantiate(ButtonPrefab).GetComponent<Button>();
             temp.GetComponentInChildren<Text>().text= TextToDisplay;
             temp.transform.SetParent(Parent,false);
             RectTransform PanelRect = temp.GetComponent<RectTransform>();

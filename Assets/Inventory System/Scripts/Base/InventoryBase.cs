@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
+
 
 namespace Dreamers.InventorySystem.Base {
     [System.Serializable]
@@ -8,8 +7,28 @@ namespace Dreamers.InventorySystem.Base {
     {
         public List<ItemSlot> ItemsInInventory;
         public uint MaxInventorySize;
-        public bool OpenSlots { get { return ItemsInInventory.Count < MaxInventorySize; } }
 
+        // Need to Update for Stackable items;
+        public bool OpenSlots(ItemSlot Slot) {
+            if (Slot.Item.Stackable) 
+            {
+                for (int i = 0; i < ItemsInInventory.Count; i++)
+                {
+                    ItemSlot itemInInventory = ItemsInInventory[i];
+                    if ( itemInInventory.Item.ItemID == Slot.Item.ItemID && itemInInventory.Count < 99)
+                    {
+                        return true;
+                     
+                    }
+                   
+                }
+                return false;
+            }
+            else
+            return ItemsInInventory.Count < MaxInventorySize;  }
+
+        public bool OpenSlot { get { return ItemsInInventory.Count < MaxInventorySize; } }
+        public int Gold;
 
 
 

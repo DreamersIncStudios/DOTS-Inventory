@@ -14,12 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _itemID: 0
   _itemName: Shield Teste
-  _desc: ardpjqwerd
+  _desc: '"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
+    eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
+    in culpa qui officia deserunt mollit anim id est laborum."'
   _icon: {fileID: 21300000, guid: ef9a6168b9cc80a45a74d255f3bb1abf, type: 3}
   _value: 20
   _type: 3
   _stackable: 0
   _questItem: 0
+  quality: 0
   _model: {fileID: 1155997294961484239, guid: d7e5cd7c159e64546b077f834d8b12c9, type: 3}
   _equipToHuman: 0
   _equipBone: 0
@@ -34,3 +40,6 @@ MonoBehaviour:
     BuffValue: 2
   - Stat: 0
     BuffValue: 2
+  maxDurable: 0
+  breakable: 0
+  _upgradeable: 0

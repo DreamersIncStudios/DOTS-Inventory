@@ -11,8 +11,8 @@ public class Testadder : MonoBehaviour,IConvertGameObjectToEntity
 {
     public uint ChangeValue;
     public List<ItemBaseSO> addering;
-    public InventoryBase Inventory;
-    public EquipmentBase Equip;
+   private InventoryBase Inventory;
+    private EquipmentBase Equip;
     private PlayerCharacter PC;
 
     public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
@@ -22,6 +22,7 @@ public class Testadder : MonoBehaviour,IConvertGameObjectToEntity
     }
 
     // Start is called before the first frame update
+    DisplayMenu Menu;
     void Start()
     {
         PC = this.GetComponent<PlayerCharacter>();
@@ -41,8 +42,8 @@ public class Testadder : MonoBehaviour,IConvertGameObjectToEntity
         addering[2].AddToInventory(Inventory);
 
         Inventory.ItemsInInventory[0].Item.Use(Inventory, 0, PC);
-        //new DisplayInventory(Inventory, Equip, (BaseCharacter)PC ,PanelSize, PanelPosition);
-        new DisplayMenu(PC, Equip,Inventory);
+       Menu = new  DisplayMenu(PC, Equip,Inventory);
+        Menu.CloseInventory();
     }
     void SetupPC() {
         PC.Name = "Test";
@@ -63,5 +64,10 @@ public class Testadder : MonoBehaviour,IConvertGameObjectToEntity
         PC.SetupStatsModifiers(); 
         PC.StatUpdate();
 
+    }
+    private void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.I) && Menu.Displayed) { Menu.CloseInventory(); }
+        if (Input.GetKeyUp(KeyCode.I) && !Menu.Displayed) { Menu = new DisplayMenu(PC, Equip, Inventory); }
     }
 }
