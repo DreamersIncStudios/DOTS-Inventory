@@ -30,7 +30,7 @@ namespace Dreamers.InventorySystem.Base
             Saleprice = Mathf.RoundToInt(Item.Item.Value * Sell* Multiplier);
             return CharacterInventory.Gold > Saleprice * Sell;
         }
-        public void BuyItem(ItemSlot ItemToBuy) {
+        public void BuyItemFrom(ItemSlot ItemToBuy) {
             //int salePrice;
             if (CanPurchase(ItemToBuy, out int salePrice)
                 && CharacterInventory.Inventory.OpenSlots(ItemToBuy)) 
@@ -40,7 +40,7 @@ namespace Dreamers.InventorySystem.Base
                 Debug.Log("Bought one " + ItemToBuy.Item.ItemName);
             }
         }
-        public void BuyItemX(ItemSlot ItemToBuy, uint Multiplier)
+        public void BuyXItemsFrom(ItemSlot ItemToBuy, uint Multiplier)
         {
             //int salePrice;
             if (CanPurchaseX(ItemToBuy, Multiplier, out int salePrice)
@@ -55,11 +55,27 @@ namespace Dreamers.InventorySystem.Base
 
             }
         }
-        public void SellItem(ItemSlot ItemToSell, int IndexOf) {
+        public void SellItemTo(ItemSlot ItemToSell, int IndexOf) {
             if (ItemToSell.Item.Type != ItemType.Quest) {
-                CharacterInventory.Gold += Mathf.RoundToInt(ItemToSell.Item.Value * (1 / Sell));
+                CharacterInventory.Gold += Mathf.RoundToInt(ItemToSell.Item.Value * (1 * Sell));
                 ItemToSell.Item.RemoveFromInventory(CharacterInventory.Inventory, IndexOf);
             }
+            else { Debug.Log("Can't Sell Item "+ ItemToSell.Item.ItemName); }
+
+
+        }
+        public void SellxItemsTo(ItemSlot ItemToSell, int IndexOf, uint Multiplier )
+        {
+            if (ItemToSell.Item.Stackable && ItemToSell.Count >= Multiplier && ItemToSell.Item.Type != ItemType.Quest)
+            {
+                CharacterInventory.Gold += Mathf.RoundToInt(ItemToSell.Item.Value * (1* Sell));
+                for (int i = 0; i < Multiplier; i++)
+                {
+                    ItemToSell.Item.RemoveFromInventory(CharacterInventory.Inventory, IndexOf);
+                }
+            }
+            else { Debug.Log("Can't Sell Item " + ItemToSell.Item.ItemName); }
+
         }
     }
 }

@@ -135,8 +135,8 @@ GameObject:
   - component: {fileID: 109663246}
   - component: {fileID: 109663245}
   - component: {fileID: 109663247}
-  - component: {fileID: 109663248}
   - component: {fileID: 109663249}
+  - component: {fileID: 109663248}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -215,7 +215,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Inventory:
     ItemsInInventory: []
-    MaxInventorySize: 10
+    MaxInventorySize: 30
     Gold: 0
   Equipment:
     PrimaryWeapon: {fileID: 0}

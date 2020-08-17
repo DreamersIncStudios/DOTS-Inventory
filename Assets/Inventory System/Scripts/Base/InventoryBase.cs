@@ -15,12 +15,15 @@ namespace Dreamers.InventorySystem.Base {
                 for (int i = 0; i < ItemsInInventory.Count; i++)
                 {
                     ItemSlot itemInInventory = ItemsInInventory[i];
-                    if ( itemInInventory.Item.ItemID == Slot.Item.ItemID && itemInInventory.Count < 99)
+                    if (itemInInventory.Item.ItemID == Slot.Item.ItemID && itemInInventory.Count < 99)
                     {
                         return true;
-                     
+
                     }
-                   
+                    if (itemInInventory.Item.ItemID == Slot.Item.ItemID && itemInInventory.Count == 99)
+                    {
+                        return ItemsInInventory.Count < MaxInventorySize;
+                    }
                 }
                 return false;
             }

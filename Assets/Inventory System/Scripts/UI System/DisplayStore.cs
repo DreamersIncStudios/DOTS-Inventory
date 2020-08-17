@@ -10,6 +10,7 @@ namespace Dreamers.InventorySystem.UISystem
     {
         readonly UIManager Manager;
         public bool Displayed { get { return (bool)MenuPanelParent; } }
+        bool Buying=true;
         GameObject MenuPanelParent { get; set; }
         private InventoryBase Inventory;
         private StoreBase Store;
@@ -21,8 +22,8 @@ namespace Dreamers.InventorySystem.UISystem
                 new Vector2(0, 0));
         }
 
-        
-        GameObject CreateStoreUI( Vector2 Size, Vector2 Position)
+
+        GameObject CreateStoreUI(Vector2 Size, Vector2 Position)
         {
             if (MenuPanelParent)
                 Object.Destroy(MenuPanelParent);
@@ -45,32 +46,52 @@ namespace Dreamers.InventorySystem.UISystem
             titleGO.alignment = TextAnchor.MiddleCenter;
             titleGO.text = Store.StoreName;
             titleGO.fontSize = 24;
+            HorizontalLayoutGroup BuySell = Manager.Panel(MainPanel.transform, new Vector2(1920, 60), Position).AddComponent<HorizontalLayoutGroup>();
+            BuySell.name = "BuySell Header";
+            BuySell.childControlHeight = false;
+            BuySell.childForceExpandHeight = false;
 
+            Manager.UIButton(BuySell.transform, "Buy Items")
+                .onClick.AddListener(() =>
+                {
+                    Buying = true;
+                      ItemPanel = DisplayItems(ItemType.None, MainPanel.transform);
+                });
+
+            Manager.UIButton(BuySell.transform, "Sell Items")
+                .onClick.AddListener(() =>
+                {
+                    Buying = false;
+
+                      ItemPanel = DisplayItems(ItemType.None, MainPanel.transform);
+                });
             #region header
-            HorizontalLayoutGroup ButtonHeader = Manager.Panel(MainPanel.transform, new Vector2(1920,60), Position).AddComponent<HorizontalLayoutGroup>();
+            HorizontalLayoutGroup ButtonHeader = Manager.Panel(MainPanel.transform, new Vector2(1920, 60), Position).AddComponent<HorizontalLayoutGroup>();
             ButtonHeader.name = "Button Header";
             ButtonHeader.childControlHeight = false;
             ButtonHeader.childForceExpandHeight = false;
             Manager.UIButton(ButtonHeader.transform, "All")
-                .onClick.AddListener(() => {
-            ItemPanel = DisplayItems(ItemType.None,MainPanel.transform);
+                .onClick.AddListener(() =>
+                {
+                    ItemPanel = DisplayItems(ItemType.None, MainPanel.transform);
                 });
-                ;
+            
 
             for (int i = 1; i < 6; i++)
             {
                 int test = i;
                 Button Temp = Manager.UIButton(ButtonHeader.transform, ((ItemType)i).ToString());
-                Temp.onClick.AddListener(() => {
+                Temp.onClick.AddListener(() =>
+                {
                     ItemPanel = DisplayItems((ItemType)test, MainPanel.transform);
                 });
                 ;
                 Temp.name = ((ItemType)i).ToString();
-              
+
             }
             #endregion
-            
-            ItemPanel = DisplayItems(ItemType.None,MainPanel.transform);
+
+            ItemPanel = DisplayItems(ItemType.None, MainPanel.transform);
             return MainPanel;
         }
 
@@ -89,32 +110,42 @@ namespace Dreamers.InventorySystem.UISystem
             basePanel.name = "Items Display";
             basePanel.padding = new RectOffset() { bottom = 20, top = 20, left = 20, right = 20 };
             basePanel.spacing = new Vector2(20, 20);
-
-            for (int i = 0; i < Store.StoreInventory.ItemsInInventory.Count - 1; i++)
+            InventoryBase inventory;
+            if (Buying)
             {
-                ItemSlot Slot = Store.StoreInventory.ItemsInInventory[i];
+                inventory = Store.StoreInventory;
+            }
+            else {
+                inventory = Inventory;
+            }
+
+            for (int i = 0; i < inventory.ItemsInInventory.Count - 1; i++)
+            {
+                ItemSlot Slot = inventory.ItemsInInventory[i];
                 int IndexOf = i;
                 if (Slot.Item.Type == Filter)
                 {
                     Button temp = ItemButton(basePanel.transform, Slot);
                     temp.onClick.AddListener(() =>
                     {
-                        GameObject pop = PopUpItemPanel(temp.GetComponent<RectTransform>().anchoredPosition
-                             + new Vector2(575, -175)
-                             , Slot, IndexOf);
-                        pop.AddComponent<PopUpMouseControl>();
+                      
+                            GameObject pop = PopUpItemPanel(temp.GetComponent<RectTransform>().anchoredPosition
+                                 + new Vector2(575, -175)
+                                 , Slot, IndexOf);
+                            pop.AddComponent<PopUpMouseControl>();
+                        
                     });
                 }
                 if (Filter == ItemType.None) 
                 {
-
                     Button temp = ItemButton(basePanel.transform, Slot);
                     temp.onClick.AddListener(() =>
                     {
+                       
                         GameObject pop = PopUpItemPanel(temp.GetComponent<RectTransform>().anchoredPosition
                              + new Vector2(100, -175)
                              , Slot, IndexOf);
-
+                    
                     });
                 }
 
@@ -142,7 +173,7 @@ namespace Dreamers.InventorySystem.UISystem
             GameObject PopUp = Manager.Panel(Manager.UICanvas().transform, new Vector2(400, 400), Pos);
             Image temp = PopUp.GetComponent<Image>();
             Color color = temp.color; color.a = 1.0f;
-                temp.color = color;
+            temp.color = color;
 
             HorizontalLayoutGroup group = PopUp.AddComponent<HorizontalLayoutGroup>();
             PopUp.AddComponent<PopUpMouseControl>();
@@ -157,38 +188,79 @@ namespace Dreamers.InventorySystem.UISystem
             info.text += "Cost: " + Mathf.RoundToInt(Slot.Item.Value * Store.Sell) + " gil";
 
             VerticalLayoutGroup ButtonPanel = Manager.Panel(PopUp.transform, new Vector2(150, 300), Pos).AddComponent<VerticalLayoutGroup>();
-            switch (Slot.Item.Type)
+            if (Buying)
             {
-                case ItemType.General:
-                case ItemType.Crafting_Materials:
+                switch (Slot.Item.Type)
+                {
+                    case ItemType.General:
+                    case ItemType.Crafting_Materials:
 
-                    Button Buy1 = Manager.UIButton(ButtonPanel.transform, "Buy 1 ");
-                    Button Buy5 = Manager.UIButton(ButtonPanel.transform, "Buy 5 ");
-                    Buy1.onClick.AddListener(() =>
-                    {
-                        Store.BuyItem(Slot);
-                        Object.Destroy(PopUp);
+                        Button Buy1 = Manager.UIButton(ButtonPanel.transform, "Buy 1 ");
+                        Button Buy5 = Manager.UIButton(ButtonPanel.transform, "Buy 5 ");
+                        Buy1.onClick.AddListener(() =>
+                        {
+                            Store.BuyItemFrom(Slot);
+                            Object.Destroy(PopUp);
 
-                    });
-                    Buy5.onClick.AddListener(() =>
-                    {
-                        Store.BuyItemX(Slot,5);
+                        });
+                        Buy5.onClick.AddListener(() =>
+                        {
+                            Store.BuyXItemsFrom(Slot, 5);
 
-                        Object.Destroy(PopUp);
+                            Object.Destroy(PopUp);
 
-                    });
-                    break;
-                case ItemType.Armor:
-                case ItemType.Weapon:
-                case ItemType.Blueprint_Recipes:
-                    Button Buy  = Manager.UIButton(ButtonPanel.transform, "Buy");
-                    Buy.onClick.AddListener(() =>
-                    {
-                        Store.BuyItem(Slot);
-                        Object.Destroy(PopUp);
-                    });
+                        });
+                        break;
+                    case ItemType.Armor:
+                    case ItemType.Weapon:
+                    case ItemType.Blueprint_Recipes:
+                        Button Buy = Manager.UIButton(ButtonPanel.transform, "Buy");
+                        Buy.onClick.AddListener(() =>
+                        {
+                            Store.BuyItemFrom(Slot);
+                            Object.Destroy(PopUp);
+                        });
 
-                    break;
+                        break;
+                }
+            }
+            else
+            {
+                switch (Slot.Item.Type)
+                {
+                    case ItemType.General:
+                    case ItemType.Crafting_Materials:
+
+                        Button Sell1 = Manager.UIButton(ButtonPanel.transform, "Sell 1 ");
+                        Button Sell5 = Manager.UIButton(ButtonPanel.transform, "Sell 5 ");
+                        Sell1.onClick.AddListener(() =>
+                        {
+                            Store.SellItemTo(Slot,IndexOf);
+                            Object.Destroy(PopUp);
+
+                        });
+                        Sell5.onClick.AddListener(() =>
+                        {
+                            Store.SellxItemsTo(Slot,IndexOf,5);
+                            ItemPanel = DisplayItems(ItemType.None, MenuPanelParent.transform);
+
+                            Object.Destroy(PopUp);
+
+                        });
+                        break;
+                    case ItemType.Armor:
+                    case ItemType.Weapon:
+                    case ItemType.Blueprint_Recipes:
+                        Button Sell= Manager.UIButton(ButtonPanel.transform, "sell");
+                       Sell.onClick.AddListener(() =>
+                        {
+                            Store.SellItemTo(Slot,IndexOf);
+                            ItemPanel = DisplayItems(ItemType.None, MenuPanelParent.transform);
+                            Object.Destroy(PopUp);
+                        });
+
+                        break;
+                }
             }
             return PopUp;
         }
