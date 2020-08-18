@@ -27,9 +27,11 @@ public class Testadder : MonoBehaviour,IConvertGameObjectToEntity
     {
         PC = this.GetComponent<PlayerCharacter>();
         Inventory = this.GetComponent<CharacterInventory>().Inventory;
-        Equip = this.GetComponent<CharacterInventory>().Equipment;
+        CharacterInventory temp = this.GetComponent<CharacterInventory>();
+        temp.Inventory.MaxInventorySize = 30;
+        Equip = temp.Equipment;
      SetupPC();
-
+        
         addering[0].AddToInventory(Inventory);
         addering[0].AddToInventory(Inventory);
         addering[0].AddToInventory(Inventory);

@@ -9,16 +9,11 @@ namespace Stats
         private void Update()
         {
             if (CurHealth <= 0) {
-                Debug.Log(MaxHealth);
+                Debug.Log("Dead");
 
              
             }
         }
-        void Healer()
-        {
-
-            AdjustHealth(100);
-
-        }
+ 
     }
 }
