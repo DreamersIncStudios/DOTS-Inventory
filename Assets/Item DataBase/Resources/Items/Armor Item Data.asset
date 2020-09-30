@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74231950e191fac439b14373020f375f, type: 3}
   m_Name: Armor Item Data
   m_EditorClassIdentifier: 
-  _itemID: 0
   _itemName: Shield Teste
   _desc: '"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
     tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,

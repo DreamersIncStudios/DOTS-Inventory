@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d702dee579f7aee4d83fbdaba56cd92a, type: 3}
   m_Name: Sample Sword
   m_EditorClassIdentifier: 
-  _itemID: 0
   _itemName: Sample Sword
   _desc: '"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
     tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,

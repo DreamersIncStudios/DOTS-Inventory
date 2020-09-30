@@ -7,7 +7,6 @@ using Dreamers.InventorySystem.Base;
 
 namespace Dreamers.InventorySystem {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "Recovery Item Data", menuName = "Item System/Recovery Item", order = 1)]
     public class RecoveryItemSO : ItemBaseSO, IRecoverItems,IGeneral
     {
         

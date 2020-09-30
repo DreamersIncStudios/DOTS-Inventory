@@ -15,7 +15,7 @@ public class Vender : MonoBehaviour
     {
         Base.CharacterInventory= player.GetComponent<CharacterInventory>();
         Store = new DisplayStore(Base, player.GetComponent<CharacterInventory>().Inventory);
-
+        Store.CloseStore();
     }
     void Update()
     {

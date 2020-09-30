@@ -16,7 +16,8 @@ public class EquipmentBase
         public ArmorSO Legs;
         public ArmorSO Signature;
 
-
+        public int CurrentActivationPoints;
+        public int MaxActivationPoints;
         public List<ItemSlot> QuickAccessItems;
         public int NumOfQuickAccessSlots;
         public bool OpenSlots { get { return QuickAccessItems.Count < NumOfQuickAccessSlots; } }
