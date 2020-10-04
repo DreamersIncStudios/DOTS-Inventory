@@ -6,7 +6,8 @@ using Dreamers.Global;
 using MCADSystem;
 using Dreamers.InventorySystem;
 using Dreamers.InventorySystem.Base;
-
+using UnityEngine.EventSystems;
+using Stats;
 
 namespace EquipmentStats
 {
@@ -14,6 +15,13 @@ namespace EquipmentStats
     {
          UIManager Manager;
         public CharacterInventory Inventory;
+       public  StandaloneInputModule inputModule;
+        string StandardHorziontal = "Horizontal", StandardVertical = "Vertical", UpdateHorziontal = "UI_Horizontal", UpdateVertical = "UI_Vertical";
+        BaseCharacter baseCharacter;
+        Navigation ButtonNav;
+        public float ChangeInterval = 1.0f;
+
+       public List<Button> ButtonsOnDisplay;
         public MCADModes MCADMode { get { return EquipmentRef.MCADMode; } }
         public Vector2 Size = new Vector2(200, 250);
         public Vector2 Pos = new Vector2(1600, -750);
@@ -23,6 +31,11 @@ namespace EquipmentStats
         {
             Manager = UIManager.instance;
             Inventory = GetComponentInParent<CharacterInventory>();
+            ButtonNav = Navigation.defaultNavigation;
+            ButtonsOnDisplay = new List<Button>();
+            inputModule = GameObject.FindGameObjectWithTag("UI_Manager").
+                GetComponent<StandaloneInputModule>();
+            baseCharacter = this.GetComponentInParent<BaseCharacter>();
         }
 
 
@@ -33,18 +46,41 @@ namespace EquipmentStats
             if (Input.GetKeyDown(KeyCode.JoystickButton5))
             {
                 MenuPanelParent = CreateMenu();
+                inputModule.horizontalAxis = UpdateHorziontal;
+                inputModule.verticalAxis = UpdateVertical;
+                inputModule.UpdateModule();
+
             }
             if (Input.GetKeyUp(KeyCode.JoystickButton5))
             {
+                if(MenuPanelParent)
                 Destroy(MenuPanelParent);
+                inputModule.horizontalAxis = StandardHorziontal;
+                inputModule.verticalAxis = StandardVertical;
+                inputModule.UpdateModule();
+
             }
             if (!Input.GetKey(KeyCode.JoystickButton5))
-            {    Destroy(MenuPanelParent);
+            {
+                if (MenuPanelParent)
+                {
+                    Destroy(MenuPanelParent);
+                    ButtonsOnDisplay = new List<Button>();
+                    inputModule.horizontalAxis = StandardHorziontal;
+                    inputModule.verticalAxis = StandardVertical;
+                    inputModule.UpdateModule();
+                }
             }
+
+
         }
+
         GameObject CreateMenu() {
             if (MenuPanelParent)
                 Object.Destroy(MenuPanelParent);
+
+            ButtonsOnDisplay = new List<Button>();
+
             GameObject Parent = Manager.UICanvas();
             GameObject MainPanel = Manager.Panel(Parent.transform, Size, Pos);
             MainPanel.transform.localScale = Vector3.one;
@@ -67,11 +103,10 @@ namespace EquipmentStats
                         else
                         {
                             Button Temp = Manager.UIButton(MainPanel.transform, ((Menus)i).ToString());
-                            if (i == 0)
-                            {
-                                Temp.Select();
-                            }
-                            Temp.navigation = Navigation.defaultNavigation;
+                            Temp.name = ((Menus)i).ToString();
+                            ButtonsOnDisplay.Add(Temp);
+                 
+                            Temp.navigation = ButtonNav;
                             Temp.onClick.AddListener(() => {
                                 MenuPanelParent = CreateSub(index);
                             });
@@ -84,11 +119,12 @@ namespace EquipmentStats
                     {
                         int index = i;
                         Button Temp = Manager.UIButton(MainPanel.transform, ((Menus)i).ToString());
-                        if (i == 0)
-                        {
-                            Temp.Select();
-                        }
-                        Temp.navigation = Navigation.defaultNavigation;
+                        Temp.name = ((Menus)i).ToString();
+
+                        ButtonsOnDisplay.Add(Temp);
+
+                        Temp.navigation = ButtonNav;
+
                         Temp.onClick.AddListener(() => {
                             MenuPanelParent = CreateSub(index);
                         });
@@ -104,11 +140,11 @@ namespace EquipmentStats
                     {
                         int index = i;
                         Button Temp = Manager.UIButton(MainPanel.transform, ((Menus)i).ToString());
-                        if (i == 0)
-                        {
-                            Temp.Select();
-                        }
-                        Temp.navigation = Navigation.defaultNavigation;
+                            Temp.name = ((Menus)i).ToString();
+
+                        ButtonsOnDisplay.Add(Temp);
+                        Temp.navigation = ButtonNav;
+
                         Temp.onClick.AddListener(() => {
                             MenuPanelParent = CreateSub(index);
                         });
@@ -116,13 +152,15 @@ namespace EquipmentStats
                     break;
             
             }
+           ButtonsOnDisplay[0].Select();
 
-            
 
 
             return MainPanel;
 
         }
+
+ 
 
         GameObject CreateSub(int index) {
             if (MenuPanelParent)
@@ -142,14 +180,14 @@ namespace EquipmentStats
             switch ((Menus)index) {
                 case Menus.Skill:
                     cancel = Manager.UIButton(MainPanel.transform, "Cannel");
-                    cancel.navigation = Navigation.defaultNavigation;
+                   // cancel.navigation = Navigation.defaultNavigation;
                     cancel.onClick.AddListener(() => {
                          MenuPanelParent = CreateMenu();
                     });
                     break;
                 case Menus.Magic:
                     cancel = Manager.UIButton(MainPanel.transform, "Cannel");
-                    cancel.navigation = Navigation.defaultNavigation;
+                  //  cancel.navigation = Navigation.defaultNavigation;
 
                     cancel.onClick.AddListener(() => {
                         MenuPanelParent = CreateMenu();
@@ -161,7 +199,7 @@ namespace EquipmentStats
                     break;
                 case Menus.Summons:
                     cancel = Manager.UIButton(MainPanel.transform, "Cancel");
-                    cancel.navigation = Navigation.defaultNavigation;
+                   // cancel.navigation = Navigation.defaultNavigation;
 
                     cancel.onClick.AddListener(() => {
                         MenuPanelParent = CreateMenu();
@@ -169,7 +207,7 @@ namespace EquipmentStats
                     break;
                 case Menus.OverDrive:    
                     cancel = Manager.UIButton(MainPanel.transform, "Cancel");
-                    cancel.navigation = Navigation.defaultNavigation;
+                //    cancel.navigation = Navigation.defaultNavigation;
 
                     cancel.onClick.AddListener(() => {
                         MenuPanelParent = CreateMenu();
@@ -178,7 +216,7 @@ namespace EquipmentStats
                 case Menus.Shortcuts:
                     //TBD
                    cancel = Manager.UIButton(MainPanel.transform, "Cancel");
-                    cancel.navigation = Navigation.defaultNavigation;
+              //      cancel.navigation = Navigation.defaultNavigation;
                     cancel.Select();
                     cancel.onClick.AddListener(() => {
                         MenuPanelParent = CreateMenu();
@@ -191,34 +229,56 @@ namespace EquipmentStats
         }
 
 
-        void DisplayUsableItemsInInventory(Transform ParentTransform) {
+       void DisplayUsableItemsInInventory(Transform ParentTransform) {
             InventoryBase inventory = Inventory.Inventory;
-            List<Button> stupid = new List<Button>();
-            foreach (ItemSlot Slot in inventory.ItemsInInventory) 
-            {
-               switch(Slot.Item.Type)
+            List<Button> buttonList = new List<Button>();
+            if (inventory.ItemsInInventory.Count > 0) {
+                foreach (ItemSlot Slot in inventory.ItemsInInventory)
                 {
-                    case ItemType.General:
-                    string ButtonText = Slot.Item.ItemName + " " + Slot.Count;
-                    Button temp = Manager.UIButton(ParentTransform, ButtonText);
-                    temp.navigation = Navigation.defaultNavigation;
-                        stupid.Add(temp);
-                break;
+                    switch (Slot.Item.Type)
+                    {
+                        case ItemType.General:
+                            string ButtonText = Slot.Item.ItemName + " " + Slot.Count;
+                            Button temp = Manager.UIButton(ParentTransform, ButtonText);
+                            temp.onClick.AddListener(() =>
+                            {
+                                IGeneral itemToUse = (IGeneral)Slot.Item;
+
+                                switch (itemToUse.GeneralItemType)
+                                {
+                                    case TypeOfGeneralItem.Health:
+                                        RecoveryItemSO renamelater = (RecoveryItemSO)Slot.Item;
+
+                                        renamelater.Use(inventory, inventory.ItemsInInventory.IndexOf(Slot), baseCharacter);
+                                        MenuPanelParent = CreateSub(2);
+                                        break;
+                                }
+                            });
+                            buttonList.Add(temp);
+                            //   temp.navigation = Navigation.defaultNavigation;
+                            //      stupid.Add(temp);
+                            break;
+                    }
                 }
             }
+
            Button cancel = Manager.UIButton(ParentTransform, "Cancel");
-            cancel.navigation = Navigation.defaultNavigation;
+           // cancel.navigation = Navigation.defaultNavigation;
 
             cancel.onClick.AddListener(() => {
+            
                 MenuPanelParent = CreateMenu();
             });
-            if (stupid[0])
+
+            if (buttonList.Count>0)
             {
-                stupid[0].Select();
+                buttonList[0].Select();
             }
             else {
                 cancel.Select();
             }
         }
+
+
     }
 }
