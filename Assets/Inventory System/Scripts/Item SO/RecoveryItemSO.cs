@@ -4,6 +4,7 @@ using Unity.Entities;
 using UnityEngine;
 using Stats;
 using Dreamers.InventorySystem.Base;
+using System;
 
 namespace Dreamers.InventorySystem {
     [System.Serializable]
@@ -25,43 +26,44 @@ namespace Dreamers.InventorySystem {
         public override void Use(InventoryBase inventoryBase, int IndexOf, BaseCharacter player)
         {
             Use(inventoryBase, IndexOf);
+            Material CharacterMaterial = player.GetComponent<Renderer>().material;
+
             switch (RecoverWhat)
             {
                 case RecoverType.Health:
          
-                    player.IncreaseHealth((int)RecoverAmount, Iterations, Frequency);
+                    player.IncreaseHealth((int)RecoverAmount, Iterations, Frequency,true);
 
                     break;
                 case RecoverType.Mana:
-                    player.IncreaseMana((int)RecoverAmount, Iterations, Frequency);
+                    player.IncreaseMana((int)RecoverAmount, Iterations, Frequency,true);
                     break;
                 case RecoverType.HealthMana:
-                    player.IncreaseHealth((int)RecoverAmount, Iterations, Frequency);
-                    player.IncreaseMana((int)RecoverAmount, Iterations, Frequency);
+                    player.IncreaseHealth((int)RecoverAmount, Iterations, Frequency,true);
+                    player.IncreaseMana((int)RecoverAmount, Iterations, Frequency,false);
                     break;
                 case RecoverType.Status:
                     //add logic later
                     break;
                 case RecoverType.StatusPlusHealth:
                     //add status logic
-                    player.IncreaseHealth((int)RecoverAmount, Iterations, Frequency);
+                    player.IncreaseHealth((int)RecoverAmount, Iterations, Frequency,true);
+
                     break;
                 case RecoverType.StatusPlusMana:
                     //add status logic
-                    player.IncreaseMana((int)RecoverAmount, Iterations, Frequency);
+                    player.IncreaseMana((int)RecoverAmount, Iterations, Frequency,true);
 
                     break;
                 case RecoverType.All:
                     //add status logic
-                    player.IncreaseMana((int)RecoverAmount, Iterations, Frequency);
-                    player.IncreaseHealth((int)RecoverAmount, Iterations, Frequency);
+                    player.IncreaseMana((int)RecoverAmount, Iterations, Frequency,false);
+                    player.IncreaseHealth((int)RecoverAmount, Iterations, Frequency,true);
 
                     break;
             }
         }
-          
 
-        
 
         public override void EquipItem(InventoryBase InventoryBase, EquipmentBase Equipment, int IndexOf, BaseCharacter player)
         {

@@ -24,8 +24,8 @@ MonoBehaviour:
   _type: 1
   _stackable: 1
   _questItem: 0
-  _GeneralType: 0
-  _recoverAmount: 10
+  _recoverAmount: 50
   _iterations: 2
   _freq: 3
   _recoverWhat: 0
+  _GeneralType: 0

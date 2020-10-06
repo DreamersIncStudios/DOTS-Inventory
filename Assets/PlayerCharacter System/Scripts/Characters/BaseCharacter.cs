@@ -16,7 +16,7 @@ namespace Stats
         private Stat[] _stats;
         private Abilities[] _ability;
         private Elemental[] _ElementalMods;
-
+        private Material characterMaterial;
  
         [Range(0, 999)]
         public int CurHealth;
@@ -55,6 +55,8 @@ namespace Stats
             CurHealth = MaxHealth;
             CurMana = MaxMana;
             // SetupElementalMods();
+            characterMaterial = this.GetComponent<Renderer>().material;
+
         }
 
 
@@ -283,7 +285,7 @@ namespace Stats
         //    if (CurMana > MaxMana) { CurMana = MaxMana; }
 
         //}
-        public void IncreaseHealth(int Change, uint Iterations, float Frequency)
+        public void IncreaseHealth(int Change, uint Iterations, float Frequency, bool glow)
         {
             World.DefaultGameObjectInjectionWorld.EntityManager.GetBuffer<ChangeVitalBuffer>(selfEntityRef).Add(new ChangeVitalBuffer()
             { recover = new VitalChange()
@@ -293,9 +295,11 @@ namespace Stats
                 Frequency = Frequency,
                 Iterations = Iterations
             } }) ;
+            if(glow)
+           StartCoroutine(SetGlow("Health", Frequency * Iterations));
         }
 
-        public void IncreaseMana(int Change, uint Iterations, float Frequency)
+        public void IncreaseMana(int Change, uint Iterations, float Frequency, bool glow)
         {
             World.DefaultGameObjectInjectionWorld.EntityManager.GetBuffer<ChangeVitalBuffer>(selfEntityRef).Add(new ChangeVitalBuffer()
             {
@@ -308,6 +312,8 @@ namespace Stats
                     Iterations = Iterations
                 }
             });
+            if (glow)
+                StartCoroutine(SetGlow("Mana", Frequency * Iterations));
         }
         public void DecreaseHealth(int Change, uint Iterations, float Frequency)
         {
@@ -342,6 +348,12 @@ namespace Stats
         public void RemoveStatus(StatusEffect StatusToAdd) { }
         public void RemoveStatus(EffectStatus StatusName) { }
 
+       IEnumerator SetGlow(string GlowWhat, float delay) {
+            characterMaterial.SetFloat(GlowWhat, 1.0f);
+            yield return new  WaitForSeconds(delay);
+            characterMaterial.SetFloat(GlowWhat, 0.0f);
+
+        }
 
     }
 }
