@@ -4,13 +4,15 @@ using UnityEngine;
 
 namespace Dreamers.CADSystem.Interfaces
 {
-    public abstract class TestSlot : ICADslot
+    public  class TestSlot : ICADslot
     {
         [SerializeField] private CADGridSquare[,] grid;
+        [SerializeField] private Skills skill;
         [SerializeField] private int size;
         [SerializeField] private int reqdLevel;
-        [SerializeField] private bool isCommand;
+   
         public string name { get; set; }
+        public Skills SkillName { get { return skill; } }
 
         public CADGridSquare[,] Grid { get { return grid; } }
 
@@ -19,13 +21,13 @@ namespace Dreamers.CADSystem.Interfaces
         public int ReqdLevel { get { return reqdLevel; } }
         public Vector2Int InstallPosition { get; set; }
         public bool Installed { get; set; }
-        public bool IsCommandLineAbility { get { return isCommand; } }
-        public bool IsOnCommandLine { get; set; }
+        public bool OnCommandLine { get; set; }
 
         public TestSlot(int sized, int level) {
             size = sized;
             reqdLevel = level;
             grid = new CADGridSquare[sized, sized];
+            OnCommandLine = false;
             Installed = false;
             for (int x = 0; x < size; x++)
             {
@@ -38,17 +40,19 @@ namespace Dreamers.CADSystem.Interfaces
             }
         }
 
-        public virtual void AddAbility(Vector2Int Position)
+        public virtual void AddAbility(SkillsManager skillsManager,Vector2Int Position)
         {
             Installed = true;
             InstallPosition = Position;
-
+            skillsManager.AddNewSkill(skill);
         }
 
-        public virtual void RemoveAbility()
+        public virtual void RemoveAbility(SkillsManager skillsManager)
         {
             Installed = false;
             InstallPosition = new Vector2Int();
+            OnCommandLine = false;
+            skillsManager.RemoveSkill(skill);
         }
     }
 
@@ -59,9 +63,12 @@ namespace Dreamers.CADSystem.Interfaces
         int ReqdLevel { get; }
         Vector2Int InstallPosition { get; set; }
         bool Installed { get; set; }
-
-        void AddAbility(Vector2Int Position);
-        void RemoveAbility();
+        Skills SkillName { get; }
+        bool OnCommandLine { get; set; }
+        void AddAbility(SkillsManager skillsManager, Vector2Int Position);
+        void RemoveAbility(SkillsManager skillsManager);
+        
     }
     public enum slotType { Magic, Skill, StatMod}
+    public enum Status { Normal, Not_Running, Corrupted, }
 }

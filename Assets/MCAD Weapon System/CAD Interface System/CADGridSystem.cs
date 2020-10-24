@@ -14,8 +14,8 @@ namespace Dreamers.CADSystem.Interfaces
     }
 
     public enum GridSquareStatus { Locked, Available, Occupied, Blocked }
-    public enum TypeOfGridSquare { Normal, CommandLine}
- 
+    public enum TypeOfGridSquare { Normal, CommandLine, Block}
+   
 
     [System.Serializable]
     public class CADGridSystem 
@@ -24,6 +24,7 @@ namespace Dreamers.CADSystem.Interfaces
         public CADGridSquare[,] Grid = new CADGridSquare[200, 200];
        [SerializeReference]
         public List<ICADslot> InstalledSlots;
+        
         public CADGridSystem(int size) {
             CurSize = size;
             InstalledSlots = new List<ICADslot>();
@@ -74,11 +75,11 @@ namespace Dreamers.CADSystem.Interfaces
             }
         }
 
-        public void addSlotToCAD(ICADslot slot, int X, int Y) {
+        public void addSlotToCAD(ICADslot slot, SkillsManager Mgr,int X, int Y) {
             if (SlotAvailable(slot, X, Y)) 
             {
                 InstalledSlots.Add(slot);
-                slot.AddAbility(new Vector2Int(X, Y));
+                slot.AddAbility(Mgr,new Vector2Int(X, Y));
                 int xLimit = X + slot.Size;
                 int yLimit = Y + slot.Size;
                 for (int i = X; i < xLimit; i++)
@@ -86,13 +87,15 @@ namespace Dreamers.CADSystem.Interfaces
                     for (int j = Y; j < yLimit; j++)
                     {
                         Grid[i, j].status = GridSquareStatus.Occupied;
+                        if (Grid[i, j].Type == TypeOfGridSquare.CommandLine)
+                            slot.OnCommandLine = true;
                     }
                 }
             }
         }
-        public void RemoveSlotFromCAD(int index) {
+        public void RemoveSlotFromCAD(SkillsManager Mgr, int index) {
             UnequipSlot(InstalledSlots[index], InstalledSlots[index].InstallPosition.x, InstalledSlots[index].InstallPosition.y);
-            InstalledSlots[index].RemoveAbility();
+            InstalledSlots[index].RemoveAbility(Mgr);
 
         }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 using Dreamers.CADSystem.Interfaces;
 using Dreamers.Global;
 using UnityEngine.UI;
+using Dreamers.CADSystem;
 
 namespace EquipmentStats
 {
@@ -14,11 +15,12 @@ namespace EquipmentStats
         public CADGridSystem test;
 
         public List<TestSlot> SlotsToAdd;
+        private SkillsManager skillsManager;
 
         private void Awake()
         {
             test = new CADGridSystem(20);
-
+            skillsManager = this.gameObject.GetComponent<SkillsManager>();
 
 
         }
@@ -29,7 +31,7 @@ namespace EquipmentStats
             TestSlot temp = new TestSlot(4, 2);
             temp.name = "Testing ";
             SlotsToAdd.Add(temp);
-            test.addSlotToCAD(SlotsToAdd[0], 0, 0);
+            test.addSlotToCAD(SlotsToAdd[0], skillsManager, 0, 0);
 
 
 
