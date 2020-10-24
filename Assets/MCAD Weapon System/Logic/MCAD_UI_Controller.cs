@@ -45,6 +45,10 @@ namespace EquipmentStats
         {
             if (Input.GetKeyDown(KeyCode.JoystickButton5))
             {
+                if (Activiation) {
+                    Time.timeScale = .1f;
+                    ActivationCur -= ActivationCost;
+                }
                 MenuPanelParent = CreateMenu();
                 inputModule.horizontalAxis = UpdateHorziontal;
                 inputModule.verticalAxis = UpdateVertical;
@@ -53,12 +57,15 @@ namespace EquipmentStats
             }
             if (Input.GetKeyUp(KeyCode.JoystickButton5))
             {
-                if(MenuPanelParent)
-                Destroy(MenuPanelParent);
-                inputModule.horizontalAxis = StandardHorziontal;
-                inputModule.verticalAxis = StandardVertical;
-                inputModule.UpdateModule();
-
+                if (MenuPanelParent)
+                {
+                    Destroy(MenuPanelParent);
+                    inputModule.horizontalAxis = StandardHorziontal;
+                    inputModule.verticalAxis = StandardVertical;
+                    inputModule.UpdateModule();
+                }
+                if (timeScaleChange)
+                    Time.timeScale = 1.0f;
             }
             if (!Input.GetKey(KeyCode.JoystickButton5))
             {
@@ -72,6 +79,8 @@ namespace EquipmentStats
                 }
             }
 
+            if (timeScaleChange)
+                Time.timeScale = 1.0f;
 
         }
 
@@ -82,7 +91,7 @@ namespace EquipmentStats
             ButtonsOnDisplay = new List<Button>();
 
             GameObject Parent = Manager.UICanvas();
-            GameObject MainPanel = Manager.Panel(Parent.transform, Size, Pos);
+            GameObject MainPanel = Manager.GetPanel(Parent.transform, Size, Pos);
             MainPanel.transform.localScale = Vector3.one;
             VerticalLayoutGroup VLG = MainPanel.AddComponent<VerticalLayoutGroup>();
             VLG.padding = new RectOffset() { bottom = 20, top = 20, left = 20, right = 20 };
@@ -167,7 +176,7 @@ namespace EquipmentStats
                 Object.Destroy(MenuPanelParent);
 
             GameObject Parent = Manager.UICanvas();
-            GameObject MainPanel = Manager.Panel(Parent.transform, Size, Pos);
+            GameObject MainPanel = Manager.GetPanel(Parent.transform, Size, Pos);
             MainPanel.transform.localScale = Vector3.one;
             VerticalLayoutGroup VLG = MainPanel.AddComponent<VerticalLayoutGroup>();
             VLG.padding = new RectOffset() { bottom = 20, top = 20, left = 20, right = 20 };

@@ -5,6 +5,7 @@ using System;
 using UnityEngine;
 using MCADSystem;
 using Dreamers.Global;
+using Dreamers.CADSystem.Interfaces;
 
 namespace EquipmentStats
 {
@@ -16,7 +17,7 @@ namespace EquipmentStats
         private ModAttributes[] _modAttributes;
         [SerializeField] private MCADModes _mode;
         public MCADModes MCADMode { get { return _mode; } }
-
+        public CADGridSystem test;
         public string Name
         {
             get { return _name; }
@@ -72,6 +73,8 @@ namespace EquipmentStats
                 GetStat((int)StatNames.Max_Overdrive_Points).AdjustBaseValue,
                 this
                 );
+
+            test = new CADGridSystem(15);
   
         }
 

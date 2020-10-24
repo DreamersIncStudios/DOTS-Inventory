@@ -54,7 +54,7 @@ namespace Dreamers.Global
         [SerializeField] private GameObject ButtonPrefab;
         // write anchoring system
 
-        public GameObject Panel(Transform Parent, Vector2 Size, Vector2 Position) 
+        public GameObject GetPanel(Transform Parent, Vector2 Size, Vector2 Position) 
         {
             GameObject temp = Instantiate(UIPanelPrefab);
             temp.transform.SetParent(Parent,false);
@@ -90,6 +90,19 @@ namespace Dreamers.Global
 
             return temp;
         }
+       [SerializeField] private Image ImagePrefab;
+        public Image GetImage(Transform Parent, Sprite sprite) {
+            Image temp = Instantiate(ImagePrefab).GetComponent<Image>();
+            temp.sprite = sprite;
+            temp.transform.SetParent(Parent, false);
 
+            RectTransform PanelRect = temp.GetComponent<RectTransform>();
+            PanelRect.pivot = new Vector2(0.5f, .5f);
+            PanelRect.anchorMax = new Vector2(0, 1);
+            PanelRect.anchorMin = new Vector2(0, 1);
+
+            return temp;
+        
+        }
     }
 }

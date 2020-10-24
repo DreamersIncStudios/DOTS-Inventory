@@ -12,6 +12,13 @@ namespace EquipmentStats
         public int ActivationMax;
         public int ActivationCur;
 
+        bool Activiation { get {
+                bool temp = false;
+                if(MCADMode== MCADModes.Normal || MCADMode == MCADModes.Overload|| MCADMode == MCADModes.Training)
+                    temp = ActivationCur >= ActivationCost;
+                return temp;
+            } }
+        bool timeScaleChange { get { return Time.timeScale != 1.0f; } }
         public BaseEquipment EquipmentRef;
 
         public void setup(int activationCost, int activationMax, BaseEquipment equipmentRef)

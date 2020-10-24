@@ -36,7 +36,7 @@ namespace Dreamers.InventorySystem.UISystem
                 Object.Destroy(MenuPanelParent);
 
             GameObject Parent = Manager.UICanvas();
-            GameObject MainPanel = Manager.Panel(Parent.transform, Size, Position);
+            GameObject MainPanel = Manager.GetPanel(Parent.transform, Size, Position);
             MainPanel.transform.localScale = Vector3.one;
             RectTransform PanelRect = MainPanel.GetComponent<RectTransform>();
             PanelRect.pivot = new Vector2(0.5f, .5f);
@@ -59,7 +59,7 @@ namespace Dreamers.InventorySystem.UISystem
             if (playerStats)
                 Object.Destroy(playerStats);
 
-            GameObject MainPanel = Manager.Panel(MenuPanelParent.transform, new Vector2(400, 300), new Vector2(0, 150));
+            GameObject MainPanel = Manager.GetPanel(MenuPanelParent.transform, new Vector2(400, 300), new Vector2(0, 150));
             MainPanel.name = "Player Window";
             MainPanel.transform.SetSiblingIndex(0);
             VerticalLayoutGroup VLG = MainPanel.AddComponent<VerticalLayoutGroup>();
@@ -72,7 +72,7 @@ namespace Dreamers.InventorySystem.UISystem
             titleGO.alignment = TextAnchor.MiddleCenter;
             titleGO.text = " Player";
             titleGO.fontSize = 24;
-            VerticalLayoutGroup PlayerStatsWindow = Manager.Panel(MainPanel.transform, new Vector2(400, 450), new Vector2(0, 150)).AddComponent<VerticalLayoutGroup>();
+            VerticalLayoutGroup PlayerStatsWindow = Manager.GetPanel(MainPanel.transform, new Vector2(400, 450), new Vector2(0, 150)).AddComponent<VerticalLayoutGroup>();
             PlayerStatsWindow.name = "Player Stats Window";
             PlayerStatsWindow.padding = new RectOffset() { bottom = 20, top = 20, left = 20, right = 20 };
             PlayerStatsWindow.childAlignment = TextAnchor.UpperCenter;
@@ -106,7 +106,7 @@ namespace Dreamers.InventorySystem.UISystem
         GameObject CurrentEquipWindow(Transform Parent) {
             if (currentEquipWindow) 
              { Object.Destroy(currentEquipWindow); }
-            GridLayoutGroup CurrentEquips = Manager.Panel(Parent, new Vector2(400, 400), new Vector2(0, 150)).AddComponent<GridLayoutGroup>();
+            GridLayoutGroup CurrentEquips = Manager.GetPanel(Parent, new Vector2(400, 400), new Vector2(0, 150)).AddComponent<GridLayoutGroup>();
             CurrentEquips.transform.localScale = Vector3.one;
             CurrentEquips.padding = new RectOffset() { bottom = 15, top = 15, left = 15, right = 15 };
             CurrentEquips.childAlignment = TextAnchor.MiddleCenter;
@@ -200,7 +200,7 @@ namespace Dreamers.InventorySystem.UISystem
         GameObject itemPanel { get; set; }
         GameObject CreateItemPanel()
         {
-            GameObject MainPanel = Manager.Panel(MenuPanelParent.transform, new Vector2(1400, 300), new Vector2(0, 150));
+            GameObject MainPanel = Manager.GetPanel(MenuPanelParent.transform, new Vector2(1400, 300), new Vector2(0, 150));
             MainPanel.transform.SetSiblingIndex(1);
             VerticalLayoutGroup VLG = MainPanel.AddComponent<VerticalLayoutGroup>();
             MainPanel.name = "Item Window";
@@ -214,7 +214,7 @@ namespace Dreamers.InventorySystem.UISystem
             titleGO.text = "Inventory";
             titleGO.fontSize = 24;
             titleGO.name = "Inventory Title TextBox";
-            HorizontalLayoutGroup InventoryPanel = Manager.Panel(MainPanel.transform, new Vector2(400, 900), new Vector2(0, 150)).AddComponent<HorizontalLayoutGroup>();
+            HorizontalLayoutGroup InventoryPanel = Manager.GetPanel(MainPanel.transform, new Vector2(400, 900), new Vector2(0, 150)).AddComponent<HorizontalLayoutGroup>();
             InventoryPanel.name = " Control Display Buttons";
             InventoryPanel.childControlHeight = false;
             InventoryPanel.childForceExpandHeight = false;
@@ -242,7 +242,7 @@ namespace Dreamers.InventorySystem.UISystem
                 Object.Destroy(itemsDisplayerPanel);
             }
 
-            GridLayoutGroup Main = Manager.Panel(Parent, new Vector2(1400, 300), new Vector2(0, 150)).AddComponent<GridLayoutGroup>();
+            GridLayoutGroup Main = Manager.GetPanel(Parent, new Vector2(1400, 300), new Vector2(0, 150)).AddComponent<GridLayoutGroup>();
             Main.padding = new RectOffset() { bottom = 20, top = 20, left = 20, right = 20 };
             Main.spacing = new Vector2(20, 20);
             for (int i = 0; i < inventory.ItemsInInventory.Count-1; i++)
@@ -282,7 +282,7 @@ namespace Dreamers.InventorySystem.UISystem
 
         GameObject PopUpItemPanel(Vector2 Pos, ItemSlot Slot, int IndexOf)
         { 
-            GameObject PopUp= Manager.Panel(Manager.UICanvas().transform, new Vector2(300, 300), Pos);
+            GameObject PopUp= Manager.GetPanel(Manager.UICanvas().transform, new Vector2(300, 300), Pos);
             HorizontalLayoutGroup group = PopUp.AddComponent<HorizontalLayoutGroup>();
             PopUp.AddComponent<PopUpMouseControl>();
 
@@ -292,7 +292,7 @@ namespace Dreamers.InventorySystem.UISystem
             info.text = Slot.Item.ItemName + "\n";
             info.text += Slot.Item.Description;
             
-                VerticalLayoutGroup ButtonPanel= Manager.Panel(PopUp.transform, new Vector2(150, 300), Pos).AddComponent<VerticalLayoutGroup>();
+                VerticalLayoutGroup ButtonPanel= Manager.GetPanel(PopUp.transform, new Vector2(150, 300), Pos).AddComponent<VerticalLayoutGroup>();
 
             switch (Slot.Item.Type) {
                 case ItemType.General:

@@ -29,7 +29,7 @@ namespace Dreamers.InventorySystem.UISystem
                 Object.Destroy(MenuPanelParent);
 
             GameObject Parent = Manager.UICanvas();
-            GameObject MainPanel = Manager.Panel(Parent.transform, Size, Position);
+            GameObject MainPanel = Manager.GetPanel(Parent.transform, Size, Position);
             MainPanel.name = Store.StoreName;
             RectTransform PanelRect = MainPanel.GetComponent<RectTransform>();
             PanelRect.pivot = new Vector2(0.5f, .5f);
@@ -46,7 +46,7 @@ namespace Dreamers.InventorySystem.UISystem
             titleGO.alignment = TextAnchor.MiddleCenter;
             titleGO.text = Store.StoreName;
             titleGO.fontSize = 24;
-            HorizontalLayoutGroup BuySell = Manager.Panel(MainPanel.transform, new Vector2(1920, 60), Position).AddComponent<HorizontalLayoutGroup>();
+            HorizontalLayoutGroup BuySell = Manager.GetPanel(MainPanel.transform, new Vector2(1920, 60), Position).AddComponent<HorizontalLayoutGroup>();
             BuySell.name = "BuySell Header";
             BuySell.childControlHeight = false;
             BuySell.childForceExpandHeight = false;
@@ -66,7 +66,7 @@ namespace Dreamers.InventorySystem.UISystem
                       ItemPanel = DisplayItems(ItemType.None, MainPanel.transform);
                 });
             #region header
-            HorizontalLayoutGroup ButtonHeader = Manager.Panel(MainPanel.transform, new Vector2(1920, 60), Position).AddComponent<HorizontalLayoutGroup>();
+            HorizontalLayoutGroup ButtonHeader = Manager.GetPanel(MainPanel.transform, new Vector2(1920, 60), Position).AddComponent<HorizontalLayoutGroup>();
             ButtonHeader.name = "Button Header";
             ButtonHeader.childControlHeight = false;
             ButtonHeader.childForceExpandHeight = false;
@@ -105,7 +105,7 @@ namespace Dreamers.InventorySystem.UISystem
             if (ItemPanel)
                 Object.Destroy(ItemPanel);
 
-           GridLayoutGroup basePanel = Manager.Panel(Parent.transform, new Vector2(1920,0), new Vector2(0, 0))
+           GridLayoutGroup basePanel = Manager.GetPanel(Parent.transform, new Vector2(1920,0), new Vector2(0, 0))
                 .AddComponent<GridLayoutGroup>();
             basePanel.name = "Items Display";
             basePanel.padding = new RectOffset() { bottom = 20, top = 20, left = 20, right = 20 };
@@ -170,7 +170,7 @@ namespace Dreamers.InventorySystem.UISystem
             }
         GameObject PopUpItemPanel(Vector2 Pos, ItemSlot Slot, int IndexOf)
         {
-            GameObject PopUp = Manager.Panel(Manager.UICanvas().transform, new Vector2(400, 400), Pos);
+            GameObject PopUp = Manager.GetPanel(Manager.UICanvas().transform, new Vector2(400, 400), Pos);
             Image temp = PopUp.GetComponent<Image>();
             Color color = temp.color; color.a = 1.0f;
             temp.color = color;
@@ -187,7 +187,7 @@ namespace Dreamers.InventorySystem.UISystem
 
             info.text += "Cost: " + Mathf.RoundToInt(Slot.Item.Value * Store.Sell) + " gil";
 
-            VerticalLayoutGroup ButtonPanel = Manager.Panel(PopUp.transform, new Vector2(150, 300), Pos).AddComponent<VerticalLayoutGroup>();
+            VerticalLayoutGroup ButtonPanel = Manager.GetPanel(PopUp.transform, new Vector2(150, 300), Pos).AddComponent<VerticalLayoutGroup>();
             if (Buying)
             {
                 switch (Slot.Item.Type)
