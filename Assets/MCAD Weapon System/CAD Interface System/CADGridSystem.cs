@@ -4,30 +4,33 @@ using UnityEngine;
 
 namespace Dreamers.CADSystem.Interfaces
 {
+    [System.Serializable]
     public class CADGridSquare {
         public GridSquareStatus status;
         public TypeOfGridSquare Type;
         public Sprite image = Resources.Load("square") as Sprite;
         public CADGridSquare() {
             image = Resources.Load<Sprite>("square");
+            status = GridSquareStatus.Available;
         }
     }
-
+    [System.Serializable]
     public enum GridSquareStatus { Locked, Available, Occupied, Blocked }
+    [System.Serializable]
     public enum TypeOfGridSquare { Normal, CommandLine, Block}
-   
+
 
     [System.Serializable]
-    public class CADGridSystem 
+    public class CADGridSystem
     {
         int CurSize;
         public CADGridSquare[,] Grid = new CADGridSquare[200, 200];
-       [SerializeReference]
+         
         public List<ICADslot> InstalledSlots;
         
         public CADGridSystem(int size) {
             CurSize = size;
-            InstalledSlots = new List<ICADslot>();
+           InstalledSlots = new List<ICADslot>();
             Grid = new CADGridSquare[200, 200];
             LayoutGrid();
             UnlockSquares(size);
@@ -76,12 +79,14 @@ namespace Dreamers.CADSystem.Interfaces
         }
 
         public void addSlotToCAD(ICADslot slot, SkillsManager Mgr,int X, int Y) {
+           
+
             if (SlotAvailable(slot, X, Y)) 
             {
                 InstalledSlots.Add(slot);
                 slot.AddAbility(Mgr,new Vector2Int(X, Y));
-                int xLimit = X + slot.Size;
-                int yLimit = Y + slot.Size;
+                int xLimit = X + slot.Size.x;
+                int yLimit = Y + slot.Size.y;
                 for (int i = X; i < xLimit; i++)
                 {
                     for (int j = Y; j < yLimit; j++)
@@ -93,7 +98,8 @@ namespace Dreamers.CADSystem.Interfaces
                 }
             }
         }
-        public void RemoveSlotFromCAD(SkillsManager Mgr, int index) {
+        public void RemoveSlotFromCAD(SkillsManager Mgr, int index)
+        {
             UnequipSlot(InstalledSlots[index], InstalledSlots[index].InstallPosition.x, InstalledSlots[index].InstallPosition.y);
             InstalledSlots[index].RemoveAbility(Mgr);
 
@@ -103,8 +109,8 @@ namespace Dreamers.CADSystem.Interfaces
 
         public bool SlotAvailable(ICADslot slot, int X, int Y) {
 
-            int xLimit = X + slot.Size;
-            int yLimit = Y + slot.Size;
+            int xLimit = X + slot.Size.x;
+            int yLimit = Y + slot.Size.y;
             if (xLimit > CurSize || yLimit > CurSize ) {
             
                 return false;
@@ -114,10 +120,10 @@ namespace Dreamers.CADSystem.Interfaces
                 for (int j = Y; j < yLimit; j++)
                 {
 
-                    if (slot.Grid[i - X, j - Y].status == GridSquareStatus.Occupied &&
-                        Grid[i, j].status != GridSquareStatus.Available)
+                    if (slot.Grid.rows[i-X].row[j-Y] &&
+                 Grid[i, j].status != GridSquareStatus.Available)
                     {
-                 
+
                         return false;
                     }
                 }
@@ -130,8 +136,8 @@ namespace Dreamers.CADSystem.Interfaces
 
         public void UnequipSlot(ICADslot slot, int X, int Y) {
 
-            int xLimit = X + slot.Size;
-            int yLimit = Y + slot.Size;
+            int xLimit = X + slot.Size.x;
+            int yLimit = Y + slot.Size.y;
 
 
             for (int i = X; i < xLimit; i++)

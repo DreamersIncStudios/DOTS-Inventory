@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Dreamers.CADSystem
 {
+    [System.Serializable]
     public enum Skills { 
         None,
         Libra,

@@ -14,7 +14,7 @@ namespace EquipmentStats
         [SerializeField]
         public CADGridSystem test;
 
-        public List<TestSlot> SlotsToAdd;
+        public List<GenericCADSlot> SlotsToAdd;
         private SkillsManager skillsManager;
 
         private void Awake()
@@ -27,14 +27,8 @@ namespace EquipmentStats
         // Start is called before the first frame update
         void Start()
         {
-            SlotsToAdd = new List<TestSlot>();
-            TestSlot temp = new TestSlot(4, 2);
-            temp.name = "Testing ";
-            SlotsToAdd.Add(temp);
-            test.addSlotToCAD(SlotsToAdd[0], skillsManager, 0, 0);
-
-
-
+          
+             test.addSlotToCAD(SlotsToAdd[0], skillsManager, 0, 0);
         }
 
         // Update is called once per frame

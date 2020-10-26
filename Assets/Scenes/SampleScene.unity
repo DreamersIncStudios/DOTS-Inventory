@@ -639,10 +639,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30eb2d1dcb580a34d81a9a9b37b11643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test:
-    InstalledSlots: []
-  references:
-    version: 1
+  SlotsToAdd:
+  - {fileID: 11400000, guid: c00724f68d3de8b42b52a2a3e57a1872, type: 2}
 --- !u!114 &830280135
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -849,10 +847,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mode: 1
-  test:
-    InstalledSlots: []
-  references:
-    version: 1
 --- !u!1 &1496049537
 GameObject:
   m_ObjectHideFlags: 0
