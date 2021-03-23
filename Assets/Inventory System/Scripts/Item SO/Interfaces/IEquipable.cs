@@ -18,10 +18,17 @@ namespace Dreamers.InventorySystem.Interfaces
 
     public enum EquipmentType
     {
-        Armor, 
-        Weapon,
-        QuickUseItem,
-        Drone,
+        Primary_Weapon,
+        Secondary_Weapon,
+        Blaster, // Rename Later
+        Armor_Chest,
+        Armor_Head,
+        Armor_Legs,
+        QuickUseItem1, //Special code here 
+        QuickUseItem2,
+        QuickUseItem3,
+
+        Special,
     }
     public enum Quality 
     {

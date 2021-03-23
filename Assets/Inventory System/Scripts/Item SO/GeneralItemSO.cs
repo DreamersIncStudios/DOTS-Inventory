@@ -3,6 +3,7 @@ using Stats;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Entities;
 
 namespace Dreamers.InventorySystem
 {
@@ -26,5 +27,7 @@ namespace Dreamers.InventorySystem
         {
           
         }
+        public override void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
+        { }
     }
 }

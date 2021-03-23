@@ -1,20 +1,14 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Dreamers.InventorySystem.Interfaces;
 namespace Dreamers.InventorySystem.Base { 
 
     [System.Serializable]
 public class EquipmentBase
     {
-        public WeaponSO PrimaryWeapon;
-        public WeaponSO SecondaryWeapon;
-        public WeaponSO ProjectileWeopon;
 
-        public ArmorSO Shield;
-        public ArmorSO Helmet;
-        public ArmorSO Chest;
-        public ArmorSO Arms;
-        public ArmorSO Legs;
-        public ArmorSO Signature;
+
+        public Dictionary<EquipmentType, ItemBaseSO> equippedItem = new Dictionary<EquipmentType, ItemBaseSO>();
 
         public int CurrentActivationPoints;
         public int MaxActivationPoints;

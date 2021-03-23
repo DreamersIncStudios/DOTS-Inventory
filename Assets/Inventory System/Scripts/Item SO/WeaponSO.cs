@@ -4,6 +4,8 @@ using UnityEngine;
 using Stats;
 using Dreamers.InventorySystem.Base;
 using Dreamers.InventorySystem.Interfaces;
+using Unity.Entities;
+
 namespace Dreamers.InventorySystem
 {
     [CreateAssetMenu(fileName = "Weapon Data", menuName = "Item System/Weapon", order = 2)]
@@ -12,7 +14,9 @@ namespace Dreamers.InventorySystem
         public new ItemType Type { get { return ItemType.Weapon; } }
         [SerializeField] Quality quality;
         public Quality Quality { get { return quality; } }
-        public EquipmentType Equipment { get { return EquipmentType.Armor; } }
+        public EquipmentType Equipment { get { return _equipment; } }
+        [SerializeField] EquipmentType _equipment;
+
         [SerializeField] GameObject _model;
         public GameObject Model { get { return _model; } }
         [SerializeField] private bool _equipToHuman;
@@ -59,49 +63,14 @@ namespace Dreamers.InventorySystem
                     }
 
                 }
-                        ModCharacterStats(player, true);
+                        EquipmentUtility.ModCharacterStats(player,Modifiers, true);
 
-
-                switch (WeaponType)
+                if (Equipment.equippedItem.TryGetValue(this.Equipment, out ItemBaseSO value))
                 {
-                    case WeaponType.Bo_Staff:
-                    case WeaponType.H2BoardSword:
-                    case WeaponType.Axe:
-                        switch (Slot)
-                        {
-                            case WeaponSlot.Primary:
-                                if(Equipment.Shield)
-                                    Equipment.Shield.Unequip(inventoryBase, Equipment, player, 0);
-                                if (Equipment.PrimaryWeapon)
-                                    Equipment.PrimaryWeapon.Unequip(inventoryBase, Equipment, player, 0);
-                                Equipment.PrimaryWeapon = this;
-                                break;
-                            case WeaponSlot.Secondary:
-                                if (Equipment.SecondaryWeapon)
-                                    Equipment.SecondaryWeapon.Unequip(inventoryBase, Equipment, player, 0);
-                                Equipment.PrimaryWeapon = this;
-                                break;
-                        }
-
-
-                        break;
-                    case WeaponType.Sword:
-                        switch (Slot)
-                        {
-                            case WeaponSlot.Primary:
-                                if (Equipment.PrimaryWeapon)
-                                    Equipment.PrimaryWeapon.Unequip(inventoryBase, Equipment, player, 0);
-                                Equipment.PrimaryWeapon = this;
-                                break;
-                            case WeaponSlot.Secondary:
-                                if (Equipment.SecondaryWeapon)
-                                    Equipment.SecondaryWeapon.Unequip(inventoryBase, Equipment, player, 0);
-                                Equipment.PrimaryWeapon = this;
-                                break;
-                        }
-                        break;
-                   
+                    Equipment.equippedItem[this.Equipment].Unequip(inventoryBase, Equipment, player, 0);
                 }
+                Equipment.equippedItem[this.Equipment] = this;
+
                 RemoveFromInventory(inventoryBase, IndexOf);
 
             }
@@ -111,22 +80,14 @@ namespace Dreamers.InventorySystem
 
         public override void Unequip(InventoryBase inventoryBase, EquipmentBase Equipment, BaseCharacter player, int IndexOf)
         {
-            ModCharacterStats(player, false);
+            EquipmentUtility.ModCharacterStats(player,Modifiers, false);
             AddToInventory(inventoryBase);
-            switch (Slot)
-            {
-                case WeaponSlot.Primary:
-                    Equipment.PrimaryWeapon = null;
-                    break;
-                case WeaponSlot.Secondary:
-                    Equipment.SecondaryWeapon = null;
-                    break;
-                case WeaponSlot.Projectile:
-                    Equipment.ProjectileWeopon = null;
-                    break;
-            }
+            Equipment.equippedItem.Remove(this.Equipment);
+            Object.Destroy(Model);
 
         }
+        public override void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
+        { }
 
         public override void Use(InventoryBase inventoryBase, int IndexOf, BaseCharacter player)
         {
@@ -134,56 +95,6 @@ namespace Dreamers.InventorySystem
         }
 
 
-        //Remove previous Mod and subtract bool
-        void ModCharacterStats(BaseCharacter character, bool Add)
-        {
-            int MP = 1;  
-            if (!Add) {
-                MP = -1;
-                }
-            foreach (StatModifier mod in Modifiers)
-            {
-              
-                switch (mod.Stat)
-                {
-                    case AttributeName.Level:
-                        Debug.LogWarning("Level Modding is not allowed at this time. Please contact Programming is needed");
-                        break;
-                    case AttributeName.Strength:
-                        character.GetPrimaryAttribute((int)AttributeName.Strength).BuffValue += mod.BuffValue*MP;
-                        break;
-                    case AttributeName.Vitality:
-                        character.GetPrimaryAttribute((int)AttributeName.Vitality).BuffValue += mod.BuffValue * MP;
-                        break;
-                    case AttributeName.Awareness:
-                        character.GetPrimaryAttribute((int)AttributeName.Awareness).BuffValue += mod.BuffValue * MP;
-                        break;
-                    case AttributeName.Speed:
-                        character.GetPrimaryAttribute((int)AttributeName.Speed).BuffValue += mod.BuffValue * MP * MP;
-                        break;
-                    case AttributeName.Skill:
-                        character.GetPrimaryAttribute((int)AttributeName.Skill).BuffValue += mod.BuffValue * MP;
-                        break;
-                    case AttributeName.Resistance:
-                        character.GetPrimaryAttribute((int)AttributeName.Resistance).BuffValue += mod.BuffValue * MP;
-                        break;
-                    case AttributeName.Concentration:
-                        character.GetPrimaryAttribute((int)AttributeName.Concentration).BuffValue += mod.BuffValue * MP;
-                        break;
-                    case AttributeName.WillPower:
-                        character.GetPrimaryAttribute((int)AttributeName.WillPower).BuffValue += mod.BuffValue * MP;
-                        break;
-                    case AttributeName.Charisma:
-                        character.GetPrimaryAttribute((int)AttributeName.Charisma).BuffValue += mod.BuffValue * MP;
-                        break;
-                    case AttributeName.Luck:
-                        character.GetPrimaryAttribute((int)AttributeName.Luck).BuffValue += mod.BuffValue * MP;
-                        break;
-                }
-            }
-            character.StatUpdate();
-
-        }
     }
 
     

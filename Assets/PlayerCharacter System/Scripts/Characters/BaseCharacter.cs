@@ -16,8 +16,16 @@ namespace Stats
         private Stat[] _stats;
         private Abilities[] _ability;
         private Elemental[] _ElementalMods;
-        private Material characterMaterial;
- 
+
+        public bool InvincibleMode;
+        public bool Alive { get {
+                bool temp = true;
+                if (!InvincibleMode) { 
+                    temp = CurHealth > 0.0f;
+                }
+                return temp;
+            } }
+        bool death = false;
         [Range(0, 999)]
         public int CurHealth;
 
@@ -54,13 +62,20 @@ namespace Stats
 
             CurHealth = MaxHealth;
             CurMana = MaxMana;
-            // SetupElementalMods();
-            characterMaterial = this.GetComponent<Renderer>().material;
+#if !UNITY_EDITOR
+            InvincibleMode = false;
+#endif
 
+#if UNITY_EDITOR
+            if (InvincibleMode)
+                Debug.LogWarning("This Character is in Invincible Mode and will not take Damage", this);
+#endif
+
+            // SetupElementalMods();
         }
 
 
-        public Entity selfEntityRef { get; private set; }
+        public Entity selfEntityRef;
         public DynamicBuffer<EffectStatusBuffer> StatusBuffers;
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
@@ -68,7 +83,6 @@ namespace Stats
             var data = new PlayerStatComponent() {  MaxHealth = MaxHealth, MaxMana = MaxMana, CurHealth = CurHealth, CurMana = CurMana };
             dstManager.AddComponentData(entity, data);
             dstManager.AddComponent<Unity.Transforms.CopyTransformFromGameObject>(entity);
-            dstManager.AddBuffer<ChangeVitalBuffer>(entity);
             StatusBuffers = dstManager.AddBuffer<EffectStatusBuffer>(entity);
             StatUpdate();
            
@@ -233,8 +247,15 @@ namespace Stats
         }
         public void SetupAbilitesModifiers()
         {
-            GetAbility((int)AbilityName.Libra).AddModifier(new ModifyingAttribute(GetPrimaryAttribute((int)AttributeName.Awareness), .25f));
-            GetAbility((int)AbilityName.Detection).AddModifier(new ModifyingAttribute(GetPrimaryAttribute((int)AttributeName.Awareness), .75f));
+            GetAbility((int)AbilityName.Libra).AddModifier(new ModifyingAttribute(GetPrimaryAttribute((int)AttributeName.Awareness), .55f));
+            GetAbility((int)AbilityName.Detection).AddModifier(new ModifyingAttribute(GetPrimaryAttribute((int)AttributeName.Awareness), .55f));
+
+            GetAbility((int)AbilityName.Detection).AddModifier(new ModifyingAttribute(GetPrimaryAttribute((int)AttributeName.Awareness), 2.75f));
+            GetAbility((int)AbilityName.Detection).AddModifier(new ModifyingAttribute(GetPrimaryAttribute((int)AttributeName.Skill), 2.75f));
+            GetAbility((int)AbilityName.Detection).AddModifier(new ModifyingAttribute(GetPrimaryAttribute((int)AttributeName.Concentration), 2.75f));
+            GetAbility((int)AbilityName.Detection).AddModifier(new ModifyingAttribute(GetPrimaryAttribute((int)AttributeName.Luck), 2.15f));
+
+
 
         }
 
@@ -252,6 +273,8 @@ namespace Stats
             GetPrimaryAttribute((int)AttributeName.Luck).BaseValue = Lck;
             GetVital((int)VitalName.Health).BuffValue = BaseHealth;
             GetVital((int)VitalName.Mana).BuffValue = BaseMana;
+
+            Invoke("StatUpdate", 10);
         }
 
 
@@ -271,89 +294,20 @@ namespace Stats
 
 
 
-        //public void AdjustHealth(int adj)
-        //{
-        //    CurHealth += adj;
-        //    if (CurHealth < 0) { CurHealth = 0; }
-        //    if (CurHealth > MaxHealth) { CurHealth = MaxHealth; }
-
-        //}
-        //public void AdjustMana(int adj)
-        //{
-        //    CurMana += adj;
-        //    if (CurMana < 0) { CurMana = 0; }
-        //    if (CurMana > MaxMana) { CurMana = MaxMana; }
-
-        //}
-        public void IncreaseHealth(int Change, uint Iterations, float Frequency, bool glow)
+     
+        public void OnDeath(float deathDelay)
         {
-            World.DefaultGameObjectInjectionWorld.EntityManager.GetBuffer<ChangeVitalBuffer>(selfEntityRef).Add(new ChangeVitalBuffer()
-            { recover = new VitalChange()
-            { type = VitalType.Health,
-                Increase = true,
-                value = Change,
-                Frequency = Frequency,
-                Iterations = Iterations
-            } }) ;
-            if(glow)
-           StartCoroutine(SetGlow("Health", Frequency * Iterations));
-        }
-
-        public void IncreaseMana(int Change, uint Iterations, float Frequency, bool glow)
-        {
-            World.DefaultGameObjectInjectionWorld.EntityManager.GetBuffer<ChangeVitalBuffer>(selfEntityRef).Add(new ChangeVitalBuffer()
+            if (!death)
             {
-                recover = new VitalChange()
-                {
-                    type = VitalType.Mana,
-                    Increase = true,
-                    value = Change,
-                    Frequency = Frequency,
-                    Iterations = Iterations
-                }
-            });
-            if (glow)
-                StartCoroutine(SetGlow("Mana", Frequency * Iterations));
-        }
-        public void DecreaseHealth(int Change, uint Iterations, float Frequency)
-        {
-            World.DefaultGameObjectInjectionWorld.EntityManager.GetBuffer<ChangeVitalBuffer>(selfEntityRef).Add(new ChangeVitalBuffer()
-            {
-                recover = new VitalChange()
-                {
-                    type = VitalType.Health,
-                    Increase = false,
-                    value = Change,
-                    Frequency = Frequency,
-                    Iterations = Iterations
-                }
-            });
+                Destroy(this.gameObject, deathDelay);
+                death = true;
+            }
         }
 
-        public void DecreaseMana(int Change, uint Iterations, float Frequency)
-        {
-            World.DefaultGameObjectInjectionWorld.EntityManager.GetBuffer<ChangeVitalBuffer>(selfEntityRef).Add(new ChangeVitalBuffer()
-            {
-                recover = new VitalChange()
-                {
-                    type = VitalType.Mana,
-                    Increase = false,
-                    value = Change,
-                    Frequency = Frequency,
-                    Iterations = Iterations
-                }
-            });
-        }
         public void AddStatus(StatusEffect StatusToAdd) { }
         public void RemoveStatus(StatusEffect StatusToAdd) { }
         public void RemoveStatus(EffectStatus StatusName) { }
 
-       IEnumerator SetGlow(string GlowWhat, float delay) {
-            characterMaterial.SetFloat(GlowWhat, 1.0f);
-            yield return new  WaitForSeconds(delay);
-            characterMaterial.SetFloat(GlowWhat, 0.0f);
-
-        }
 
     }
 }

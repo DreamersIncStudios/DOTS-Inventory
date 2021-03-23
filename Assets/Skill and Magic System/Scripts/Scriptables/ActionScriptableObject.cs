@@ -25,11 +25,12 @@ namespace Dreamers.SkillMagicSystem
             throw new System.NotImplementedException();
         }
 
+        //Rewrite
         public virtual void UseSkill(BaseCharacter character)
         {
             if (character.CurMana > ManaCost && !InCooldown) {
                 TriggerAnimation();
-                character.DecreaseMana(ManaCost,0,0);
+              //  character.DecreaseMana(ManaCost,0,0);
                 Debug.Log("Skill Trigger");
             }
 

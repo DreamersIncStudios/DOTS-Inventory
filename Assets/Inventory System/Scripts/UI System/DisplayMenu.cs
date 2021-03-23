@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using Dreamers.Global;
 using Stats;
 using Dreamers.InventorySystem.Base;
+using Dreamers.InventorySystem.Interfaces;
 
 namespace Dreamers.InventorySystem.UISystem
 {
@@ -112,78 +113,21 @@ namespace Dreamers.InventorySystem.UISystem
             CurrentEquips.childAlignment = TextAnchor.MiddleCenter;
             CurrentEquips.spacing = new Vector2(10, 10);
 
-            if (Equipment.PrimaryWeapon)
+
+            for (int i = 0; i < System.Enum.GetValues(typeof(EquipmentType)).Length; i++)
             {
-                ItemIconDisplay(CurrentEquips.transform, Equipment.PrimaryWeapon.Icon);
+                if (Equipment.equippedItem.TryGetValue((EquipmentType)i, out ItemBaseSO value))
+                {
+                    ItemIconDisplay(CurrentEquips.transform, Equipment.equippedItem[(EquipmentType)i].Icon);
+
+                }
+                else
+                {
+                    ItemIconDisplay(CurrentEquips.transform, null);
+                }
             }
-            else
-            {
-                ItemIconDisplay(CurrentEquips.transform, null);
-            }
-            if (Equipment.SecondaryWeapon)
-            {
-                ItemIconDisplay(CurrentEquips.transform, Equipment.SecondaryWeapon.Icon);
-            }
-            else
-            {
-                ItemIconDisplay(CurrentEquips.transform, null);
-            }
-            if (Equipment.ProjectileWeopon)
-            {
-                ItemIconDisplay(CurrentEquips.transform, Equipment.ProjectileWeopon.Icon);
-            }
-            else
-            {
-                ItemIconDisplay(CurrentEquips.transform, null);
-            }
-            if (Equipment.Helmet)
-            {
-                ItemIconDisplay(CurrentEquips.transform, Equipment.Helmet.Icon);
-            }
-            else
-            {
-                ItemIconDisplay(CurrentEquips.transform, null);
-            }
-            if (Equipment.Arms)
-            {
-                ItemIconDisplay(CurrentEquips.transform, Equipment.Arms.Icon);
-            }
-            else
-            {
-                ItemIconDisplay(CurrentEquips.transform, null);
-            }
-            if (Equipment.Chest)
-            {
-                ItemIconDisplay(CurrentEquips.transform, Equipment.Chest.Icon);
-            }
-            else
-            {
-                ItemIconDisplay(CurrentEquips.transform, null);
-            }
-            if (Equipment.Legs)
-            {
-                ItemIconDisplay(CurrentEquips.transform, Equipment.Legs.Icon);
-            }
-            else
-            {
-                ItemIconDisplay(CurrentEquips.transform, null);
-            }
-            if (Equipment.Shield)
-            {
-                ItemIconDisplay(CurrentEquips.transform, Equipment.Shield.Icon);
-            }
-            else
-            {
-                ItemIconDisplay(CurrentEquips.transform, null);
-            }
-            if (Equipment.Signature)
-            {
-                ItemIconDisplay(CurrentEquips.transform, Equipment.Signature.Icon);
-            }
-            else
-            {
-                ItemIconDisplay(CurrentEquips.transform, null);
-            }
+
+   
             return CurrentEquips.gameObject;
         }
 

@@ -25,46 +25,50 @@ namespace Dreamers.InventorySystem {
         public TypeOfGeneralItem GeneralItemType { get { return _GeneralType; } }
         public override void Use(InventoryBase inventoryBase, int IndexOf, BaseCharacter player)
         {
-            Use(inventoryBase, IndexOf);
-            Material CharacterMaterial = player.GetComponent<Renderer>().material;
+            /// Rewrite this system to be entity based 
+           
 
-            switch (RecoverWhat)
-            {
-                case RecoverType.Health:
+            //Use(inventoryBase, IndexOf);
+            //Material CharacterMaterial = player.GetComponent<Renderer>().material;
+
+            //switch (RecoverWhat)
+            //{
+            //    case RecoverType.Health:
          
-                    player.IncreaseHealth((int)RecoverAmount, Iterations, Frequency,true);
+            //        player.IncreaseHealth((int)RecoverAmount, Iterations, Frequency,true);
 
-                    break;
-                case RecoverType.Mana:
-                    player.IncreaseMana((int)RecoverAmount, Iterations, Frequency,true);
-                    break;
-                case RecoverType.HealthMana:
-                    player.IncreaseHealth((int)RecoverAmount, Iterations, Frequency,true);
-                    player.IncreaseMana((int)RecoverAmount, Iterations, Frequency,false);
-                    break;
-                case RecoverType.Status:
-                    //add logic later
-                    break;
-                case RecoverType.StatusPlusHealth:
-                    //add status logic
-                    player.IncreaseHealth((int)RecoverAmount, Iterations, Frequency,true);
+            //        break;
+            //    case RecoverType.Mana:
+            //        player.IncreaseMana((int)RecoverAmount, Iterations, Frequency,true);
+            //        break;
+            //    case RecoverType.HealthMana:
+            //        player.IncreaseHealth((int)RecoverAmount, Iterations, Frequency,true);
+            //        player.IncreaseMana((int)RecoverAmount, Iterations, Frequency,false);
+            //        break;
+            //    case RecoverType.Status:
+            //        //add logic later
+            //        break;
+            //    case RecoverType.StatusPlusHealth:
+            //        //add status logic
+            //        player.IncreaseHealth((int)RecoverAmount, Iterations, Frequency,true);
 
-                    break;
-                case RecoverType.StatusPlusMana:
-                    //add status logic
-                    player.IncreaseMana((int)RecoverAmount, Iterations, Frequency,true);
+            //        break;
+            //    case RecoverType.StatusPlusMana:
+            //        //add status logic
+            //        player.IncreaseMana((int)RecoverAmount, Iterations, Frequency,true);
 
-                    break;
-                case RecoverType.All:
-                    //add status logic
-                    player.IncreaseMana((int)RecoverAmount, Iterations, Frequency,false);
-                    player.IncreaseHealth((int)RecoverAmount, Iterations, Frequency,true);
+            //        break;
+            //    case RecoverType.All:
+            //        //add status logic
+            //        player.IncreaseMana((int)RecoverAmount, Iterations, Frequency,false);
+            //        player.IncreaseHealth((int)RecoverAmount, Iterations, Frequency,true);
 
-                    break;
-            }
+            //        break;
+            //}
         }
 
-
+        public override void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
+        { }
         public override void EquipItem(InventoryBase InventoryBase, EquipmentBase Equipment, int IndexOf, BaseCharacter player)
         {
 
