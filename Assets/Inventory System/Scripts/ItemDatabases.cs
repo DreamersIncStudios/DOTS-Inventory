@@ -65,11 +65,33 @@ namespace Dreamers.InventorySystem
                 RecoveryItemSO Item;
                 ScriptableObjectUtility.CreateAsset<RecoveryItemSO>("Item", out Item);
                 ItemDatabase.LoadDatabaseForce();
-                Debug.Log( Item.ItemID = (uint)ItemDatabase.Items.Count + 1);
+                Item.setItemID((uint)ItemDatabase.Items.Count + 1);
+                Debug.Log( Item.ItemID );
                 // need to deal with duplicate itemID numbers 
 
             }
+            [MenuItem("Assets/Create/RPG/Armor Item")]
+            static public void CreateArmorItem()
+            {
+                ArmorSO Item;
+                ScriptableObjectUtility.CreateAsset<ArmorSO>("Item", out Item);
+                ItemDatabase.LoadDatabaseForce();
+                Item.setItemID((uint)ItemDatabase.Items.Count + 1);
+                Debug.Log(Item.ItemID);
+                // need to deal with duplicate itemID numbers 
 
+            }
+            [MenuItem("Assets/Create/RPG/Weapon Item")]
+            static public void CreateWeaponItem()
+            {
+                WeaponSO Item;
+                ScriptableObjectUtility.CreateAsset<WeaponSO>("Item", out Item);
+                ItemDatabase.LoadDatabaseForce();
+                Item.setItemID((uint)ItemDatabase.Items.Count + 1);
+                Debug.Log(Item.ItemID);
+                // need to deal with duplicate itemID numbers 
+
+            }
         }
 #endif
     }

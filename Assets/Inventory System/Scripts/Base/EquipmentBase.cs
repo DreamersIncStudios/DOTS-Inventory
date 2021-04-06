@@ -8,7 +8,8 @@ public class EquipmentBase
     {
 
 
-        public Dictionary<EquipmentType, ItemBaseSO> equippedItem = new Dictionary<EquipmentType, ItemBaseSO>();
+        public Dictionary<ArmorType, ArmorSO> EquippedArmor = new Dictionary<ArmorType, ArmorSO>();
+        public Dictionary<WeaponSlot, WeaponSO> EquippedWeapons = new Dictionary<WeaponSlot, WeaponSO>();
 
         public int CurrentActivationPoints;
         public int MaxActivationPoints;

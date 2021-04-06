@@ -8,7 +8,7 @@ namespace Dreamers.InventorySystem
 
     public interface IItemBase
     {
-        uint ItemID { get; set; }
+        uint ItemID { get; }
         string ItemName { get; }
         string Description {get;}
         Sprite Icon { get; }
@@ -27,8 +27,8 @@ namespace Dreamers.InventorySystem
     [System.Serializable]
     public abstract class ItemBaseSO : ScriptableObject, IItemBase
     {
-  
-        public uint ItemID { get; set; } // To be implemented with Database system/CSV Editor creator 
+        [SerializeField] private uint _itemID;
+        public uint ItemID { get { return _itemID; }  } // To be implemented with Database system/CSV Editor creator 
         [SerializeField] private string _itemName;
         public string ItemName { get { return _itemName; } }
         [TextArea(3,6)]
@@ -48,6 +48,13 @@ namespace Dreamers.InventorySystem
         [SerializeField] bool _questItem;
         public bool QuestItem { get { return _questItem; } }
 
+        public void setItemID(uint ID)
+        {
+
+#if UNITY_EDITOR
+            _itemID = ID;
+#endif
+        }
         public  void Use(InventoryBase inventoryBase, int IndexOf)
         {
             RemoveFromInventory(inventoryBase, IndexOf);
