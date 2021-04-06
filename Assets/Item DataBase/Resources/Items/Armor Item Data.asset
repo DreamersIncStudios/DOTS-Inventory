@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74231950e191fac439b14373020f375f, type: 3}
   m_Name: Armor Item Data
   m_EditorClassIdentifier: 
-  _itemID: 1
   _itemName: Shield Teste
   _desc: '"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
     tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -26,7 +25,6 @@ MonoBehaviour:
   _stackable: 0
   _questItem: 0
   quality: 0
-  _equipment: 0
   _model: {fileID: 1155997294961484239, guid: d7e5cd7c159e64546b077f834d8b12c9, type: 3}
   _equipToHuman: 0
   _equipBone: 0

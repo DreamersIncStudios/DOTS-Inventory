@@ -45,6 +45,7 @@ public class Testadder : MonoBehaviour,IConvertGameObjectToEntity
 
         Inventory.ItemsInInventory[0].Item.Use(Inventory, 0, PC);
        Menu = new  DisplayMenu(PC, Equip,Inventory);
+        Menu.CloseInventory();
     }
     void SetupPC() {
         PC.Name = "Test";
@@ -68,12 +69,7 @@ public class Testadder : MonoBehaviour,IConvertGameObjectToEntity
     }
     private void Update()
     {
-        if (Menu == null)
-            Menu = new DisplayMenu(PC, Equip, Inventory);
-
         if (Input.GetKeyUp(KeyCode.I) && Menu.Displayed) { Menu.CloseInventory(); }
-
-
-        if (Input.GetKeyUp(KeyCode.I) && !Menu.Displayed) { Menu.OpenInventory(Inventory); }
+        if (Input.GetKeyUp(KeyCode.I) && !Menu.Displayed) { Menu = new DisplayMenu(PC, Equip, Inventory); }
     }
 }

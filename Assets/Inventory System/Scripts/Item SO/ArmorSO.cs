@@ -8,6 +8,7 @@ using Unity.Entities;
 
 namespace Dreamers.InventorySystem
 {
+    [CreateAssetMenu(fileName = "Armor Item Data", menuName = "Item System/Armor Item", order = 1)]
 
     public class ArmorSO : ItemBaseSO, IEquipable, IArmor
     {
@@ -62,11 +63,11 @@ namespace Dreamers.InventorySystem
                 }
                EquipmentUtility.ModCharacterStats(player, Modifiers, true);
 
-                if (Equipment.EquippedArmor.TryGetValue(this.ArmorType, out ArmorSO value))
+                if (Equipment.equippedItem.TryGetValue(this.Equipment, out ItemBaseSO value))
                 {
-                    Equipment.EquippedArmor[this.ArmorType].Unequip(inventoryBase, Equipment, player, 0);
+                    Equipment.equippedItem[this.Equipment].Unequip(inventoryBase, Equipment, player, 0);
                 }
-                Equipment.EquippedArmor[this.ArmorType] = this;
+                Equipment.equippedItem[this.Equipment] = this;
 
 
                 RemoveFromInventory(inventoryBase, IndexOf);
@@ -81,7 +82,7 @@ namespace Dreamers.InventorySystem
             AddToInventory(inventoryBase);
             DestroyImmediate(Model);
            EquipmentUtility.ModCharacterStats(player, Modifiers, false);
-            Equipment.EquippedArmor.Remove(this.ArmorType);
+            Equipment.equippedItem.Remove(this.Equipment);
         }
         public override void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         { }

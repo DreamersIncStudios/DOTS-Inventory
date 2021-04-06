@@ -20,7 +20,7 @@ namespace Dreamers.Global
         }
 
         private static GameObject _uICanvas;
-        [SerializeField] private GameObject EventController;
+       
         public  GameObject UICanvas()
         {
             GameObject Instance;
@@ -30,8 +30,12 @@ namespace Dreamers.Global
                 {
                     name = "Canvas"
                 };
-
+                GameObject EventInstance = new GameObject
+                {
+                    name = "Event System"
+                };
                 Instance.AddComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+                EventInstance.AddComponent<StandaloneInputModule>();
                 CanvasScaler scaler = Instance.AddComponent<CanvasScaler>();
                 scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
                 scaler.referenceResolution = new Vector2(1920, 1080);

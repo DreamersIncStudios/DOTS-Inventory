@@ -18,13 +18,10 @@ namespace Dreamers.InventorySystem.UISystem
             Manager = UIManager.instance;
             Store = storeBase;
             Inventory = inventoryBase;
- 
+            MenuPanelParent = CreateStoreUI(new Vector2(0, 0),
+                new Vector2(0, 0));
         }
 
-        public void OpenStore(InventoryBase inventoryBase) {
-            MenuPanelParent = CreateStoreUI(new Vector2(0, 0),
-         new Vector2(0, 0));
-        }
 
         GameObject CreateStoreUI(Vector2 Size, Vector2 Position)
         {

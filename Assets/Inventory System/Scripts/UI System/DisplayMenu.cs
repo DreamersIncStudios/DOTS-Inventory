@@ -12,32 +12,19 @@ namespace Dreamers.InventorySystem.UISystem
     {
         readonly UIManager Manager;
         public bool Displayed { get { return (bool)MenuPanelParent; } }
-
         public DisplayMenu(BaseCharacter player, EquipmentBase equipment, InventoryBase inventory) {
             Manager = UIManager.instance;
-
+            MenuPanelParent = CreateMenu(
+                new Vector2(0,0),
+                new Vector2(0,0));
             Character = player;
             Inventory = inventory;
             Equipment = equipment;
-        
-
-        }
-
-        public void OpenInventory(InventoryBase inventory) {
-            Inventory = inventory;
-
-            MenuPanelParent = CreateMenu(
-        new Vector2(0, 0),
-        new Vector2(0, 0));
             playerStats = CreatePlayerPanel();
-            itemPanel = CreateItemPanel();
-
+             itemPanel =CreateItemPanel();
         }
-
-
-
         public void CloseInventory() {
-             Object.Destroy(MenuPanelParent);
+             Object.Destroy(MenuPanelParent); 
         }
         private InventoryBase Inventory;
         private EquipmentBase Equipment;
@@ -127,11 +114,11 @@ namespace Dreamers.InventorySystem.UISystem
             CurrentEquips.spacing = new Vector2(10, 10);
 
 
-            for (int i = 0; i < System.Enum.GetValues(typeof(ArmorType)).Length; i++)
+            for (int i = 0; i < System.Enum.GetValues(typeof(EquipmentType)).Length; i++)
             {
-                if (Equipment.EquippedArmor.TryGetValue((ArmorType)i, out ArmorSO value))
+                if (Equipment.equippedItem.TryGetValue((EquipmentType)i, out ItemBaseSO value))
                 {
-                    ItemIconDisplay(CurrentEquips.transform, Equipment.EquippedArmor[(ArmorType)i].Icon);
+                    ItemIconDisplay(CurrentEquips.transform, Equipment.equippedItem[(EquipmentType)i].Icon);
 
                 }
                 else
@@ -140,19 +127,7 @@ namespace Dreamers.InventorySystem.UISystem
                 }
             }
 
-            for (int i = 0; i < System.Enum.GetValues(typeof(WeaponSlot)).Length; i++)
-            {
-                if (Equipment.EquippedWeapons.TryGetValue((WeaponSlot)i, out WeaponSO value))
-                {
-                    ItemIconDisplay(CurrentEquips.transform, Equipment.EquippedWeapons[(WeaponSlot)i].Icon);
-
-                }
-                else
-                {
-                    ItemIconDisplay(CurrentEquips.transform, null);
-                }
-            }
-
+   
             return CurrentEquips.gameObject;
         }
 
@@ -214,7 +189,7 @@ namespace Dreamers.InventorySystem.UISystem
             GridLayoutGroup Main = Manager.GetPanel(Parent, new Vector2(1400, 300), new Vector2(0, 150)).AddComponent<GridLayoutGroup>();
             Main.padding = new RectOffset() { bottom = 20, top = 20, left = 20, right = 20 };
             Main.spacing = new Vector2(20, 20);
-            for (int i = 0; i < inventory.ItemsInInventory.Count; i++)
+            for (int i = 0; i < inventory.ItemsInInventory.Count-1; i++)
             {
                 ItemSlot Slot = inventory.ItemsInInventory[i];
                 int IndexOf = i;
