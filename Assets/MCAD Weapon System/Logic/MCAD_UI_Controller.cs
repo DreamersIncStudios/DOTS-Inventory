@@ -258,7 +258,7 @@ namespace EquipmentStats
                                     case TypeOfGeneralItem.Health:
                                         RecoveryItemSO renamelater = (RecoveryItemSO)Slot.Item;
 
-                                        renamelater.Use(inventory, inventory.ItemsInInventory.IndexOf(Slot), baseCharacter);
+                                        renamelater.Use(Inventory, inventory.ItemsInInventory.IndexOf(Slot), baseCharacter);
                                         MenuPanelParent = CreateSub(2);
                                         break;
                                 }

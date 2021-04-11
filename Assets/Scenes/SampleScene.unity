@@ -124,123 +124,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &109663242
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 109663244}
-  - component: {fileID: 109663243}
-  - component: {fileID: 109663246}
-  - component: {fileID: 109663245}
-  - component: {fileID: 109663247}
-  - component: {fileID: 109663248}
-  m_Layer: 0
-  m_Name: Player Test
-  m_TagString: Player
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &109663243
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 109663242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ConversionMode: 1
---- !u!4 &109663244
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 109663242}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &109663245
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 109663242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb84b9d0264a299428aff52845c91508, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ChangeValue: 25
-  addering:
-  - {fileID: 11400000, guid: 5fa69137951380a40bd60918be05ae65, type: 2}
-  - {fileID: 11400000, guid: defbe74f21f853f46b55eb48e670f46d, type: 2}
-  - {fileID: 11400000, guid: 8a999ef255c4dc745b9d1f6b708c6825, type: 2}
---- !u!114 &109663246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 109663242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c011c8de432cc8346999ba23e7c8a8a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Value: 250
---- !u!114 &109663247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 109663242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13784d0ad5f618a41af36d55e6724f64, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Inventory:
-    ItemsInInventory: []
-    MaxInventorySize: 30
-    Gold: 0
-  Equipment:
-    CurrentActivationPoints: 0
-    MaxActivationPoints: 0
-    QuickAccessItems: []
-    NumOfQuickAccessSlots: 5
-  Gold: 250
---- !u!114 &109663248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 109663242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d63c08bd6fc5f514fbd670c988fb6406, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InvincibleMode: 0
-  CurHealth: 50
-  maxHealth: 0
-  CurMana: 30
-  maxMana: 0
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -477,7 +360,7 @@ GameObject:
   - component: {fileID: 830280135}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -557,7 +440,7 @@ Transform:
   m_Children:
   - {fileID: 1175604924}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &830280130
 MonoBehaviour:
@@ -599,7 +482,7 @@ MonoBehaviour:
     MaxActivationPoints: 0
     QuickAccessItems: []
     NumOfQuickAccessSlots: 0
-  Gold: 0
+  Gold: 5000
 --- !u!114 &830280132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -804,7 +687,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1175604923
 GameObject:
@@ -879,7 +762,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1496049539
 MonoBehaviour:
@@ -937,74 +820,18 @@ MonoBehaviour:
       ItemsInInventory:
       - Item: {fileID: 11400000, guid: defbe74f21f853f46b55eb48e670f46d, type: 2}
         Count: 0
-      - Item: {fileID: 11400000, guid: defbe74f21f853f46b55eb48e670f46d, type: 2}
+      - Item: {fileID: 11400000, guid: 50da1fbcb683d264ea4ebaa5b25ada0a, type: 2}
         Count: 0
-      - Item: {fileID: 11400000, guid: defbe74f21f853f46b55eb48e670f46d, type: 2}
+      - Item: {fileID: 11400000, guid: 1570f87a4daa73449b19f524906d9f5f, type: 2}
         Count: 0
-      - Item: {fileID: 11400000, guid: defbe74f21f853f46b55eb48e670f46d, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: defbe74f21f853f46b55eb48e670f46d, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 8a999ef255c4dc745b9d1f6b708c6825, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 8a999ef255c4dc745b9d1f6b708c6825, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 8a999ef255c4dc745b9d1f6b708c6825, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 8a999ef255c4dc745b9d1f6b708c6825, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 8a999ef255c4dc745b9d1f6b708c6825, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 8a999ef255c4dc745b9d1f6b708c6825, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 8a999ef255c4dc745b9d1f6b708c6825, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 8a999ef255c4dc745b9d1f6b708c6825, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 8a999ef255c4dc745b9d1f6b708c6825, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 8a999ef255c4dc745b9d1f6b708c6825, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 5fa69137951380a40bd60918be05ae65, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 5fa69137951380a40bd60918be05ae65, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 5fa69137951380a40bd60918be05ae65, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 5fa69137951380a40bd60918be05ae65, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 5fa69137951380a40bd60918be05ae65, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 5fa69137951380a40bd60918be05ae65, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 5fa69137951380a40bd60918be05ae65, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 5fa69137951380a40bd60918be05ae65, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 5fa69137951380a40bd60918be05ae65, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 5fa69137951380a40bd60918be05ae65, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 5fa69137951380a40bd60918be05ae65, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 5fa69137951380a40bd60918be05ae65, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 5fa69137951380a40bd60918be05ae65, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 5fa69137951380a40bd60918be05ae65, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 5fa69137951380a40bd60918be05ae65, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 5fa69137951380a40bd60918be05ae65, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 5fa69137951380a40bd60918be05ae65, type: 2}
+      - Item: {fileID: 11400000, guid: 6da72a949f5f2b4448689132018a5fd4, type: 2}
         Count: 0
       MaxInventorySize: 0
       Gold: 0
-    CharacterInventory: {fileID: 0}
+    CharacterInventory: {fileID: 830280131}
     Sell: 0.75
     Buy: 1
-  player: {fileID: 109663242}
+  player: {fileID: 830280125}
 --- !u!4 &1934555976
 Transform:
   m_ObjectHideFlags: 0
@@ -1017,7 +844,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!850595691 &1974083247
 LightingSettings:
