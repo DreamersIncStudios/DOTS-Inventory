@@ -19,7 +19,7 @@ namespace Dreamers.InventorySystem
         public GameObject ShootPoint; // may have to make this in code?????
         public Quality Quality { get { return quality; } }
         [SerializeField] Quality quality;
-        public EquipmentType Equipment { get { return EquipmentType.Weapon; } }
+        public EquipmentType Equipment { get { return EquipmentType.Armor_Chest; } }
         [SerializeField] GameObject _model;
         public GameObject Model { get { return _model; } }
         [SerializeField] private bool _equipToHuman;
