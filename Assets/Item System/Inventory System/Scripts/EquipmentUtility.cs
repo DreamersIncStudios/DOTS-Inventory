@@ -31,7 +31,7 @@ public static  class EquipmentUtility
                     character.GetPrimaryAttribute((int)AttributeName.Awareness).BuffValue += mod.BuffValue * MP;
                     break;
                 case AttributeName.Speed:
-                    character.GetPrimaryAttribute((int)AttributeName.Speed).BuffValue += mod.BuffValue * MP * MP;
+                    character.GetPrimaryAttribute((int)AttributeName.Speed).BuffValue += mod.BuffValue * MP ;
                     break;
                 case AttributeName.Skill:
                     character.GetPrimaryAttribute((int)AttributeName.Skill).BuffValue += mod.BuffValue * MP;

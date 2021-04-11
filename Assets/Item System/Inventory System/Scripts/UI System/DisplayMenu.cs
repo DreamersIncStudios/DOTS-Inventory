@@ -163,7 +163,7 @@ namespace Dreamers.InventorySystem.UISystem
                 temp.onClick.AddListener(() =>
                 {
                     so.Unequip(CharacterInventory, Character);
-                    currentEquipWindow = CurrentEquipWindow(playerStats.transform);
+                    playerStats = CreatePlayerPanel();
                     itemPanel = CreateItemPanel();
 
                 });
