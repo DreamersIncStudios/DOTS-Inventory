@@ -27,7 +27,7 @@ namespace Dreamers.InventorySystem
         {
           
         }
-        public override void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
+        public override void Convert(Entity entity, EntityManager dstManager)
         { }
     }
 }

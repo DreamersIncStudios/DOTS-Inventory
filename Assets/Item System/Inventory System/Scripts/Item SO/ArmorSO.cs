@@ -15,8 +15,6 @@ namespace Dreamers.InventorySystem
         #region variables
         [SerializeField] Quality quality;
         public Quality Quality { get { return quality; } }
-        public EquipmentType Equipment { get { return _equipment; } }
-        [SerializeField] EquipmentType _equipment;
 
         [SerializeField] private GameObject _model;
         public GameObject Model { get { return _model; } }
@@ -90,7 +88,7 @@ namespace Dreamers.InventorySystem
            EquipmentUtility.ModCharacterStats(player, Modifiers, false);
             Equipment.EquippedArmor.Remove(this.ArmorType);
         }
-        public override void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
+        public override void Convert(Entity entity, EntityManager dstManager)
         { }
 
 

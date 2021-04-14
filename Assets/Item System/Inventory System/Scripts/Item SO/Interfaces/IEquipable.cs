@@ -7,7 +7,6 @@ namespace Dreamers.InventorySystem.Interfaces
     {
         Quality Quality {get;}
         uint LevelRqd { get; }
-        EquipmentType Equipment { get; }
         GameObject Model { get; }
          bool EquipToHuman { get; }
         HumanBodyBones EquipBone { get; }

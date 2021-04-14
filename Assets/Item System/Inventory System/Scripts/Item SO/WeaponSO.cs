@@ -15,8 +15,6 @@ namespace Dreamers.InventorySystem
         public new ItemType Type { get { return ItemType.Weapon; } }
         [SerializeField] Quality quality;
         public Quality Quality { get { return quality; } }
-        public EquipmentType Equipment { get { return _equipment; } }
-        [SerializeField] EquipmentType _equipment;
 
         [SerializeField] GameObject _model;
         public GameObject Model { get { return _model; } }
@@ -47,7 +45,7 @@ namespace Dreamers.InventorySystem
         #endregion
 
 
-        GameObject weaponModel;
+        public GameObject weaponModel { get; set; }
         public override void EquipItem(CharacterInventory characterInventory, int IndexOf,BaseCharacter player)
         {
             EquipmentBase Equipment = characterInventory.Equipment;
@@ -93,7 +91,7 @@ namespace Dreamers.InventorySystem
             Destroy(weaponModel);
 
         }
-        public override void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
+        public override void Convert(Entity entity, EntityManager dstManager)
         { }
 
         public override void Use(CharacterInventory characterInventory, int IndexOf, BaseCharacter player)

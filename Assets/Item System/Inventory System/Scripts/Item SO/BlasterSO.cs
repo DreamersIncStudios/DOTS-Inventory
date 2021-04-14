@@ -10,30 +10,14 @@ using Dreamers.InventorySystem.Interfaces;
 
 namespace Dreamers.InventorySystem
 {
-    public class BlasterSO : ItemBaseSO,IEquipable ,IProjectile
+    public class BlasterSO :WeaponSO,IEquipable ,IProjectile
     {
 
 
         #region Variable
-        public Projectile ProjectilePrefab; //Move to SO later
+        public GameObject ProjectilePrefab; //Move to SO later
         public GameObject ShootPoint; // may have to make this in code?????
-        public Quality Quality { get { return quality; } }
-        [SerializeField] Quality quality;
-        public EquipmentType Equipment { get { return EquipmentType.Armor_Chest; } }
-        [SerializeField] GameObject _model;
-        public GameObject Model { get { return _model; } }
-        [SerializeField] private bool _equipToHuman;
-        public bool EquipToHuman { get { return _equipToHuman; } }
-        [SerializeField] private HumanBodyBones _equipBone;
-        public HumanBodyBones EquipBone { get { return _equipBone; } }
-        [SerializeField] private List<StatModifier> _modifiers;
-        public List<StatModifier> Modifiers { get { return _modifiers; } }
-        [SerializeField] private uint _levelRQD;
-        public uint LevelRqd { get { return _levelRQD; } }
-        public int SkillPoints { get; set; }
-        public int Exprience { get; set; }
-        [SerializeField] private WeaponSlot slot = WeaponSlot.Projectile;
-        public WeaponSlot Slot { get { return slot; } }
+       
 
         public int RoundsPerMin => throw new System.NotImplementedException();
 
@@ -41,21 +25,22 @@ namespace Dreamers.InventorySystem
 
         public float NormalSpeed => throw new System.NotImplementedException();
 
-        public Vector3 ShootLocationOffset => throw new System.NotImplementedException();
-        GameObject BlastModel;
+        [SerializeField] Vector3 offset;
+        public Vector3 ShootLocationOffset { get { return offset; }  }
+   
 #endregion
 
 
-        public override void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
+        public override void Convert(Entity entity, EntityManager dstManager)
         {
             var ShootingData = new ShooterComponent();
-            ShootingData.ProjectileGameObject = ProjectilePrefab.GO;
+            ShootingData.ProjectileGameObject = ProjectilePrefab;
             ShootingData.LastTimeShot = 0.0f;
+            ShootingData.Offset = ShootLocationOffset;
             Entity point = dstManager.CreateEntity();
             var shootPoint = new GameObject();
-            shootPoint.transform.parent = _model.transform;
+            shootPoint.transform.parent = weaponModel.transform;
             shootPoint.transform.localPosition = ShootLocationOffset;
-            dstManager.AddComponentObject(point, ShootPoint.transform); // Add child transform manually
             dstManager.AddComponentData(point, new Translation()); // Have to add all this stuff manually too
             dstManager.AddComponentData(point, new Rotation());
             dstManager.AddComponentData(point, new LocalToWorld());
@@ -75,26 +60,9 @@ namespace Dreamers.InventorySystem
 
         public override void EquipItem(CharacterInventory characterInventory, int IndexOf, BaseCharacter player)
         {
-            if (player.Level >= LevelRqd)
-            {
-                if (Model != null)
-                {
-                    BlastModel = Instantiate(Model);
-                    // Consider adding and enum as all character maybe not be human 
-                    if (EquipToHuman)
-                    {
-                        Transform bone = player.GetComponent<Animator>().GetBoneTransform(EquipBone);
-                        if (bone)
-                        {
-                            BlastModel.transform.SetParent(bone);
-                        }
-
-                    }
-
-                }
-                EquipmentUtility.ModCharacterStats(player,Modifiers, true);
-
-            }
+            base.EquipItem(characterInventory, IndexOf, player);
+                Convert(characterInventory.self, World.DefaultGameObjectInjectionWorld.EntityManager);
+            
         }
 
         public override void Unequip(CharacterInventory characterInventory, BaseCharacter player)
@@ -126,7 +94,7 @@ namespace Dreamers.InventorySystem
 
     }
 
-    public class Projectile : ScriptableObject
+    public class Projectiles : ScriptableObject
     {
         public GameObject GO;
     }

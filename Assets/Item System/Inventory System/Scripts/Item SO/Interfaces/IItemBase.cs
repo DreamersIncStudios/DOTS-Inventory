@@ -67,7 +67,7 @@ namespace Dreamers.InventorySystem
         //How we handle Equip Potions
         public abstract void EquipItem(CharacterInventory characterInventory,int IndexOf, BaseCharacter player );
         public abstract void Unequip(CharacterInventory characterInventory, BaseCharacter player);
-        public abstract void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem);
+        public abstract void Convert(Entity entity, EntityManager dstManager);
 
 
         public virtual void AddToInventory(CharacterInventory characterInventory)

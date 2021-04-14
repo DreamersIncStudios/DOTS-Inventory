@@ -26,7 +26,7 @@ namespace Dreamers.CADSystem
             {
                 UsableSkills.Remove(skill);
             }
-            else { Debug.LogWarning("Skill does not existi in this List of active skills"); }
+            else { Debug.LogWarning("Skill does not exist in this List of active skills"); }
 
         }
         // Start is called before the first frame update
