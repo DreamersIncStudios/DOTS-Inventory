@@ -84,10 +84,7 @@ namespace Dreamers.InventorySystem.Base {
 
 
         public bool OpenSlot { get { return ItemsInInventory.Count < MaxInventorySize; } }
-        public int Gold;
-
-
-
+   
     }
 
     [System.Serializable]

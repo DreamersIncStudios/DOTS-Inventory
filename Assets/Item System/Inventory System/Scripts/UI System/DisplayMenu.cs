@@ -159,7 +159,7 @@ namespace Dreamers.InventorySystem.UISystem
                 temp.image.sprite = so.Icon;
                 if (!so.Icon)
                     temp.image.color = new Color() { a = 0.0f };
-            }
+
                 temp.onClick.AddListener(() =>
                 {
                     so.Unequip(CharacterInventory, Character);
@@ -167,7 +167,7 @@ namespace Dreamers.InventorySystem.UISystem
                     itemPanel = CreateItemPanel();
 
                 });
-            
+            }
             return temp;
         }
         ItemType DisplayItems;

@@ -9,6 +9,6 @@ namespace Dreamers.InventorySystem
         int RoundsPerMin { get; }
         int RoundsPerShot { get; }
         float NormalSpeed { get; }
-        Vector3 ShootLocationOffset { get; }
+       float ShootLocationOffset { get; }
     }
 }

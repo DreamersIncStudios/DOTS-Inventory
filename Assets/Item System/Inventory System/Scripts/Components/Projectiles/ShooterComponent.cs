@@ -20,7 +20,7 @@ namespace Dreamers.InventorySystem{
 
         public Entity ShootFromHere;
         public Entity SelfReference;
-        public float3 Offset;
+        public float Offset;
         [HideInInspector] public float LastTimeShot;
         public bool Wait => LastTimeShot > 0.0f;
     }

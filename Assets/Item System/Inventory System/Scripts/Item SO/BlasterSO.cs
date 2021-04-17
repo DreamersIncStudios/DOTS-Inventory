@@ -17,16 +17,19 @@ namespace Dreamers.InventorySystem
         #region Variable
         public GameObject ProjectilePrefab; //Move to SO later
         public GameObject ShootPoint; // may have to make this in code?????
-       
 
-        public int RoundsPerMin => throw new System.NotImplementedException();
+        [SerializeField] int roundsPerMin;
 
-        public int RoundsPerShot => throw new System.NotImplementedException();
+        public int RoundsPerMin { get { return roundsPerMin; } }
+        [SerializeField] int roundsPerShot;
 
-        public float NormalSpeed => throw new System.NotImplementedException();
+        public int RoundsPerShot { get { return roundsPerShot; } }
+        [SerializeField] float normalSpeed;
 
-        [SerializeField] Vector3 offset;
-        public Vector3 ShootLocationOffset { get { return offset; }  }
+        public float NormalSpeed { get { return normalSpeed; } }
+
+        [SerializeField] float offset;
+        public float ShootLocationOffset { get { return offset; }  }
    
 #endregion
 
@@ -37,10 +40,14 @@ namespace Dreamers.InventorySystem
             ShootingData.ProjectileGameObject = ProjectilePrefab;
             ShootingData.LastTimeShot = 0.0f;
             ShootingData.Offset = ShootLocationOffset;
+            ShootingData.NormalSpeed = NormalSpeed;
+            ShootingData.RoundsPerMin = RoundsPerMin;
+            ShootingData.RoundsPerShot = RoundsPerShot;
+
             Entity point = dstManager.CreateEntity();
-            var shootPoint = new GameObject();
+            var shootPoint = weaponModel;
             shootPoint.transform.parent = weaponModel.transform;
-            shootPoint.transform.localPosition = ShootLocationOffset;
+            dstManager.AddComponentObject(point, weaponModel.transform);
             dstManager.AddComponentData(point, new Translation()); // Have to add all this stuff manually too
             dstManager.AddComponentData(point, new Rotation());
             dstManager.AddComponentData(point, new LocalToWorld());
@@ -69,7 +76,7 @@ namespace Dreamers.InventorySystem
         {
             EquipmentBase Equipment = characterInventory.Equipment;
             AddToInventory(characterInventory);
-            Destroy(BlastModel);
+            Destroy(weaponModel);
             EquipmentUtility.ModCharacterStats(player, Modifiers, false);
             Equipment.EquippedWeapons.Remove(this.Slot);
         }
