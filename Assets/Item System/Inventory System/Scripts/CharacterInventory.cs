@@ -11,6 +11,7 @@ namespace Dreamers.InventorySystem
     public class CharacterInventory : MonoBehaviour,IConvertGameObjectToEntity
     {
         private BaseCharacter PC => this.GetComponent<BaseCharacter>();
+        private Animator anim => this.GetComponent<Animator>();
         public InventoryBase Inventory;
         public EquipmentBase Equipment;
         DisplayMenu Menu;
@@ -22,10 +23,6 @@ namespace Dreamers.InventorySystem
             self = entity;
         }
 
-        void Awake() {
-            Inventory = new InventoryBase();
-            Equipment = new EquipmentBase();
-        }
         public void Start()
         {
             Menu = new DisplayMenu(PC, this);
@@ -39,6 +36,18 @@ namespace Dreamers.InventorySystem
             if (Input.GetKeyUp(KeyCode.I) && Menu.Displayed) { Menu.CloseInventory(); }
             if (Input.GetKeyUp(KeyCode.I) && !Menu.Displayed) { Menu.OpenInventory(Inventory); }
         }
+        public void EquipWeaponAnim()
+        {
+            //   anim.SetBool("CanDoDamage", true);
+            Equipment.EquippedWeapons[WeaponSlot.Primary].DrawWeapon(anim);
 
+        }
+
+        public void UnequipWeaponAnim()
+        {
+            //   anim.SetBool("CanDoDamage", false);
+            Equipment.EquippedWeapons[WeaponSlot.Primary].StoreWeapon(anim);
+
+        }
     }
 }

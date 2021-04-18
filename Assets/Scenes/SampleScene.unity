@@ -472,10 +472,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Inventory:
     ItemsInInventory:
-    - Item: {fileID: 11400000, guid: 8a999ef255c4dc745b9d1f6b708c6825, type: 2}
+    - Item: {fileID: 11400000, guid: 50da1fbcb683d264ea4ebaa5b25ada0a, type: 2}
       Count: 1
     MaxInventorySize: 30
-    Gold: 0
   Equipment:
     CurrentActivationPoints: 0
     MaxActivationPoints: 0
@@ -489,7 +488,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 830280125}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eb84b9d0264a299428aff52845c91508, type: 3}
   m_Name: 
@@ -665,12 +664,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e02f2b4d39f2cc45a96d9b39cd52cfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UIPanelPrefab: {fileID: 8819059375951432230, guid: 1cd7a7bba569e5e4baca7fc2566c63fb,
-    type: 3}
-  TextBoxPrefab: {fileID: 1517078347903538409, guid: e218fceb333034947bbee96d139a9c9e,
-    type: 3}
-  ButtonPrefab: {fileID: 2757070062215172664, guid: 37fd4ae65a46de049b980d86bd4ae05c,
-    type: 3}
   ImagePrefab: {fileID: 57199623650358205, guid: 4d4edf2f768522a43935317587af027c,
     type: 3}
 --- !u!1 &1934555974
@@ -717,7 +710,6 @@ MonoBehaviour:
       - Item: {fileID: 11400000, guid: 9da3c7a8ad3ecfc42917d92dd4b84223, type: 2}
         Count: 0
       MaxInventorySize: 0
-      Gold: 0
     CharacterInventory: {fileID: 830280131}
     Sell: 0.75
     Buy: 1

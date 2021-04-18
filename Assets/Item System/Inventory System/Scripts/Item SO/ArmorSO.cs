@@ -42,7 +42,8 @@ namespace Dreamers.InventorySystem
         public int SkillPoints { get; set; }
         public int Exprience { get; set; }
         GameObject armorModel;
-#endregion
+
+        #endregion
         public override void EquipItem(CharacterInventory characterInventory, int IndexOf, BaseCharacter player)
         {
             EquipmentBase Equipment = characterInventory.Equipment;
@@ -61,6 +62,10 @@ namespace Dreamers.InventorySystem
                             armorModel.transform.SetParent(bone);
                         }
 
+                    }
+                    else {
+                        armorModel.transform.SetParent(player.transform);
+                    
                     }
 
                 }

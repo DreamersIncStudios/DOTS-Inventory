@@ -20,6 +20,9 @@ namespace Dreamers.InventorySystem
         public GameObject Model { get { return _model; } }
         [SerializeField] private bool _equipToHuman;
         public bool EquipToHuman { get { return _equipToHuman; } }
+        [SerializeField] private HumanBodyBones _heldBone;
+        public HumanBodyBones HeldBone { get { return _heldBone; } }
+
         [SerializeField] private HumanBodyBones _equipBone;
         public HumanBodyBones EquipBone { get { return _equipBone; } }
         [SerializeField] private List<StatModifier> _modifiers;
@@ -42,6 +45,19 @@ namespace Dreamers.InventorySystem
 
         public int SkillPoints { get; set; }
         public int Exprience { get; set; }
+        [SerializeField] Vector3 _sheathedPos;
+        public Vector3 SheathedPos { get { return _sheathedPos; } }
+
+
+        [SerializeField] Vector3 _heldPos;
+        public Vector3 HeldPos { get { return _heldPos; } }
+
+        [SerializeField] Vector3 _sheathedRot;
+        public Vector3 SheathedRot { get { return _sheathedRot; } }
+
+
+        [SerializeField] Vector3 _heldRot;
+        public Vector3 HeldRot { get { return _heldRot; } }
         #endregion
 
 
@@ -49,6 +65,12 @@ namespace Dreamers.InventorySystem
         public override void EquipItem(CharacterInventory characterInventory, int IndexOf,BaseCharacter player)
         {
             EquipmentBase Equipment = characterInventory.Equipment;
+            if (Equipment.EquippedWeapons.TryGetValue(this.Slot, out WeaponSO value))
+            {
+                Equipment.EquippedWeapons[this.Slot].Unequip(characterInventory, player);
+            }
+            Equipment.EquippedWeapons[this.Slot] = this;
+
             if (player.Level >= LevelRqd)
             {
                 if (Model != null)
@@ -62,17 +84,19 @@ namespace Dreamers.InventorySystem
                         {
                             weaponModel.transform.SetParent(bone);
                         }
+                    }
+                    else
+                    {
+                     weaponModel.transform.SetParent(player.transform);
 
                     }
+                    weaponModel.transform.localPosition = SheathedPos;
+                    weaponModel.transform.localRotation = Quaternion.Euler(SheathedRot);
 
                 }
-                        EquipmentUtility.ModCharacterStats(player,Modifiers, true);
+                EquipmentUtility.ModCharacterStats(player,Modifiers, true);
 
-                if (Equipment.EquippedWeapons.TryGetValue(this.Slot, out WeaponSO value))
-                {
-                    Equipment.EquippedWeapons[this.Slot].Unequip(characterInventory, player);
-                }
-                Equipment.EquippedWeapons[this.Slot] = this;
+         
 
                 RemoveFromInventory(characterInventory, IndexOf);
 
@@ -98,6 +122,19 @@ namespace Dreamers.InventorySystem
         {
             throw new System.NotImplementedException();
         }
+
+        public void DrawWeapon(Animator anim) {
+            weaponModel.transform.SetParent(anim.GetBoneTransform(HeldBone));
+            weaponModel.transform.localPosition = HeldPos;
+            weaponModel.transform.localRotation = Quaternion.Euler(HeldRot);
+
+        }
+        public void StoreWeapon(Animator anim) {
+            weaponModel.transform.parent = anim.GetBoneTransform(EquipBone);
+            weaponModel.transform.localPosition = SheathedPos;
+            weaponModel.transform.localRotation = Quaternion.Euler(SheathedRot);
+        }
+
         public bool Equals(ItemBaseSO obj)
         {
             if (obj == null || GetType() != obj.GetType())
