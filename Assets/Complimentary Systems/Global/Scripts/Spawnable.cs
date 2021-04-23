@@ -33,7 +33,7 @@ public class Spawnable : MonoBehaviour, IConvertGameObjectToEntity
 
     }
 }
-public class Destoy : ComponentSystem
+public class DestroySystem : ComponentSystem
 {
     protected override void OnUpdate()
     {

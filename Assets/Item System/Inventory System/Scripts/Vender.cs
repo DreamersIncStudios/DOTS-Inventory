@@ -13,24 +13,41 @@ namespace Dreamers.InventorySystem
         public StoreBase Base;
         DisplayStore Store;
         public GameObject player;
+        bool canOpen =false;
 
         private void Start()
         {
-            Base.CharacterInventory = player.GetComponent<CharacterInventory>();
             Store = new DisplayStore(Base);
             Store.CloseStore();
         }
-
-
-        private void OnTriggerStay(Collider other)
+        private void Update()
         {
-            if (other.gameObject.tag.Equals("Player"))
-            {
+            if (canOpen) {
                 if (Input.GetKeyUp(KeyCode.V) && Store.Displayed) { Store.CloseStore(); }
                 if (Input.GetKeyUp(KeyCode.V) && !Store.Displayed)
                 {
                     Store.OpenStore();
                 }
+
+            }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.tag.Equals("Player"))
+            {
+                canOpen = true;
+                player = other.gameObject;
+                Base.CharacterInventory = player.GetComponent<CharacterInventory>();
+
+            }
+        }
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.gameObject.tag.Equals("Player")) {
+                player = null;
+                Base.CharacterInventory = null;
+                canOpen = false;
             }
         }
     }

@@ -22,7 +22,8 @@ namespace Dreamers.InventorySystem
         public bool EquipToHuman { get { return _equipToHuman; } }
         [SerializeField] private HumanBodyBones _heldBone;
         public HumanBodyBones HeldBone { get { return _heldBone; } }
-
+        public bool Equipped { get; private set; }
+       
         [SerializeField] private HumanBodyBones _equipBone;
         public HumanBodyBones EquipBone { get { return _equipBone; } }
         [SerializeField] private List<StatModifier> _modifiers;
@@ -62,6 +63,34 @@ namespace Dreamers.InventorySystem
 
 
         public GameObject weaponModel { get; set; }
+
+        public void Equip(BaseCharacter player)
+        {
+            if (player.Level >= LevelRqd)
+            {
+                if (Model != null)
+                {
+                    weaponModel = Instantiate(Model);
+                    // Consider adding and enum as all character maybe not be human 
+                    if (EquipToHuman)
+                    {
+                        Transform bone = player.GetComponent<Animator>().GetBoneTransform(EquipBone);
+                        if (bone)
+                        {
+                            weaponModel.transform.SetParent(bone);
+                        }
+                    }
+                    else
+                    {
+                        weaponModel.transform.SetParent(player.transform);
+                    }
+                    weaponModel.transform.localPosition = SheathedPos;
+                    weaponModel.transform.localRotation = Quaternion.Euler(SheathedRot);
+
+                }
+            }
+        }
+
         public override void EquipItem(CharacterInventory characterInventory, int IndexOf,BaseCharacter player)
         {
             EquipmentBase Equipment = characterInventory.Equipment;
@@ -95,8 +124,9 @@ namespace Dreamers.InventorySystem
 
                 }
                 EquipmentUtility.ModCharacterStats(player,Modifiers, true);
+                Equipped = true;
+                player.StatUpdate();
 
-         
 
                 RemoveFromInventory(characterInventory, IndexOf);
 
