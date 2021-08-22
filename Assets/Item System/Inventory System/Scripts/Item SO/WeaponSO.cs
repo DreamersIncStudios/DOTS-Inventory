@@ -6,6 +6,9 @@ using Dreamers.InventorySystem.Base;
 using Dreamers.InventorySystem.Interfaces;
 using Unity.Entities;
 using System.Linq;
+using DreamersInc.MagicSkill;
+
+
 
 namespace Dreamers.InventorySystem
 {
@@ -87,6 +90,8 @@ namespace Dreamers.InventorySystem
                     weaponModel.transform.localPosition = SheathedPos;
                     weaponModel.transform.localRotation = Quaternion.Euler(SheathedRot);
 
+                    MagicSkillGrid grid = weaponModel.AddComponent<MagicSkillGrid>();
+                    grid = new MagicSkillGrid(20,15);
                 }
             }
         }

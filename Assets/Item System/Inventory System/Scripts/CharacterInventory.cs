@@ -4,8 +4,8 @@ using UnityEngine;
 using Unity.Entities;
 using Dreamers.InventorySystem.Base;
 using Dreamers.InventorySystem.UISystem;
-
 using Stats;
+
 namespace Dreamers.InventorySystem
 {
     public class CharacterInventory : MonoBehaviour,IConvertGameObjectToEntity

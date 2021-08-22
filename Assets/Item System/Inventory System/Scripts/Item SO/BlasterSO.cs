@@ -75,6 +75,7 @@ namespace Dreamers.InventorySystem
         public override void Unequip(CharacterInventory characterInventory, BaseCharacter player)
         {
             EquipmentBase Equipment = characterInventory.Equipment;
+            World.DefaultGameObjectInjectionWorld.EntityManager.RemoveComponent<ShooterComponent>(characterInventory.self);
             AddToInventory(characterInventory);
             Destroy(weaponModel);
             EquipmentUtility.ModCharacterStats(player, Modifiers, false);

@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
 using UnityEngine;
-using MCADSystem;
 using Dreamers.Global;
-using Dreamers.CADSystem.Interfaces;
 
 namespace EquipmentStats
 {
@@ -15,9 +13,7 @@ namespace EquipmentStats
         private Attributes[] _primaryAttribute;
         private Stat[] _stats;
         private ModAttributes[] _modAttributes;
-        [SerializeField] private MCADModes _mode;
-        public MCADModes MCADMode { get { return _mode; } }
-        public CADGridSystem test;
+ 
         public string Name
         {
             get { return _name; }
@@ -66,15 +62,6 @@ namespace EquipmentStats
             SetupPrimaryAttributes();
             SetupModAttributes();
             SetupStats();
-         
-                MCAD_UI_Controller MCADContol = gameObject.AddComponent<MCAD_UI_Controller>();
-            MCADContol.setup(
-                GetStat((int)StatNames.Overdrive_Activiation_Cost).AdjustBaseValue,
-                GetStat((int)StatNames.Max_Overdrive_Points).AdjustBaseValue,
-                this
-                );
-
-            test = new CADGridSystem(15);
   
         }
 
@@ -106,10 +93,7 @@ namespace EquipmentStats
 
         #region public functions
 
-        public void ChangeMode(int Mode) {
-            _mode = (MCADModes)Mode;
-        }
-        
+
         #endregion
     }
 }

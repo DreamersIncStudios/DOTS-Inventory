@@ -7,6 +7,8 @@ using Stats;
 using Dreamers.InventorySystem.Base;
 using Dreamers.InventorySystem.UISystem;
 
+#if UNITY_EDITOR
+
 public class Testadder : MonoBehaviour,IConvertGameObjectToEntity
 {
     public uint ChangeValue;
@@ -76,3 +78,4 @@ public class Testadder : MonoBehaviour,IConvertGameObjectToEntity
         if (Input.GetKeyUp(KeyCode.I) && !Menu.Displayed) { Menu.OpenInventory(Inventory.Inventory); }
     }
 }
+#endif
