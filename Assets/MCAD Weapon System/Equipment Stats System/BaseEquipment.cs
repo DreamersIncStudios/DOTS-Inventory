@@ -85,12 +85,6 @@ namespace EquipmentStats
                 _stats[j].Update();
         }
 
-
-
-
-
-
-
         #region public functions
 
 

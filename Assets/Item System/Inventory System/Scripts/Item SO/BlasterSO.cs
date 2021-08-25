@@ -36,13 +36,15 @@ namespace Dreamers.InventorySystem
 
         public override void Convert(Entity entity, EntityManager dstManager)
         {
-            var ShootingData = new ShooterComponent();
-            ShootingData.ProjectileGameObject = ProjectilePrefab;
-            ShootingData.LastTimeShot = 0.0f;
-            ShootingData.Offset = ShootLocationOffset;
-            ShootingData.NormalSpeed = NormalSpeed;
-            ShootingData.RoundsPerMin = RoundsPerMin;
-            ShootingData.RoundsPerShot = RoundsPerShot;
+            var ShootingData = new ShooterComponent
+            {
+                ProjectileGameObject = ProjectilePrefab,
+                LastTimeShot = 0.0f,
+                Offset = ShootLocationOffset,
+                NormalSpeed = NormalSpeed,
+                RoundsPerMin = RoundsPerMin,
+                RoundsPerShot = RoundsPerShot
+            };
 
             Entity point = dstManager.CreateEntity();
             var shootPoint = weaponModel;

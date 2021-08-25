@@ -90,8 +90,8 @@ namespace Dreamers.InventorySystem
                     weaponModel.transform.localPosition = SheathedPos;
                     weaponModel.transform.localRotation = Quaternion.Euler(SheathedRot);
 
-                    MagicSkillGrid grid = weaponModel.AddComponent<MagicSkillGrid>();
-                    grid = new MagicSkillGrid(20,15);
+                    weaponModel.AddComponent<MagicSkillGrid>().Setup(7,7,2.5f);
+
                 }
             }
         }
@@ -99,7 +99,7 @@ namespace Dreamers.InventorySystem
         public override void EquipItem(CharacterInventory characterInventory, int IndexOf,BaseCharacter player)
         {
             EquipmentBase Equipment = characterInventory.Equipment;
-            if (Equipment.EquippedWeapons.TryGetValue(this.Slot, out WeaponSO value))
+            if (Equipment.EquippedWeapons.TryGetValue(this.Slot, out _))
             {
                 Equipment.EquippedWeapons[this.Slot].Unequip(characterInventory, player);
             }

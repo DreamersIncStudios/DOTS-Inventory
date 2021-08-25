@@ -19,8 +19,7 @@ namespace Utilities
             for (int i = 0; i < 30; i++)
             {
                 Vector3 randomPoint = center + UnityEngine.Random.insideUnitSphere * range;
-                NavMeshHit hit;
-                if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
+                if (NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, 1.0f, NavMesh.AllAreas))
                 {
                     result = hit.position;
                     return true;
@@ -36,8 +35,7 @@ namespace Utilities
             for (int i = 0; i < 30; i++)
             {
                 Vector3 randomPoint = center + UnityEngine.Random.insideUnitSphere * range;
-                NavMeshHit hit;
-                if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
+                if (NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, 1.0f, NavMesh.AllAreas))
                 {
                     result = (float3)hit.position;
                     return true;
@@ -53,8 +51,7 @@ namespace Utilities
             {
                 Vector3 direction = (ThreatLocation - PlayerLocation) / Vector3.Distance(ThreatLocation, PlayerLocation);
                 Vector3 LocAwayFromThreat = ThreatLocation + direction * (range + 10) + UnityEngine.Random.insideUnitSphere * 10;
-                NavMeshHit hit;
-                if (NavMesh.SamplePosition(LocAwayFromThreat, out hit, 2.5f, NavMesh.AllAreas))
+                if (NavMesh.SamplePosition(LocAwayFromThreat, out NavMeshHit hit, 2.5f, NavMesh.AllAreas))
                 {
                     result = (float3)hit.position;
                     return true;
@@ -72,8 +69,7 @@ namespace Utilities
             {
                 float3 direction = (ThreatLocation - PlayerLocation) / Vector3.Distance(ThreatLocation, PlayerLocation);
                 Vector3 LocAwayFromThreat = ThreatLocation + direction * (range + 10) + (float3)UnityEngine.Random.insideUnitSphere * 10;
-                NavMeshHit hit;
-                if (NavMesh.SamplePosition(LocAwayFromThreat, out hit, 2.5f, NavMesh.AllAreas))
+                if (NavMesh.SamplePosition(LocAwayFromThreat, out NavMeshHit hit, 2.5f, NavMesh.AllAreas))
                 {
                     result = (float3)hit.position;
                     return true;
@@ -82,7 +78,27 @@ namespace Utilities
             result = float3.zero;
             return false;
         }
-      
+
+        public static Vector3 GetMousePosition()
+        {
+            Vector3 worldPosition = GetMousePositionWithZ(Input.mousePosition, Camera.main);
+            worldPosition.z = 0;
+            return worldPosition;
+        }
+
+        public static Vector3 GetMousePositionWithZ()
+        {
+            return GetMousePositionWithZ(Input.mousePosition, Camera.main);
+        }
+            public static Vector3 GetMousePositionWithZ(Camera worldCamera)
+        {
+            return GetMousePositionWithZ(Input.mousePosition, worldCamera);
+        }
+
+            public static Vector3 GetMousePositionWithZ( Vector3 screenPosition, Camera worldCamera) {
+            Vector3 worldPosition = worldCamera.ScreenToWorldPoint(screenPosition );
+            return worldPosition; 
+        }
         
         public static bool CanAvoidThreat;
 
