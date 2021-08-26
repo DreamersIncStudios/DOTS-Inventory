@@ -1,9 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+
 using DreamersInc.Utils;
 using Unity.Mathematics;
 namespace DreamersInc.MagicSkill {
+
+    [System.Serializable]
     public class MagicSkillGridObject 
     {
         private GridStatus Status;
