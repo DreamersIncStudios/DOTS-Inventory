@@ -13,16 +13,6 @@ namespace Dreamers.InventorySystem
         [SerializeField] private TypeOfGeneralItem _GeneralType;
         public TypeOfGeneralItem GeneralItemType { get { return _GeneralType; } }
 
-        public override void EquipItem( CharacterInventory characterInventory, int IndexOf, BaseCharacter player)
-        {
-           
-        }
-
-        public override void Unequip(CharacterInventory characterInventory, BaseCharacter player)
-        {
-         
-        }
-
         public override void Use(CharacterInventory characterInventory, int IndexOf, BaseCharacter player)
         {
           

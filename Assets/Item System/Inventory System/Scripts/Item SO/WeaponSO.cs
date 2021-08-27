@@ -89,27 +89,26 @@ namespace Dreamers.InventorySystem
                     }
                     weaponModel.transform.localPosition = SheathedPos;
                     weaponModel.transform.localRotation = Quaternion.Euler(SheathedRot);
-
-                    weaponModel.AddComponent<MagicSkillGrid>().Setup(7,7,2.5f);
-
                 }
             }
         }
+        //TODO Should this be a bool instead of Void
 
-        public override void EquipItem(CharacterInventory characterInventory, int IndexOf,BaseCharacter player)
+        public bool EquipItem(CharacterInventory characterInventory, int IndexOf,BaseCharacter player)
         {
             EquipmentBase Equipment = characterInventory.Equipment;
-            if (Equipment.EquippedWeapons.TryGetValue(this.Slot, out _))
-            {
-                Equipment.EquippedWeapons[this.Slot].Unequip(characterInventory, player);
-            }
-            Equipment.EquippedWeapons[this.Slot] = this;
-
             if (player.Level >= LevelRqd)
             {
+                if (Equipment.EquippedWeapons.TryGetValue(this.Slot, out _))
+                {
+                    Equipment.EquippedWeapons[this.Slot].Unequip(characterInventory, player);
+                }
+                Equipment.EquippedWeapons[this.Slot] = this;
+
+
                 if (Model != null)
                 {
-                 weaponModel = Instantiate(Model);
+                    weaponModel = Instantiate(Model);
                     // Consider adding and enum as all character maybe not be human 
                     if (EquipToHuman)
                     {
@@ -121,37 +120,41 @@ namespace Dreamers.InventorySystem
                     }
                     else
                     {
-                     weaponModel.transform.SetParent(player.transform);
+                        weaponModel.transform.SetParent(player.transform);
 
                     }
                     weaponModel.transform.localPosition = SheathedPos;
                     weaponModel.transform.localRotation = Quaternion.Euler(SheathedRot);
 
                 }
-                EquipmentUtility.ModCharacterStats(player,Modifiers, true);
-                Equipped = true;
-                player.StatUpdate();
-
-
+                EquipmentUtility.ModCharacterStats(player, Modifiers, true);
                 RemoveFromInventory(characterInventory, IndexOf);
 
+                
+                player.StatUpdate();
+                return Equipped = true; ;
             }
-            else { Debug.LogWarning("Level required to Equip is " + LevelRqd + ". Character is currently level " + player.Level); }
+            else { Debug.LogWarning("Level required to Equip is " + LevelRqd + ". Character is currently level " + player.Level); 
+                return Equipped = false;
+            }
 
         }
 
-        public override void Unequip(CharacterInventory characterInventory, BaseCharacter player)
+        public bool Unequip(CharacterInventory characterInventory, BaseCharacter player)
         {
             EquipmentBase Equipment = characterInventory.Equipment;
-
-            EquipmentUtility.ModCharacterStats(player,Modifiers, false);
             AddToInventory(characterInventory);
-            Equipment.EquippedWeapons.Remove(this.Slot);
             Destroy(weaponModel);
 
+            EquipmentUtility.ModCharacterStats(player,Modifiers, false);
+            Equipment.EquippedWeapons.Remove(this.Slot);
+            Equipped = false;
+            return true; ;
         }
         public override void Convert(Entity entity, EntityManager dstManager)
-        { }
+        { 
+            //TODO Implement Convert at top level
+        }
 
         public override void Use(CharacterInventory characterInventory, int IndexOf, BaseCharacter player)
         {

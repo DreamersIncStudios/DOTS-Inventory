@@ -56,6 +56,8 @@ namespace Dreamers.Global
         private GameObject UIPanelPrefab;
         private GameObject TextBoxPrefab;
         private GameObject ButtonPrefab;
+        private Image ImagePrefab;
+
         // write anchoring system
 
 
@@ -157,7 +159,6 @@ namespace Dreamers.Global
 
             return temp;
         }
-        [SerializeField] private Image ImagePrefab;
         public Image GetImage(Transform Parent, Sprite sprite)
         {
             Image temp = Instantiate(ImagePrefab).GetComponent<Image>();

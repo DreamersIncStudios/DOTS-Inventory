@@ -39,8 +39,8 @@ namespace Dreamers.InventorySystem
             if (Menu == null)
                 Menu = new DisplayMenu(PC, this);
 
-            if (Input.GetKeyUp(KeyCode.I) && Menu.Displayed) { Menu.CloseInventory(); }
-            if (Input.GetKeyUp(KeyCode.I) && !Menu.Displayed) { Menu.OpenInventory(Inventory); }
+            if (Input.GetKeyUp(KeyCode.I) && Menu.Displayed) { Menu.CloseCharacterMenu(); }
+            if (Input.GetKeyUp(KeyCode.I) && !Menu.Displayed) { Menu.OpenCharacterMenu(Inventory); }
         }
         public void EquipWeaponAnim()
         {

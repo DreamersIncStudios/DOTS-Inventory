@@ -72,10 +72,10 @@ public class Testadder : MonoBehaviour,IConvertGameObjectToEntity
         if (Menu == null)
             Menu = new DisplayMenu(PC, Inventory);
 
-        if (Input.GetKeyUp(KeyCode.I) && Menu.Displayed) { Menu.CloseInventory(); }
+        if (Input.GetKeyUp(KeyCode.I) && Menu.Displayed) { Menu.CloseCharacterMenu(); }
 
 
-        if (Input.GetKeyUp(KeyCode.I) && !Menu.Displayed) { Menu.OpenInventory(Inventory.Inventory); }
+        if (Input.GetKeyUp(KeyCode.I) && !Menu.Displayed) { Menu.OpenCharacterMenu(Inventory.Inventory); }
     }
 }
 #endif

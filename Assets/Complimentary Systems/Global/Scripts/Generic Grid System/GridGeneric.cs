@@ -18,16 +18,17 @@ namespace DreamersInc.Utils
         private TGridObject[,] gridArray;
         private Vector3 originPosition;
         private TextMesh[,] debugTextArray;
-
+        bool debugGrid;
         /// <summary>
         /// Create Grid
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
-        public GridGeneric(int width, int height, float cellSize, Func<GridGeneric<TGridObject>, int, int, TGridObject> CreateGridObject)  {
+        public GridGeneric(int width, int height, float cellSize, Func<GridGeneric<TGridObject>, int, int, TGridObject> CreateGridObject, bool debug = false)  {
             this.width = width;
             this.height = height;
             this.cellSize = cellSize;
+            this.debugGrid = debug;
             gridArray = new TGridObject[width, height];
             originPosition = Vector3.zero;
             for (int x = 0; x < gridArray.GetLength(0); x++)
@@ -37,15 +38,18 @@ namespace DreamersInc.Utils
                     gridArray[x, y] = CreateGridObject(this, x,y);
                 }
             }
-            DrawDebugGrid();
+            if(debug)
+                DrawDebugGrid();
 
         }
 
-        public GridGeneric(int width, int height, float cellSize, Vector3 originPos, Func<GridGeneric<TGridObject>, int, int, TGridObject> CreateGridObject)
+        public GridGeneric(int width, int height, float cellSize, Vector3 originPos, Func<GridGeneric<TGridObject>, int, int, TGridObject> CreateGridObject, bool debug = false)
         {
             this.width = width;
             this.height = height;
             this.cellSize = cellSize;
+            this.debugGrid = debug;
+
             gridArray = new TGridObject[width, height];
             this.originPosition = originPos;
             for (int x = 0; x < gridArray.GetLength(0); x++)
@@ -55,7 +59,8 @@ namespace DreamersInc.Utils
                     gridArray[x, y] = CreateGridObject(this, x,y);
                 }
             }
-            DrawDebugGrid();
+            if (debug)
+                DrawDebugGrid();
         }
 
         public void DrawDebugGrid()
@@ -78,18 +83,6 @@ namespace DreamersInc.Utils
                 debugTextArray[eventArgs.x, eventArgs.y].text = gridArray[eventArgs.x, eventArgs.y]?.ToString();
             };
         }
-
-        public void DrawGrid() {
-
-
-
-            OnGridValueChanged += (object sender, OnGridValueChangedEventArgs eventArgs) =>
-            {
-            
-            
-            };
-        }
-
 
         private Vector3 GetWorldPosition(int x, int y) {
             return new Vector3(x, y) * cellSize+originPosition;

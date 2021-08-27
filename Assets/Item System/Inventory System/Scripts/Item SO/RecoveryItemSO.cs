@@ -80,17 +80,6 @@ namespace Dreamers.InventorySystem {
         { 
         
         }
-
-        public override void EquipItem(CharacterInventory characterInventory, int IndexOf, BaseCharacter player)
-        {
-
-        }
-
-        public override void Unequip(CharacterInventory characterInventory, BaseCharacter player)
-        { 
-
-        }
-
         void Activate() { 
         
         

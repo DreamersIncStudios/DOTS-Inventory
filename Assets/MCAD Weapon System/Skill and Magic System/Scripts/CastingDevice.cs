@@ -6,7 +6,7 @@ using Utilities;
 using Unity.Mathematics;
 namespace DreamersInc.MagicSkill
 {
-    public class MagicSkillGrid :MonoBehaviour
+    public class CastingDevice :MonoBehaviour
     {
         private int width, height;
         private float cellsize;
@@ -30,20 +30,7 @@ namespace DreamersInc.MagicSkill
 
         public void Update()
         {
-            if (Input.GetMouseButtonDown(0)) {
-                grid.GetXY(GlobalFunctions.GetMousePosition(), out int x, out int y);
-                if (AddMapToGrid(x, y, test.Grid)) {
-                    SpellNames.Add(test.Name);
-                }
-            }
-            if (Input.GetMouseButtonDown(1))
-            {
-
-
-                grid.GetXY(GlobalFunctions.GetMousePosition(), out int x, out int y);
-                if (grid.GetGridObject(x, y) != null)
-                    RemoveMapToGrid(x, y);
-            }
+    
         }
         public bool AddMapToGrid(int x, int y, AugmentGrid addGrid) {
             bool output = true;

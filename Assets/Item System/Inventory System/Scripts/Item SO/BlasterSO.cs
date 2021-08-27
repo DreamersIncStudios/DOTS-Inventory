@@ -10,7 +10,7 @@ using Dreamers.InventorySystem.Interfaces;
 
 namespace Dreamers.InventorySystem
 {
-    public class BlasterSO :WeaponSO,IEquipable ,IProjectile
+    public class BlasterSO :WeaponSO, IProjectile
     {
 
 
@@ -67,22 +67,14 @@ namespace Dreamers.InventorySystem
             //throw new System.NotImplementedException();
         }
 
-        public override void EquipItem(CharacterInventory characterInventory, int IndexOf, BaseCharacter player)
+        public new bool EquipItem(CharacterInventory characterInventory, int IndexOf, BaseCharacter player)
         {
-            base.EquipItem(characterInventory, IndexOf, player);
+            bool temp = base.EquipItem(characterInventory, IndexOf, player);
+            if(temp)
                 Convert(characterInventory.self, World.DefaultGameObjectInjectionWorld.EntityManager);
-            
+            return temp;
         }
 
-        public override void Unequip(CharacterInventory characterInventory, BaseCharacter player)
-        {
-            EquipmentBase Equipment = characterInventory.Equipment;
-            World.DefaultGameObjectInjectionWorld.EntityManager.RemoveComponent<ShooterComponent>(characterInventory.self);
-            AddToInventory(characterInventory);
-            Destroy(weaponModel);
-            EquipmentUtility.ModCharacterStats(player, Modifiers, false);
-            Equipment.EquippedWeapons.Remove(this.Slot);
-        }
 
         public bool Equals(ItemBaseSO obj)
         {

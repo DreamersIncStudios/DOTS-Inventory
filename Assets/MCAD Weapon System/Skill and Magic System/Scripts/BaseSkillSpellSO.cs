@@ -23,10 +23,10 @@ namespace DreamersInc.MagicSkill {
         [SerializeField] Specialty specialty;
 
 
-        public void AugmentItem(MagicSkillGrid Grid, int x, int y) { }
+        public void AugmentItem(CastingDevice Grid, int x, int y) { }
 
 
-        public  void RemoveAugment(MagicSkillGrid Grid) { }
+        public  void RemoveAugment(CastingDevice Grid) { }
 
         public void Create(string name, int width, int height, int Level, int value)
         {

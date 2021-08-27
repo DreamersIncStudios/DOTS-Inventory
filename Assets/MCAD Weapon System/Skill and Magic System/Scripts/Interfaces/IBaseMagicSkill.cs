@@ -18,8 +18,8 @@ namespace DreamersInc.MagicSkill
         Specialty GetSpecialty { get; }
 
         void Create( string name, int width, int Height, int Level, int value);
-        void AugmentItem(MagicSkillGrid Grid, int x , int y);
-        void RemoveAugment(MagicSkillGrid Grid);
+        void AugmentItem(CastingDevice Grid, int x , int y);
+        void RemoveAugment(CastingDevice Grid);
     }
     public enum Classification { 
         Standard, Intermediate, Advanced, Expert, Virtuoso, Grandmaster, god

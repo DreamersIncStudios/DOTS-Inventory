@@ -74,20 +74,21 @@ namespace Dreamers.InventorySystem
         }
 
         #endregion
-        public override void EquipItem(CharacterInventory characterInventory, int IndexOf, BaseCharacter player)
+        public  bool EquipItem(CharacterInventory characterInventory, int IndexOf, BaseCharacter player)
         {
             EquipmentBase Equipment = characterInventory.Equipment;
-            if (Equipment.EquippedArmor.TryGetValue(this.ArmorType, out ArmorSO value))
-            {
-                Equipment.EquippedArmor[this.ArmorType].Unequip(characterInventory, player);
-            }
-            Equipment.EquippedArmor[this.ArmorType] = this;
 
             if (player.Level >= LevelRqd)
             {
+                if (Equipment.EquippedArmor.TryGetValue(this.ArmorType, out _))
+                {
+                    Equipment.EquippedArmor[this.ArmorType].Unequip(characterInventory, player);
+                }
+                Equipment.EquippedArmor[this.ArmorType] = this;
+
                 if (Model != null)
                 {
-                    armorModel=_model = Instantiate(Model);
+                    armorModel = _model = Instantiate(Model);
                     // Consider adding and enum as all character maybe not be human 
                     if (EquipToHuman)
                     {
@@ -98,28 +99,33 @@ namespace Dreamers.InventorySystem
                         }
 
                     }
-                    else {
+                    else
+                    {
                         armorModel.transform.SetParent(player.transform);
-                    
+
                     }
 
                 }
-               EquipmentUtility.ModCharacterStats(player, Modifiers, true);
+                EquipmentUtility.ModCharacterStats(player, Modifiers, true);
 
                 RemoveFromInventory(characterInventory, IndexOf);
-                Equipped = true;
                 player.StatUpdate();
+                return Equipped = true;
             }
-            else { Debug.LogWarning("Level required to Equip is " + LevelRqd +". Character is currently level "+ player.Level); }
+            else { Debug.LogWarning("Level required to Equip is " + LevelRqd + ". Character is currently level " + player.Level);
+                return Equipped =false;
+            }
         }
 
-        public override void Unequip(CharacterInventory characterInventory, BaseCharacter player)
+        public  bool Unequip(CharacterInventory characterInventory, BaseCharacter player)
         {
             EquipmentBase Equipment = characterInventory.Equipment;
             AddToInventory(characterInventory);
             Destroy(armorModel);
            EquipmentUtility.ModCharacterStats(player, Modifiers, false);
             Equipment.EquippedArmor.Remove(this.ArmorType);
+            Equipped = false;
+            return true;
         }
         public override void Convert(Entity entity, EntityManager dstManager)
         { }
