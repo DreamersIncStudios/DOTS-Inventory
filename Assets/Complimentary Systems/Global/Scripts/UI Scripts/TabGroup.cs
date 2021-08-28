@@ -8,6 +8,8 @@ namespace DreamersInc.UI
     public class TabGroup : MonoBehaviour
     {
         public List<TabButton> tabButtons { get; private set; }
+        public Color TabIdle, TabSelected, TabHovered;
+        private TabButton selectedtab;
 
         public void Awake()
         {
@@ -28,10 +30,38 @@ namespace DreamersInc.UI
 
         }
 
-        public void OnTabEnter(TabButton button) { }
-        public void OnTabExit(TabButton button) { }
+        public void OnTabEnter(TabButton button) {
+            ResetTabs();
+            if (selectedtab == null && button!=selectedtab)
+                button.background.color = TabHovered;
 
-        public void OnTabSelected(TabButton button) { }
 
+        }
+        public void OnTabExit(TabButton button) {
+            ResetTabs();
+        }
+
+        public void OnTabSelected(TabButton button) {
+
+            if (selectedtab != null && button != selectedtab) {
+                selectedtab.Deselect();
+            }
+
+            selectedtab = button;
+            selectedtab.Select();
+            ResetTabs();
+            button.background.color = TabSelected;
+        }
+
+
+        public void ResetTabs() {
+            foreach (var button in tabButtons)
+            {
+                if (button == selectedtab && selectedtab != null)
+                    continue;
+                button.background.color = TabIdle;
+            }
+
+        }
     }
 }

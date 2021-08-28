@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
 namespace DreamersInc.UI
 {
     [RequireComponent(typeof(Image))]
@@ -10,6 +11,8 @@ namespace DreamersInc.UI
     {
         private TabGroup tabGroup => GetComponentInParent<TabGroup>();
         public Image background;
+        public UnityEvent OnTabSelected;
+        public UnityEvent OnTabDeselected;
         // Start is called before the first frame update
         void Start()
         {
@@ -17,25 +20,35 @@ namespace DreamersInc.UI
             background = GetComponent<Image>();
         }
 
-        // Update is called once per frame
-        void Update()
+        public void Select()
         {
+            if(OnTabSelected != null)
+            {
+                OnTabSelected.Invoke();
 
+            }
+        }   
+        public void Deselect() {
+            if (OnTabDeselected != null)
+            {
+                OnTabDeselected.Invoke();
+            }
         }
+
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            throw new System.NotImplementedException();
+            tabGroup.OnTabEnter(this);
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            throw new System.NotImplementedException();
+            tabGroup.OnTabSelected(this);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            throw new System.NotImplementedException();
+            tabGroup.OnTabExit(this);
         }
     }
 }
