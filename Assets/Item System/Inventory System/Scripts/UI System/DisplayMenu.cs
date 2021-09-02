@@ -5,6 +5,7 @@ using Dreamers.InventorySystem.Interfaces;
 using Stats;
 using UnityEngine;
 using UnityEngine.UI;
+using DreamersInc.UI;
 
 namespace Dreamers.InventorySystem.UISystem
 {
@@ -13,7 +14,7 @@ namespace Dreamers.InventorySystem.UISystem
         readonly UIManager Manager;
         public bool Displayed { get { return (bool)MenuPanelParent; } }
 
-        public DisplayMenu(BaseCharacter player,CharacterInventory characterInventory) {
+        public DisplayMenu(BaseCharacter player , CharacterInventory characterInventory) {
             Manager = UIManager.instance;
         }
 
@@ -21,8 +22,7 @@ namespace Dreamers.InventorySystem.UISystem
             MenuPanelParent = CreateMenu(
         new Vector2(0, 0),
         new Vector2(0, 0));
-            playerStats = CreatePlayerPanel();
-            itemPanel = CreateItemPanel();
+          //  itemPanel = CreateItemPanel();
 
         }
 
@@ -57,124 +57,40 @@ namespace Dreamers.InventorySystem.UISystem
             HLG.childAlignment = TextAnchor.UpperLeft;
             HLG.childControlHeight = true; HLG.childControlWidth = false;
             HLG.childForceExpandHeight = true; HLG.childForceExpandWidth = true;
-
+            playerStats = CreatePlayerPanel(MainPanel.transform);
+            TabView = CreateTabView(MainPanel.transform);
             return MainPanel;
         }
-        GameObject playerStats { get;  set; }
-        GameObject CreatePlayerPanel() {
-            if (playerStats)
-                Object.Destroy(playerStats);
 
-            GameObject MainPanel = Manager.GetPanel(MenuPanelParent.transform, new Vector2(400, 300), new Vector2(0, 150));
-            MainPanel.name = "Player Window";
-            MainPanel.transform.SetSiblingIndex(0);
-            VerticalLayoutGroup VLG = MainPanel.AddComponent<VerticalLayoutGroup>();
-            VLG.padding = new RectOffset() { bottom = 20, top = 20, left = 20, right = 20 };
-            VLG.childAlignment = TextAnchor.UpperCenter;
-            VLG.childControlHeight = false; VLG.childControlWidth = true;
-            VLG.childForceExpandHeight = false; VLG.childForceExpandWidth = true;
+        GameObject TabView;
+        public Sprite[] TabIcons;
+        GameObject CreateTabView( Transform parent) {
+            if (TabView)
+                Object.Destroy(TabView);
 
-            Text titleGO = Manager.TextBox(MainPanel.transform, new Vector2(400, 50)).GetComponent<Text>();
-            titleGO.alignment = TextAnchor.MiddleCenter;
-            titleGO.text = " Player";
-            titleGO.fontSize = 24;
-            VerticalLayoutGroup PlayerStatsWindow = Manager.GetPanel(MainPanel.transform, new Vector2(400, 450), new Vector2(0, 150)).AddComponent<VerticalLayoutGroup>();
-            PlayerStatsWindow.name = "Player Stats Window";
-            PlayerStatsWindow.padding = new RectOffset() { bottom = 20, top = 20, left = 20, right = 20 };
-            PlayerStatsWindow.childAlignment = TextAnchor.UpperCenter;
-            PlayerStatsWindow.childControlHeight = true; PlayerStatsWindow.childControlWidth = true;
-            PlayerStatsWindow.childForceExpandHeight = true; PlayerStatsWindow.childForceExpandWidth = true;
-            
-            Text statsText= Manager.TextBox(PlayerStatsWindow.transform, new Vector2(400, 50)).GetComponent<Text>();
-            statsText.alignment = TextAnchor.UpperLeft;
-            statsText.text = " Player";
-            statsText.fontSize = 24;
+            GameObject contextPanel = Manager.GetPanel(parent, new Vector2(1400, 0), Vector2.zero, Global.LayoutGroup.Vertical, "Context Panel");
+            VerticalLayoutGroup verticalLayoutGroup = contextPanel.GetComponent<VerticalLayoutGroup>();
+            verticalLayoutGroup.childControlHeight = verticalLayoutGroup.childControlWidth = false;
+            verticalLayoutGroup.childForceExpandHeight = false;
+            GameObject tabGroup = Manager.GetPanel(contextPanel.transform, new Vector2(1400, 100), Vector2.zero, Global.LayoutGroup.Horizontal, "Tab Panel");
+            TabGroup groupMaster = tabGroup.AddComponent<TabGroup>();
+           TabButton inventory = Manager.TabButton (tabGroup.transform,"Inventory", "Inventory");
+           
+            inventory.OnTabSelected.
+                AddListener(() => {
+                itemPanel = CreateItemPanel();
+            });
+            inventory.OnTabDeslected.AddListener(() =>{
+                Object.Destroy(itemPanel);
+            });
+            TabButton CAD = Manager.TabButton(tabGroup.transform,  "CAD", "CAD");
+            TabButton save = Manager.TabButton(tabGroup.transform, "Save/Load", "Save/Load");
 
-            statsText.text = Character.Name + " Lvl: " + Character.Level;
-            statsText.text += "\nHealth:\t\t" + Character.CurHealth+"/" + Character.MaxHealth;
-            statsText.text += "\nMana:\t\t\t" + Character.CurMana + "/" + Character.MaxMana+"\n";
-
-            for (int i = 0; i < System.Enum.GetValues(typeof(AttributeName)).Length; i++)
-            {
-                statsText.text += "\n"+((AttributeName)i).ToString() + ":\t\t\t" + Character.GetPrimaryAttribute(i).BaseValue;
-                statsText.text += " + "+ Character.GetPrimaryAttribute(i).BuffValue;
-                statsText.text += " + " + Character.GetPrimaryAttribute(i).AdjustBaseValue;
-
-
-            }
-            currentEquipWindow = CurrentEquipWindow(MainPanel.transform);
-
-            return MainPanel;
-
-
+            groupMaster.TabIdle = Color.white;
+            groupMaster.TabHovered = Color.red;
+            groupMaster.TabSelected = Color.green;
+            return contextPanel;
         }
-        GameObject currentEquipWindow { get; set; }
-        GameObject CurrentEquipWindow(Transform Parent) {
-            if (currentEquipWindow) 
-             { Object.Destroy(currentEquipWindow); }
-            GridLayoutGroup CurrentEquips = Manager.GetPanel(Parent, new Vector2(400, 400), new Vector2(0, 150)).AddComponent<GridLayoutGroup>();
-            CurrentEquips.transform.localScale = Vector3.one;
-            CurrentEquips.padding = new RectOffset() { bottom = 15, top = 15, left = 15, right = 15 };
-            CurrentEquips.childAlignment = TextAnchor.MiddleCenter;
-            CurrentEquips.spacing = new Vector2(10, 10);
-
-
-            for (int i = 0; i < System.Enum.GetValues(typeof(ArmorType)).Length; i++)
-            {
-                if (Equipment.EquippedArmor.TryGetValue((ArmorType)i, out ArmorSO value))
-                {
-                    ItemIconDisplay(CurrentEquips.transform, Equipment.EquippedArmor[(ArmorType)i]);
-
-                }
-                else
-                {
-                    ItemIconDisplay(CurrentEquips.transform, null);
-                }
-            }
-
-            for (int i = 0; i < System.Enum.GetValues(typeof(WeaponSlot)).Length; i++)
-            {
-                if (Equipment.EquippedWeapons.TryGetValue((WeaponSlot)i, out WeaponSO value))
-                {
-                    ItemIconDisplay(CurrentEquips.transform, Equipment.EquippedWeapons[(WeaponSlot)i]);
-
-                }
-                else
-                {
-                    ItemIconDisplay(CurrentEquips.transform, null);
-                }
-            }
-
-            return CurrentEquips.gameObject;
-        }
-
-        // Making a button to remove 
-        Button ItemIconDisplay(Transform Parent, ItemBaseSO so) {
-            Button temp = Manager.UIButton(Parent, "ItemName");
-            if (so != null)
-            {
-                temp.image.sprite = so.Icon;
-                if (!so.Icon)
-                    temp.image.color = new Color() { a = 0.0f };
-                if (so.Type == ItemType.Armor || so.Type == ItemType.Weapon)
-                {
-                    IEquipable equippedItem = (IEquipable)so;
-                    temp.onClick.AddListener(() =>
-                {
-                    equippedItem.Unequip(CharacterInventory, Character);
-                    playerStats = CreatePlayerPanel();
-                    itemPanel = CreateItemPanel();
-
-                });
-                }
-            }
-            return temp;
-        }
-        ItemType DisplayItems;
-        GameObject itemPanel { get; set; }
-        
-        GameObject itemsDisplayerPanel { get; set; }
-
 
     }
 

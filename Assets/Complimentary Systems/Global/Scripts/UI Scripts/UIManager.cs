@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-
+using DreamersInc.UI;
 namespace Dreamers.Global
 {
     public class UIManager : MonoBehaviour
@@ -91,7 +91,7 @@ namespace Dreamers.Global
             return temp;
         }
 
-        public GameObject GetPanel(Transform Parent, Vector2 Size, Vector2 Position, LayoutGroup layout)
+        public GameObject GetPanel(Transform Parent, Vector2 Size, Vector2 Position= default, LayoutGroup layout = LayoutGroup.None, string Name = "New UI Panel")
         {
             GameObject temp = Instantiate(UIPanelPrefab);
             temp.transform.SetParent(Parent, false);
@@ -113,7 +113,7 @@ namespace Dreamers.Global
                     temp.AddComponent<VerticalLayoutGroup>();
                     break;
             }
-
+            temp.name = Name;
 
             return temp;
         }
@@ -159,9 +159,10 @@ namespace Dreamers.Global
 
             return temp;
         }
-        public Image GetImage(Transform Parent, Sprite sprite)
+        public Image GetImage(Transform Parent, Sprite sprite=default, string name = "New Image")
         {
             Image temp = Instantiate(ImagePrefab).GetComponent<Image>();
+            temp.name = name;
             temp.sprite = sprite;
             temp.transform.SetParent(Parent, false);
 
@@ -173,9 +174,49 @@ namespace Dreamers.Global
             return temp;
 
         }
+        //TODO Implement Get Tab Button
+
+        public TabButton TabButton(Transform Parent, string content = default, string name = "New Image", Sprite sprite = default) {
+            GameObject temp = new GameObject();
+            temp.name = name;
+           Image image =  temp.AddComponent<Image>();
+            if (!sprite)
+                image.sprite = sprite;
+            temp.transform.SetParent(Parent, false);
+            TabButton button= temp.AddComponent<TabButton>();
+         
+
+            RectTransform PanelRect = temp.GetComponent<RectTransform>();
+            PanelRect.pivot = new Vector2(0.5f, .5f);
+            PanelRect.anchorMax = new Vector2(0, 1);
+            PanelRect.anchorMin = new Vector2(0, 1);
+            if (content != default) {
+                AddTextBox(content, temp.transform,40, TextAnchor.MiddleCenter);
+            }
+
+            return button;
+        }
+
+        public Text AddTextBox(string input, Transform parent, int size = 14, TextAnchor align = default) {
+
+            GameObject temp = new GameObject();
+            temp.transform.SetParent(parent);
+            temp.name = "TextBox";
 
 
-
+            Text TextBox = temp.AddComponent<Text>();
+            TextBox.text = input;
+            TextBox.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
+            TextBox.color = Color.black;
+            TextBox.fontSize = size;
+            TextBox.alignment = align;
+            RectTransform PanelRect = temp.GetComponent<RectTransform>();
+            PanelRect.pivot = new Vector2(0.5f, .5f);
+            PanelRect.anchoredPosition = Vector2.zero;
+            PanelRect.anchorMax = new Vector2(1, 1);
+            PanelRect.anchorMin = new Vector2(0, 0);
+            return TextBox;
+        }
     }
 
     public enum LayoutGroup { None, Horizontal, Vertical, Grid }

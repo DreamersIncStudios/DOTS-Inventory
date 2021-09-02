@@ -10,12 +10,18 @@ namespace Dreamers.InventorySystem.UISystem
 {
     public partial class DisplayMenu
     {
+
+        ItemType DisplayItems;
+        GameObject itemPanel { get; set; }
+
+        GameObject itemsDisplayerPanel { get; set; }
+
         GameObject CreateItemPanel()
         {
             if (itemPanel)
                 Object.Destroy(itemPanel);
 
-            GameObject MainPanel = Manager.GetPanel(MenuPanelParent.transform, new Vector2(1400, 300), new Vector2(0, 150));
+            GameObject MainPanel = Manager.GetPanel(TabView.transform, new Vector2(1400, 300), new Vector2(0, 150));
             MainPanel.transform.SetSiblingIndex(1);
             VerticalLayoutGroup VLG = MainPanel.AddComponent<VerticalLayoutGroup>();
             MainPanel.name = "Item Window";
@@ -155,7 +161,7 @@ namespace Dreamers.InventorySystem.UISystem
                                 break;
                         }
                         itemsDisplayerPanel = ItemsDisplayPanel(itemPanel.transform, Inventory, DisplayItems);
-                        playerStats = CreatePlayerPanel();
+                        playerStats = CreatePlayerPanel(MenuPanelParent.transform);
                         Object.Destroy(PopUp);
                     });
                     Button Mod = Manager.UIButton(ButtonPanel.transform, "Modify");

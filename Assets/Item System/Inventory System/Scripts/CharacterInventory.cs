@@ -33,14 +33,13 @@ namespace Dreamers.InventorySystem
             Equipment.LoadEquipment(PC,Save);
 #endif
         }
-
+        bool CloseMenu => Input.GetKeyUp(KeyCode.I) && Menu.Displayed;
+        bool OpenMenu => Input.GetKeyUp(KeyCode.I) && !Menu.Displayed;
         private void Update()
         {
-            if (Menu == null)
-                Menu = new DisplayMenu(PC, this);
-
-            if (Input.GetKeyUp(KeyCode.I) && Menu.Displayed) { Menu.CloseCharacterMenu(); }
-            if (Input.GetKeyUp(KeyCode.I) && !Menu.Displayed) { Menu.OpenCharacterMenu(Inventory); }
+            if (CloseMenu) { Menu.CloseCharacterMenu(); }
+            if (OpenMenu)
+            { Menu.OpenCharacterMenu(Inventory); }
         }
         public void EquipWeaponAnim()
         {

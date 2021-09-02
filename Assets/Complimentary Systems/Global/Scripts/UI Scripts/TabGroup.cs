@@ -16,6 +16,38 @@ namespace DreamersInc.UI
             GetComponentsInChildren<TabButton>(true, tabButtons);
         }
 
+        private void Update()
+        {
+         //   if(selectedtab== null)
+           //     OnTabSelected(tabButtons[0]);
+
+            ChangeTab();
+        }
+        bool MoveToLeftTab => Input.GetKeyDown(KeyCode.LeftShift);
+        bool MoveToRightTab => Input.GetKeyDown(KeyCode.RightShift) ;
+
+        void ChangeTab()
+        {
+
+            if (MoveToLeftTab && selectedtab)
+            {
+                int index = tabButtons.IndexOf(selectedtab);
+                index--;
+                if (index < 0)
+                    index = tabButtons.Count-1;
+              OnTabSelected( tabButtons[index]);
+            }
+            
+            if (MoveToRightTab && selectedtab)
+            {
+                int index = tabButtons.IndexOf(selectedtab);
+                index++;
+                if (index >= tabButtons.Count)
+                    index = 0;
+                OnTabSelected(tabButtons[index]);
+            }
+
+        }
         public void Subscribe(TabButton button)
         {
             if (tabButtons == null)
