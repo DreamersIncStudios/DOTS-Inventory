@@ -63,7 +63,7 @@ namespace Dreamers.InventorySystem.UISystem
                     {
                         equippedItem.Unequip(CharacterInventory, Character);
                         playerStats = CreatePlayerPanel(MenuPanelParent.transform);
-                        itemPanel = CreateItemPanel();
+                        GetInventoryPanel.Refresh();
 
                     });
                 }

@@ -49,7 +49,7 @@ namespace Dreamers.InventorySystem.UISystem
             PanelRect.anchorMin = new Vector2(.0f, .0f);
 
             HorizontalLayoutGroup HLG = MainPanel.AddComponent<HorizontalLayoutGroup>();
-            DisplayItems = (ItemType)0; // change to zero when all tab is added
+         //   DisplayItems = (ItemType)0; // change to zero when all tab is added
 
 
             HLG.padding = new RectOffset() { bottom = 20, top = 20, left = 20, right = 20 };
@@ -78,12 +78,16 @@ namespace Dreamers.InventorySystem.UISystem
            
             inventory.OnTabSelected.
                 AddListener(() => {
-                itemPanel = CreateItemPanel();
+                 GetInventoryPanel.CreatePanel(contextPanel.transform);
             });
             inventory.OnTabDeslected.AddListener(() =>{
-                Object.Destroy(itemPanel);
+               GetInventoryPanel.DestoryPanel();
             });
             TabButton CAD = Manager.TabButton(tabGroup.transform,  "CAD", "CAD");
+            CAD.OnTabSelected.AddListener(() => 
+                GetCADPanel.CreatePanel(TabView.transform));
+           
+            CAD.OnTabDeslected.AddListener(() => GetCADPanel.DestoryPanel());
             TabButton save = Manager.TabButton(tabGroup.transform, "Save/Load", "Save/Load");
 
             groupMaster.TabIdle = Color.white;
