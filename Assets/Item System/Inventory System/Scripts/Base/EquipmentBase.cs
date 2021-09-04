@@ -46,8 +46,11 @@ public class EquipmentBase
             }
             foreach (WeaponSO SO in Save.EquippedWeapons)
             {
-                SO.Equip(PC);
-                EquippedWeapons[SO.Slot] = SO;
+                if (SO)
+                {
+                    SO.Equip(PC);
+                    EquippedWeapons[SO.Slot] = SO;
+                }
             }
         }
 

@@ -12,6 +12,9 @@ namespace Dreamers.InventorySystem.UISystem
     public  partial class DisplayMenu 
     {
         readonly UIManager Manager;
+     
+        public enum PanelToRefresh { Inventory, CAD, PlayerStat, Equipment}
+     
         public bool Displayed { get { return (bool)MenuPanelParent; } }
 
         public DisplayMenu(BaseCharacter player , CharacterInventory characterInventory) {
@@ -80,9 +83,9 @@ namespace Dreamers.InventorySystem.UISystem
                 AddListener(() => {
                  GetInventoryPanel.CreatePanel(contextPanel.transform);
             });
-            inventory.OnTabDeslected.AddListener(() =>{
-               GetInventoryPanel.DestoryPanel();
-            });
+            inventory.OnTabDeslected.AddListener(() =>
+               GetInventoryPanel.DestoryPanel());
+            
             TabButton CAD = Manager.TabButton(tabGroup.transform,  "CAD", "CAD");
             CAD.OnTabSelected.AddListener(() => 
                 GetCADPanel.CreatePanel(TabView.transform));

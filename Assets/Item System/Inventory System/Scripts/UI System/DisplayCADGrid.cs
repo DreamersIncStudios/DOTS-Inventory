@@ -6,6 +6,7 @@ using Stats;
 using UnityEngine;
 using UnityEngine.UI;
 using DreamersInc.UI;
+using System;
 
 namespace Dreamers.InventorySystem.UISystem
 {
@@ -14,6 +15,8 @@ namespace Dreamers.InventorySystem.UISystem
 
        public  class CADPanel : Panel
         {
+       
+
             public CADPanel( Vector2 Size, Vector2 Position)
             {
                 Setup(Size, Position);
@@ -22,7 +25,7 @@ namespace Dreamers.InventorySystem.UISystem
             public override GameObject CreatePanel(Transform Parent)
             {
                 if (Top)
-                    Object.Destroy(Top);
+                    UnityEngine.Object.Destroy(Top);
                 Top = Manager.GetPanel(Parent, Size, Position);
                 Top.name = "CAD Menu";
 
@@ -31,7 +34,7 @@ namespace Dreamers.InventorySystem.UISystem
 
             public override void DestoryPanel()
             {
-                Object.Destroy(Top);
+                UnityEngine.Object.Destroy(Top);
 
             }
             public override void Refresh()

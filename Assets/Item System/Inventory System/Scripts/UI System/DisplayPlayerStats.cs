@@ -53,7 +53,7 @@ namespace Dreamers.InventorySystem.UISystem
 
 
             }
-            currentEquipWindow = CurrentEquipWindow(MainPanel.transform);
+            GetEquiqmentPanel.CreatePanel(MainPanel.transform);
 
             return MainPanel;
 

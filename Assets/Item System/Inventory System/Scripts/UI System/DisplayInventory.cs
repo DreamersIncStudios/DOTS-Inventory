@@ -13,15 +13,17 @@ namespace Dreamers.InventorySystem.UISystem
             ItemType DisplayItems;
             GameObject itemsDisplayerPanel { get; set; }
             CharacterInventory CharacterInventory => Character.GetComponent<CharacterInventory>();
+            EquiqmentPanel equiqmentPanel;
 
             InventoryBase Inventory => CharacterInventory.Inventory;
 
             BaseCharacter Character;
-            public InventoryPanel(Vector2 Size, Vector2 Position, BaseCharacter Character )
+            public InventoryPanel(Vector2 Size, Vector2 Position, BaseCharacter Character, EquiqmentPanel panel)
             {
                 Setup(Size, Position);
                 this.Character = Character;
                 DisplayItems = (ItemType)0;
+                this.equiqmentPanel = panel;
             }
 
             public override GameObject CreatePanel(Transform Parent)
@@ -29,9 +31,6 @@ namespace Dreamers.InventorySystem.UISystem
                 if (Top)
                     Object.Destroy(Top);
                 Top = Manager.GetPanel(Parent, Size, Position);
-                Top.name = "Inventory Menu";
-
-                Top = Manager.GetPanel(Parent, new Vector2(1400, 300), new Vector2(0, 150));
                 Top.transform.SetSiblingIndex(1);
                 VerticalLayoutGroup VLG = Top.AddComponent<VerticalLayoutGroup>();
                 Top.name = "Item Window";
@@ -114,7 +113,7 @@ namespace Dreamers.InventorySystem.UISystem
                         {
                             GameObject pop = PopUpItemPanel(temp.GetComponent<RectTransform>().anchoredPosition
                                  + new Vector2(575, -175)
-                                 , Slot, IndexOf);
+                                 , Slot, IndexOf,temp);
                         });
                     }
                     else if (Slot.Item.Type == Type)
@@ -124,7 +123,7 @@ namespace Dreamers.InventorySystem.UISystem
                         {
                             GameObject pop = PopUpItemPanel(temp.GetComponent<RectTransform>().anchoredPosition
                                  + new Vector2(575, -175)
-                                 , Slot, IndexOf);
+                                 , Slot, IndexOf,temp);
                         });
                     }
                 }
@@ -145,7 +144,7 @@ namespace Dreamers.InventorySystem.UISystem
             }
 
 
-            GameObject PopUpItemPanel(Vector2 Pos, ItemSlot Slot, int IndexOf)
+            GameObject PopUpItemPanel(Vector2 Pos, ItemSlot Slot, int IndexOf, Button itemButton)
             {
                 GameObject PopUp = Manager.GetPanel(Manager.UICanvas().transform, new Vector2(300, 300), Pos);
                 HorizontalLayoutGroup group = PopUp.AddComponent<HorizontalLayoutGroup>();
@@ -179,20 +178,26 @@ namespace Dreamers.InventorySystem.UISystem
                         Button Equip = Manager.UIButton(ButtonPanel.transform, "Equip");
                         Equip.onClick.AddListener(() =>
                         {
+                            bool equipedItem = false;
                             switch (Slot.Item.Type)
                             {
                                 case ItemType.Armor:
                                     ArmorSO Armor = (ArmorSO)Slot.Item;
-                                    Armor.EquipItem(CharacterInventory, IndexOf, Character);
+                                  equipedItem=  Armor.EquipItem(CharacterInventory, IndexOf, Character);
                                     break;
                                 case ItemType.Weapon:
                                     WeaponSO weapon = (WeaponSO)Slot.Item;
-                                    weapon.EquipItem(CharacterInventory, IndexOf, Character);
-
+                                    equipedItem = weapon.EquipItem(CharacterInventory, IndexOf, Character);
                                     break;
                             }
-                            itemsDisplayerPanel = ItemsDisplayPanel(Top.transform, Inventory, DisplayItems);
-                            //TODO refresh PlayerPanel
+                            //TODO Implement Change Event here
+                            if (equipedItem)
+                            {
+                                equiqmentPanel.Refresh(Slot);
+                                Object.Destroy(itemButton.gameObject);
+                            }
+                                    //itemsDisplayerPanel = ItemsDisplayPanel(Top.transform, Inventory, DisplayItems);
+                            //TODO refresh PlayerPanel Event system;
                         //    playerStats = CreatePlayerPanel(MenuPanelParent.transform);
                             Object.Destroy(PopUp);
                         });
@@ -221,7 +226,7 @@ namespace Dreamers.InventorySystem.UISystem
             }
 
         }
-        public InventoryPanel GetInventoryPanel = new InventoryPanel(new Vector2(1400, 300), new Vector2(0, 150), GameObject.FindGameObjectWithTag("Player").GetComponent<BaseCharacter>());
+        public static InventoryPanel GetInventoryPanel = new InventoryPanel(new Vector2(1400, 300), new Vector2(0, 150), GameObject.FindGameObjectWithTag("Player").GetComponent<BaseCharacter>(), GetEquiqmentPanel);
 
     }
 }

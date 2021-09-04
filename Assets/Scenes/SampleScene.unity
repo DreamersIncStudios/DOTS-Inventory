@@ -503,6 +503,10 @@ MonoBehaviour:
     ItemsInInventory:
     - Item: {fileID: 11400000, guid: 50da1fbcb683d264ea4ebaa5b25ada0a, type: 2}
       Count: 1
+    - Item: {fileID: 11400000, guid: 9da3c7a8ad3ecfc42917d92dd4b84223, type: 2}
+      Count: 1
+    - Item: {fileID: 11400000, guid: 8a999ef255c4dc745b9d1f6b708c6825, type: 2}
+      Count: 1
     MaxInventorySize: 30
   Equipment:
     CurrentActivationPoints: 0
@@ -512,8 +516,8 @@ MonoBehaviour:
   Gold: 5000
   Save:
     EquippedWeapons:
-    - {fileID: 11400000, guid: 50da1fbcb683d264ea4ebaa5b25ada0a, type: 2}
-    - {fileID: 11400000, guid: 9da3c7a8ad3ecfc42917d92dd4b84223, type: 2}
+    - {fileID: 0}
+    - {fileID: 0}
     EquippedArmors:
     - {fileID: 11400000, guid: 1570f87a4daa73449b19f524906d9f5f, type: 2}
     - {fileID: 11400000, guid: defbe74f21f853f46b55eb48e670f46d, type: 2}

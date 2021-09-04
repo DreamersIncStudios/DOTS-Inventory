@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using Dreamers.Global;
-
+using System;
 using UnityEngine;
 using UnityEngine.UI;
-using DreamersInc.UI;
+using Dreamers.InventorySystem.Base;
+
 namespace Dreamers.InventorySystem.UISystem {
     public abstract class Panel 
     {
         public GameObject Top;
+
         public  UIManager Manager { get { return UIManager.instance; } }
         public Vector2 Size { get; private set; }
         public Vector2 Position { get; private set; }
