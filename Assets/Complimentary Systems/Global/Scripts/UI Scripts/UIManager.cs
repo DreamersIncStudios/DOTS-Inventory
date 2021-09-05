@@ -21,6 +21,7 @@ namespace Dreamers.Global
             UIPanelPrefab = Resources.Load("UI Prefabs/Panel") as GameObject;
             ButtonPrefab = Resources.Load("UI Prefabs/Button") as GameObject;
             TextBoxPrefab = Resources.Load("UI Prefabs/Text") as GameObject;
+       
         }
 
         private static GameObject _uICanvas;
@@ -56,7 +57,6 @@ namespace Dreamers.Global
         private GameObject UIPanelPrefab;
         private GameObject TextBoxPrefab;
         private GameObject ButtonPrefab;
-        private Image ImagePrefab;
 
         // write anchoring system
 
@@ -161,9 +161,10 @@ namespace Dreamers.Global
         }
         public Image GetImage(Transform Parent, Sprite sprite=default, string name = "New Image")
         {
-            Image temp = Instantiate(ImagePrefab).GetComponent<Image>();
+            GameObject temp = new GameObject();
             temp.name = name;
-            temp.sprite = sprite;
+            Image image = temp.AddComponent<Image>();
+                image.sprite = sprite;
             temp.transform.SetParent(Parent, false);
 
             RectTransform PanelRect = temp.GetComponent<RectTransform>();
@@ -171,10 +172,9 @@ namespace Dreamers.Global
             PanelRect.anchorMax = new Vector2(0, 1);
             PanelRect.anchorMin = new Vector2(0, 1);
 
-            return temp;
+            return image;
 
         }
-        //TODO Implement Get Tab Button
 
         public TabButton TabButton(Transform Parent, string content = default, string name = "New Image", Sprite sprite = default) {
             GameObject temp = new GameObject();

@@ -17,12 +17,12 @@ namespace Dreamers.InventorySystem.UISystem
             private EquipmentBase Equipment => CharacterInventory.Equipment;
             private CharacterInventory CharacterInventory => Character.GetComponent<CharacterInventory>();
 
-            InventoryPanel inventoryPanel;
-            public EquiqmentPanel(Vector2 Size, Vector2 Position, BaseCharacter Character, InventoryPanel panel )
+            InventoryPanel inventoryPanel=> DisplayMenu.GetInventoryPanel;
+            public EquiqmentPanel(Vector2 Size, Vector2 Position, BaseCharacter Character)
             {
                 Setup(Size, Position);
                 this.Character = Character;
-                this.inventoryPanel = panel;
+              //  this.inventoryPanel = panel;
              
             }
             List<Button> armors;
@@ -178,7 +178,7 @@ namespace Dreamers.InventorySystem.UISystem
                                 //TODO add inventory refresh
                                this.Refresh(so.Type, (int)armorToRemove.ArmorType);
                                 equippedItem.Unequip(CharacterInventory, Character);
-                                 
+                                inventoryPanel.Refresh();
 
                             });
                             break;
@@ -189,9 +189,8 @@ namespace Dreamers.InventorySystem.UISystem
                             {
                                 equippedWeapon.Unequip(CharacterInventory, Character);
                                 //TODO Link To PlayerStat Panel
-                                //playerStats = CreatePlayerPanel(MenuPanelParent.transform);
-                                //TODO add inventory refresh
                                this.Refresh(so.Type,weapons.IndexOf(temp) );
+                                inventoryPanel.Refresh();
 
                             });
                             break;
@@ -202,8 +201,7 @@ namespace Dreamers.InventorySystem.UISystem
         }
 
         public static EquiqmentPanel GetEquiqmentPanel = new EquiqmentPanel(new Vector2(400, 400), new Vector2(0, 150),
-            GameObject.FindGameObjectWithTag("Player").GetComponent<BaseCharacter>(),
-          GetInventoryPanel
+            GameObject.FindGameObjectWithTag("Player").GetComponent<BaseCharacter>()
             );
     }
 }

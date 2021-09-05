@@ -32,8 +32,7 @@ namespace Dreamers.InventorySystem.UISystem
         public void CloseCharacterMenu() {
              Object.Destroy(MenuPanelParent);
         }
-        private InventoryBase Inventory => CharacterInventory.Inventory;
-        private EquipmentBase Equipment=> CharacterInventory.Equipment;
+
         private BaseCharacter Character => GameObject.FindGameObjectWithTag("Player").GetComponent<BaseCharacter>();
         private CharacterInventory CharacterInventory => Character.GetComponent<CharacterInventory>();
        // PlayerCharacter PC;

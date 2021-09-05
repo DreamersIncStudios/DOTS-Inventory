@@ -15,12 +15,14 @@ namespace Dreamers.InventorySystem.UISystem
 
        public  class CADPanel : Panel
         {
-       
+            Sprite gridSquares;
 
             public CADPanel( Vector2 Size, Vector2 Position)
             {
                 Setup(Size, Position);
+                gridSquares = Resources.Load<Sprite>("Sprites/Grid_Square");
             }
+        
 
             public override GameObject CreatePanel(Transform Parent)
             {
@@ -28,7 +30,8 @@ namespace Dreamers.InventorySystem.UISystem
                     UnityEngine.Object.Destroy(Top);
                 Top = Manager.GetPanel(Parent, Size, Position);
                 Top.name = "CAD Menu";
-
+                gridSquares = Resources.Load<Sprite>("Sprites/Grid_Square");
+                Manager.GetImage(Top.transform, gridSquares, "gridSquare");
                 return Top;
             }
 

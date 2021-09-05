@@ -47,9 +47,9 @@ namespace Dreamers.InventorySystem
             };
 
             Entity point = dstManager.CreateEntity();
-            var shootPoint = weaponModel;
-            shootPoint.transform.parent = weaponModel.transform;
-            dstManager.AddComponentObject(point, weaponModel.transform);
+            var shootPoint = WeaponModel;
+            shootPoint.transform.parent = WeaponModel.transform;
+            dstManager.AddComponentObject(point, WeaponModel.transform);
             dstManager.AddComponentData(point, new Translation()); // Have to add all this stuff manually too
             dstManager.AddComponentData(point, new Rotation());
             dstManager.AddComponentData(point, new LocalToWorld());

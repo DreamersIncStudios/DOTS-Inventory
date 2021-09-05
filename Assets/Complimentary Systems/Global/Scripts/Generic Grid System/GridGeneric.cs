@@ -38,7 +38,7 @@ namespace DreamersInc.Utils
                     gridArray[x, y] = CreateGridObject(this, x,y);
                 }
             }
-            if(debug)
+            if(debugGrid)
                 DrawDebugGrid();
 
         }
@@ -59,7 +59,7 @@ namespace DreamersInc.Utils
                     gridArray[x, y] = CreateGridObject(this, x,y);
                 }
             }
-            if (debug)
+            if (debugGrid)
                 DrawDebugGrid();
         }
 

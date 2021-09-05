@@ -65,7 +65,7 @@ namespace Dreamers.InventorySystem
         #endregion
 
 
-        public GameObject weaponModel { get; set; }
+        public GameObject WeaponModel { get; set; }
 
         public void Equip(BaseCharacter player)
         {
@@ -73,22 +73,22 @@ namespace Dreamers.InventorySystem
             {
                 if (Model != null)
                 {
-                    weaponModel = Instantiate(Model);
+                    WeaponModel = Instantiate(Model);
                     // Consider adding and enum as all character maybe not be human 
                     if (EquipToHuman)
                     {
                         Transform bone = player.GetComponent<Animator>().GetBoneTransform(EquipBone);
                         if (bone)
                         {
-                            weaponModel.transform.SetParent(bone);
+                            WeaponModel.transform.SetParent(bone);
                         }
                     }
                     else
                     {
-                        weaponModel.transform.SetParent(player.transform);
+                        WeaponModel.transform.SetParent(player.transform);
                     }
-                    weaponModel.transform.localPosition = SheathedPos;
-                    weaponModel.transform.localRotation = Quaternion.Euler(SheathedRot);
+                    WeaponModel.transform.localPosition = SheathedPos;
+                    WeaponModel.transform.localRotation = Quaternion.Euler(SheathedRot);
                 }
             }
         }
@@ -108,23 +108,23 @@ namespace Dreamers.InventorySystem
 
                 if (Model != null)
                 {
-                    weaponModel = Instantiate(Model);
+                    WeaponModel = Instantiate(Model);
                     // Consider adding and enum as all character maybe not be human 
                     if (EquipToHuman)
                     {
                         Transform bone = player.GetComponent<Animator>().GetBoneTransform(EquipBone);
                         if (bone)
                         {
-                            weaponModel.transform.SetParent(bone);
+                            WeaponModel.transform.SetParent(bone);
                         }
                     }
                     else
                     {
-                        weaponModel.transform.SetParent(player.transform);
+                        WeaponModel.transform.SetParent(player.transform);
 
                     }
-                    weaponModel.transform.localPosition = SheathedPos;
-                    weaponModel.transform.localRotation = Quaternion.Euler(SheathedRot);
+                    WeaponModel.transform.localPosition = SheathedPos;
+                    WeaponModel.transform.localRotation = Quaternion.Euler(SheathedRot);
 
                 }
                 EquipmentUtility.ModCharacterStats(player, Modifiers, true);
@@ -144,7 +144,7 @@ namespace Dreamers.InventorySystem
         {
             EquipmentBase Equipment = characterInventory.Equipment;
             AddToInventory(characterInventory);
-            Destroy(weaponModel);
+            Destroy(WeaponModel);
 
             EquipmentUtility.ModCharacterStats(player,Modifiers, false);
             Equipment.EquippedWeapons.Remove(this.Slot);
@@ -162,15 +162,15 @@ namespace Dreamers.InventorySystem
         }
 
         public void DrawWeapon(Animator anim) {
-            weaponModel.transform.SetParent(anim.GetBoneTransform(HeldBone));
-            weaponModel.transform.localPosition = HeldPos;
-            weaponModel.transform.localRotation = Quaternion.Euler(HeldRot);
+            WeaponModel.transform.SetParent(anim.GetBoneTransform(HeldBone));
+            WeaponModel.transform.localPosition = HeldPos;
+            WeaponModel.transform.localRotation = Quaternion.Euler(HeldRot);
 
         }
         public void StoreWeapon(Animator anim) {
-            weaponModel.transform.parent = anim.GetBoneTransform(EquipBone);
-            weaponModel.transform.localPosition = SheathedPos;
-            weaponModel.transform.localRotation = Quaternion.Euler(SheathedRot);
+            WeaponModel.transform.parent = anim.GetBoneTransform(EquipBone);
+            WeaponModel.transform.localPosition = SheathedPos;
+            WeaponModel.transform.localRotation = Quaternion.Euler(SheathedRot);
         }
 
         public bool Equals(ItemBaseSO obj)

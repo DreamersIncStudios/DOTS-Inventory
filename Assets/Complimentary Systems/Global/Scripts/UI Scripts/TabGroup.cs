@@ -16,11 +16,8 @@ namespace DreamersInc.UI
             GetComponentsInChildren<TabButton>(true, tabButtons);
         }
 
-        private void Update()
+        void Update()
         {
-         //   if(selectedtab== null)
-           //     OnTabSelected(tabButtons[0]);
-
             ChangeTab();
         }
         bool MoveToLeftTab => Input.GetKeyDown(KeyCode.LeftShift);
@@ -69,7 +66,7 @@ namespace DreamersInc.UI
 
 
         }
-        public void OnTabExit(TabButton button) {
+        public void OnTabExit() {
             ResetTabs();
         }
 

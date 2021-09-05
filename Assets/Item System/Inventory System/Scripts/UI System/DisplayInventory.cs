@@ -1,4 +1,5 @@
 using Dreamers.Global;
+using System.Collections.Generic;
 using Dreamers.InventorySystem.Base;
 using Dreamers.InventorySystem.Interfaces;
 using Stats;
@@ -13,17 +14,16 @@ namespace Dreamers.InventorySystem.UISystem
             ItemType DisplayItems;
             GameObject itemsDisplayerPanel { get; set; }
             CharacterInventory CharacterInventory => Character.GetComponent<CharacterInventory>();
-            EquiqmentPanel equiqmentPanel;
+            EquiqmentPanel equiqmentPanel= DisplayMenu.GetEquiqmentPanel;
 
             InventoryBase Inventory => CharacterInventory.Inventory;
 
             BaseCharacter Character;
-            public InventoryPanel(Vector2 Size, Vector2 Position, BaseCharacter Character, EquiqmentPanel panel)
+            public InventoryPanel(Vector2 Size, Vector2 Position, BaseCharacter Character)
             {
                 Setup(Size, Position);
                 this.Character = Character;
                 DisplayItems = (ItemType)0;
-                this.equiqmentPanel = panel;
             }
 
             public override GameObject CreatePanel(Transform Parent)
@@ -86,9 +86,15 @@ namespace Dreamers.InventorySystem.UISystem
             }
             public override void Refresh()
             {
-                throw new System.NotImplementedException();
+                //TODO have this Implementation Cleaned up so that we are just adding a new icon to the list. It work right now 
+                if(Top)
+                CreatePanel(Top.transform.parent);
             }
-
+            ItemBaseSO itemToAdd;
+            public void Refresh(ItemBaseSO item) {
+                this.itemToAdd = item;
+                Refresh();
+            }
             GameObject ItemsDisplayPanel(Transform Parent, InventoryBase inventory, ItemType Type)
             {
                 if (itemsDisplayerPanel)
@@ -226,7 +232,7 @@ namespace Dreamers.InventorySystem.UISystem
             }
 
         }
-        public static InventoryPanel GetInventoryPanel = new InventoryPanel(new Vector2(1400, 300), new Vector2(0, 150), GameObject.FindGameObjectWithTag("Player").GetComponent<BaseCharacter>(), GetEquiqmentPanel);
+        public static InventoryPanel GetInventoryPanel = new InventoryPanel(new Vector2(1400, 300), new Vector2(0, 150), GameObject.FindGameObjectWithTag("Player").GetComponent<BaseCharacter>());
 
     }
 }

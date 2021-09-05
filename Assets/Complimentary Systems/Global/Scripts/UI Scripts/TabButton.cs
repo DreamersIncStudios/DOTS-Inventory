@@ -51,7 +51,7 @@ namespace DreamersInc.UI
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            tabGroup.OnTabExit(this);
+            tabGroup.OnTabExit();
         }
 
     }
