@@ -1,6 +1,7 @@
 
 using DreamersInc.Utils;
 using Unity.Mathematics;
+using UnityEngine;
 namespace DreamersInc.MagicSkill {
 
     [System.Serializable]
@@ -10,6 +11,9 @@ namespace DreamersInc.MagicSkill {
         private string SkillSpellName;
         private GridGeneric<MagicSkillGridObject> grid;
         private AugmentGrid refernceToSkill;
+        private Color gridColor;
+
+
        private int2 StartPos;
         private int x, y;
         public MagicSkillGridObject(GridGeneric<MagicSkillGridObject> grid, int x, int y, string name = default) {
@@ -33,8 +37,25 @@ namespace DreamersInc.MagicSkill {
             grid.TriggerGridObjectChanged(x, y);
         }
         public void SetGridRef(AugmentGrid grid) {
+            Status = GridStatus.Occupied;
             refernceToSkill = grid;
+            this.grid.TriggerGridObjectChanged(x, y);
+
         }
+        public void SetGridColor(Color color) {
+            this.gridColor = color;
+            grid.TriggerGridObjectChanged(x, y);
+
+        }
+        public void ClearGridColor() {
+            this.gridColor = Color.white;
+            grid.TriggerGridObjectChanged(x, y);
+
+        }
+        public bool CanPlace() {
+            return Status == GridStatus.Open;
+        }
+
         public GridStatus GetStatus
         {
             get
@@ -50,7 +71,7 @@ namespace DreamersInc.MagicSkill {
         public AugmentGrid GetSkillMap { get { return refernceToSkill; } }
         public override string ToString()
         {
-            return Status.ToString();
+            return x+", " + y+ "\n" + Status+ "\n" + SkillSpellName;
         }
     }
 

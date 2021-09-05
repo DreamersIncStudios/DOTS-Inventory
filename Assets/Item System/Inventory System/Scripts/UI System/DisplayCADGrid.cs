@@ -5,7 +5,7 @@ using Dreamers.InventorySystem.Interfaces;
 using Stats;
 using UnityEngine;
 using UnityEngine.UI;
-using DreamersInc.UI;
+using DreamersInc.MagicSkill;
 using System;
 
 namespace Dreamers.InventorySystem.UISystem
@@ -16,7 +16,7 @@ namespace Dreamers.InventorySystem.UISystem
        public  class CADPanel : Panel
         {
             Sprite gridSquares;
-
+            CastingDevice CAD;
             public CADPanel( Vector2 Size, Vector2 Position)
             {
                 Setup(Size, Position);
@@ -30,6 +30,8 @@ namespace Dreamers.InventorySystem.UISystem
                     UnityEngine.Object.Destroy(Top);
                 Top = Manager.GetPanel(Parent, Size, Position);
                 Top.name = "CAD Menu";
+                GridLayoutGroup gridLayoutGroup = Top.AddComponent<GridLayoutGroup>();
+           
                 gridSquares = Resources.Load<Sprite>("Sprites/Grid_Square");
                 Manager.GetImage(Top.transform, gridSquares, "gridSquare");
                 return Top;

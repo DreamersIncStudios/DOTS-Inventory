@@ -515,9 +515,7 @@ MonoBehaviour:
     NumOfQuickAccessSlots: 0
   Gold: 5000
   Save:
-    EquippedWeapons:
-    - {fileID: 0}
-    - {fileID: 0}
+    EquippedWeapons: []
     EquippedArmors:
     - {fileID: 11400000, guid: 1570f87a4daa73449b19f524906d9f5f, type: 2}
     - {fileID: 11400000, guid: defbe74f21f853f46b55eb48e670f46d, type: 2}

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace DreamersInc.MagicSkill {
-    public  class BaseSkillSpellSO : ScriptableObject, IBaseMagicSkill
+    public  class GridPlaceCADObject : ScriptableObject, IBaseMagicSkill
     {
         public string Name { get { return SkillSpellname; } }
         [SerializeField] string SkillSpellname;
@@ -21,7 +21,7 @@ namespace DreamersInc.MagicSkill {
         [SerializeField] Classification classification;
         public Specialty GetSpecialty { get { return specialty; } }
         [SerializeField] Specialty specialty;
-
+        public int width, height;
 
         public void AugmentItem(CastingDevice Grid, int x, int y) { }
 
@@ -37,5 +37,10 @@ namespace DreamersInc.MagicSkill {
             grid.grid.GetGridObject(1, 0).SetStatus(GridStatus.Open);
             grid.grid.GetGridObject(1, 2).SetStatus(GridStatus.Open);
         }
+
+
+        
     }
+
+    public enum Dir { Down, Up, Left, Right}
 }

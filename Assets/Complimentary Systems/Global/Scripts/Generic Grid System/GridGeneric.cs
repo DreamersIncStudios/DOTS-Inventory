@@ -92,7 +92,11 @@ namespace DreamersInc.Utils
             x = Mathf.FloorToInt((worldPosition - originPosition).x / cellSize);
             y = Mathf.FloorToInt((worldPosition -originPosition).y / cellSize);
         }
-
+        public void GetXY(Vector3 worldPosition, out Vector2Int vector2Int)
+        {
+            GetXY(worldPosition, out int x, out int y);
+            vector2Int = new Vector2Int(x, y);
+        }
         public void SetGridObject(int x, int y, TGridObject value) {
             if (x >= 0 && y >= 0 && x < width && y < height)
             {
@@ -117,6 +121,10 @@ namespace DreamersInc.Utils
             else {
                 return default(TGridObject);
             }
+        }
+        public TGridObject GetGridObject(Vector2Int input)
+        {
+            return GetGridObject(input.x, input.y);
         }
         public TGridObject GetGridObject(Vector3 WorldPosition) {
             GetXY(WorldPosition, out int x, out int  y);
