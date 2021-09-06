@@ -37,9 +37,19 @@ namespace DreamersInc.MagicSkill {
             grid.grid.GetGridObject(1, 0).SetStatus(GridStatus.Open);
             grid.grid.GetGridObject(1, 2).SetStatus(GridStatus.Open);
         }
+        public static Dir GetNextDir(Dir dir) {
+            switch (dir) {
+                default:
+                case Dir.Down: return Dir.Left;
+                case Dir.Left: return Dir.Up;
+                case Dir.Up: return Dir.Right;
+                case Dir.Right: return Dir.Down;
+
+            }
+        }
 
 
-        
+
     }
 
     public enum Dir { Down, Up, Left, Right}

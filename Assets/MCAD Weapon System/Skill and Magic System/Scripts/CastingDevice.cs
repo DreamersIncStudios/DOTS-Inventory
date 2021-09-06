@@ -25,7 +25,7 @@ namespace DreamersInc.MagicSkill
         private void Start()
         {
             test = (GridPlaceCADObject)ScriptableObject.CreateInstance(typeof(GridPlaceCADObject));
-            test.Create("FireBall", 3, 3, 1, 100);
+            test.Create("FireBall", 2, 3, 1, 100);
             Setup();
         }
 
@@ -35,9 +35,11 @@ namespace DreamersInc.MagicSkill
                 grid.GetXY(GlobalFunctions.GetMousePosition(), out Vector2Int pos);
                 AddMapToGrid(pos, test.Grid);
             }
+            if (Input.GetKeyDown(KeyCode.R))
+                test.Grid.dir = GridPlaceCADObject.GetNextDir(test.Grid.dir);
         }
         public bool AddMapToGrid(Vector2Int input, AugmentGrid addGrid) {
-            List<Vector2Int> gridPositionList = addGrid.GetGridPositionList(input);
+            List<Vector2Int> gridPositionList = addGrid.GetGridPositionList(input, test.Grid.dir);
             bool canPlace = true;
             foreach (Vector2Int gridPosition in gridPositionList) {
                 if (!grid.GetGridObject(gridPosition).CanPlace())
@@ -66,7 +68,9 @@ namespace DreamersInc.MagicSkill
     public class AugmentGrid {
         public int Width { get; private set; }
         public int Height{ get; private set; }
-      
+        public Dir dir;
+
+        
         
         public GridGeneric<MagicSkillGridObject> grid;
 
@@ -87,13 +91,23 @@ namespace DreamersInc.MagicSkill
 
         public List<Vector2Int> GetGridPositionList(Vector2Int offset, Dir dir= Dir.Down)
         {
+            Debug.Log(dir);
             List<Vector2Int> gridPositionList = new List<Vector2Int>();
             switch (dir)
             {
                 default:
                 case Dir.Down:
-                case Dir.Up:
                     for (int x = 0; x < Width; x++)
+                    {
+                        for (int y = 0; y < Height; y++)
+                        {
+                            if (!grid.GetGridObject(x, y).CanPlace())
+                                gridPositionList.Add(offset - new Vector2Int(x, y-Height+1));
+                        }
+                    }
+                    break;
+                case Dir.Up:
+                    for (int x = 0; x <Width; x++)
                     {
                         for (int y = 0; y < Height; y++)
                         {
@@ -103,12 +117,22 @@ namespace DreamersInc.MagicSkill
                     }
                     break;
                 case Dir.Left:
-                case Dir.Right:
-                    for (int x = 0; x < Height; x++)
+                    for (int x = 0; x < Width; x++)
                     {
-                        for (int y = 0; y < Width; y++)
+                        for (int y = 0; y < Height; y++)
                         {
-                            gridPositionList.Add(offset + new Vector2Int(x, y));
+                            if (!grid.GetGridObject(x, y).CanPlace())
+                                gridPositionList.Add(offset + new Vector2Int(y, x));
+                        }
+                    }
+                    break;
+                case Dir.Right:
+                    for (int x = 0; x < Width; x++)
+                    {
+                        for (int y = 0; y < Height; y++)
+                        {
+                            if (!grid.GetGridObject(x, y).CanPlace())
+                                gridPositionList.Add(offset - new Vector2Int(y-Width+1, x));
                         }
                     }
                     break;
