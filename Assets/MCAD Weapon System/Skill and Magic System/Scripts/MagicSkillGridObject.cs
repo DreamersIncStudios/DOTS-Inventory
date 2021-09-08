@@ -12,7 +12,7 @@ namespace DreamersInc.MagicSkill {
         private GridGeneric<MagicSkillGridObject> grid;
         private AugmentGrid refernceToSkill;
         private Color gridColor;
-
+        private PlacedAugmentedGrid placedAugmentedGrid;
 
        private int2 StartPos;
         private int x, y;
@@ -28,6 +28,13 @@ namespace DreamersInc.MagicSkill {
             Status = status;
             grid.TriggerGridObjectChanged(x,y);
         }
+
+        public void SetPlacedAugmentedGrid(PlacedAugmentedGrid grid) {
+            this.placedAugmentedGrid = grid;
+            SetStatus(GridStatus.Occupied);
+            
+        }
+
         public void SetName(string name) {
             SkillSpellName = name;
             grid.TriggerGridObjectChanged(x, y);
@@ -40,7 +47,6 @@ namespace DreamersInc.MagicSkill {
             Status = GridStatus.Occupied;
             refernceToSkill = grid;
             this.grid.TriggerGridObjectChanged(x, y);
-
         }
         public void SetGridColor(Color color) {
             this.gridColor = color;
@@ -52,10 +58,21 @@ namespace DreamersInc.MagicSkill {
             grid.TriggerGridObjectChanged(x, y);
 
         }
+
+        public void Reset() {
+            placedAugmentedGrid = null;
+            gridColor = Color.white;
+            refernceToSkill = null;
+            SetStatus(GridStatus.Open);
+            //grid.TriggerGridObjectChanged(x, y);
+        }
+
         public bool CanPlace() {
             return Status == GridStatus.Open;
         }
-
+        public PlacedAugmentedGrid GetPlacedAugmentedGrid() {
+            return placedAugmentedGrid;
+        }
         public GridStatus GetStatus
         {
             get
