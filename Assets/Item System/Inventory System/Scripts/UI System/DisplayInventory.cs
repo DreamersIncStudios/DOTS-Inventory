@@ -232,7 +232,7 @@ namespace Dreamers.InventorySystem.UISystem
             }
 
         }
-        public static InventoryPanel GetInventoryPanel = new InventoryPanel(new Vector2(1400, 300), new Vector2(0, 150), GameObject.FindGameObjectWithTag("Player").GetComponent<BaseCharacter>());
+        public InventoryPanel GetInventoryPanel;
 
     }
 }

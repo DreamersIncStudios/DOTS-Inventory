@@ -28,7 +28,7 @@ namespace Dreamers.InventorySystem
 
         public void Start()
         {
-            Menu = new DisplayMenu(PC, this);
+            Menu = new DisplayMenu(PC);
 #if UNITY_EDITOR
             Equipment.LoadEquipment(PC,Save);
 #endif

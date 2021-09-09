@@ -17,12 +17,12 @@ namespace Dreamers.InventorySystem.UISystem
             private EquipmentBase Equipment => CharacterInventory.Equipment;
             private CharacterInventory CharacterInventory => Character.GetComponent<CharacterInventory>();
 
-            InventoryPanel inventoryPanel=> DisplayMenu.GetInventoryPanel;
-            public EquiqmentPanel(Vector2 Size, Vector2 Position, BaseCharacter Character)
+            InventoryPanel inventoryPanel;
+            public EquiqmentPanel(Vector2 Size, Vector2 Position, BaseCharacter Character, InventoryPanel inventoryPanel)
             {
                 Setup(Size, Position);
                 this.Character = Character;
-              //  this.inventoryPanel = panel;
+                this.inventoryPanel = inventoryPanel;
              
             }
             List<Button> armors;
@@ -200,8 +200,6 @@ namespace Dreamers.InventorySystem.UISystem
             }
         }
 
-        public static EquiqmentPanel GetEquiqmentPanel = new EquiqmentPanel(new Vector2(400, 400), new Vector2(0, 150),
-            GameObject.FindGameObjectWithTag("Player").GetComponent<BaseCharacter>()
-            );
+        public static EquiqmentPanel GetEquiqmentPanel;
     }
 }

@@ -12,10 +12,10 @@ namespace DreamersInc.MagicSkill
         private float cellsize;
         public GridGeneric<MagicSkillGridObject> grid;
         public List<string> SpellNames;
-        public Vector2 GetDimensions => new Vector2(width, height);
+        public Vector2Int GetDimensions { get { return new Vector2Int(width, height); } }
         public GridPlaceCADSO test;
         public void Setup ( int width = 15, int height =10, float cellsize = 5f) {
-            grid = new GridGeneric<MagicSkillGridObject>(width, height, cellsize, (GridGeneric<MagicSkillGridObject> g, int x, int y) => new MagicSkillGridObject(g, x, y), true
+            grid = new GridGeneric<MagicSkillGridObject>(width, height, cellsize, (GridGeneric<MagicSkillGridObject> g, int x, int y) => new MagicSkillGridObject(g, x, y)
                 );
             this.width = width;
             this.height = height;
@@ -31,19 +31,7 @@ namespace DreamersInc.MagicSkill
 
         public void Update()
         {
-            if (Input.GetMouseButtonDown(0)) {
-                grid.GetXY(GlobalFunctions.GetMousePosition(), out Vector2Int pos);
-                AddMapToGrid(pos, test.Grid);
-            }
 
-            if (Input.GetMouseButtonDown(1))
-            {
-                grid.GetXY(GlobalFunctions.GetMousePosition(), out Vector2Int pos);
-                RemoveMapToGrid(pos);
-            }
-
-            if (Input.GetKeyDown(KeyCode.R))
-                test.Grid.dir = GridPlaceCADSO.GetNextDir(test.Grid.dir);
         }
         public bool AddMapToGrid(Vector2Int input, AugmentGrid addGrid) {
             List<Vector2Int> gridPositionList = addGrid.GetGridPositionList(input, test.Grid.dir);
@@ -71,14 +59,16 @@ namespace DreamersInc.MagicSkill
         {
             int x = input.x;
             int y = input.y;
-
-            List<Vector2Int> gridPositionList = new List<Vector2Int>();
-               gridPositionList = grid.GetGridObject(x, y).GetPlacedAugmentedGrid().GetGridPositionList();
-            foreach (Vector2Int vector in gridPositionList)
+            if (grid.GetGridObject(x, y).GetPlacedAugmentedGrid() != null)
             {
-                grid.GetGridObject(vector).Reset();
-            }
+                List<Vector2Int> gridPositionList = new List<Vector2Int>();
+                gridPositionList = grid.GetGridObject(x, y).GetPlacedAugmentedGrid().GetGridPositionList();
+                foreach (Vector2Int vector in gridPositionList)
+                {
+                    grid.GetGridObject(vector).Reset();
+                }
 
+            }
         }
 
     }

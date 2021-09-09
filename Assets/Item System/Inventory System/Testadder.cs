@@ -45,7 +45,7 @@ public class Testadder : MonoBehaviour,IConvertGameObjectToEntity
         addering[2].AddToInventory(Inventory);
         addering[2].AddToInventory(Inventory);
 
-       Menu = new  DisplayMenu(PC, Inventory);
+       Menu = new  DisplayMenu(PC);
     }
     void SetupPC() {
         PC.Name = "Test";
@@ -70,7 +70,7 @@ public class Testadder : MonoBehaviour,IConvertGameObjectToEntity
     private void Update()
     {
         if (Menu == null)
-            Menu = new DisplayMenu(PC, Inventory);
+            Menu = new DisplayMenu(PC);
 
         if (Input.GetKeyUp(KeyCode.I) && Menu.Displayed) { Menu.CloseCharacterMenu(); }
 

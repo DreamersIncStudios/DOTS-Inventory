@@ -6,7 +6,7 @@ using Stats;
 using UnityEngine;
 using UnityEngine.UI;
 using DreamersInc.UI;
-
+using DreamersInc.MagicSkill;
 namespace Dreamers.InventorySystem.UISystem
 {
     public  partial class DisplayMenu 
@@ -17,15 +17,19 @@ namespace Dreamers.InventorySystem.UISystem
      
         public bool Displayed { get { return (bool)MenuPanelParent; } }
 
-        public DisplayMenu(BaseCharacter player , CharacterInventory characterInventory) {
+        public DisplayMenu(BaseCharacter player ) {
             Manager = UIManager.instance;
+            this.Character = player;
         }
 
         public void OpenCharacterMenu(InventoryBase inventory) {
+             GetInventoryPanel = new InventoryPanel(new Vector2(1400, 300), new Vector2(0, 150), Character);
+            GetCADPanel = new CADPanel(new Vector2(1400, 1000), new Vector2(0, 150), Character.GetComponent<CastingDevice>());
+            GetEquiqmentPanel = new EquiqmentPanel(new Vector2(400, 400), new Vector2(0, 150), Character, GetInventoryPanel);
+
             MenuPanelParent = CreateMenu(
         new Vector2(0, 0),
         new Vector2(0, 0));
-          //  itemPanel = CreateItemPanel();
 
         }
 
@@ -33,9 +37,7 @@ namespace Dreamers.InventorySystem.UISystem
              Object.Destroy(MenuPanelParent);
         }
 
-        private BaseCharacter Character => GameObject.FindGameObjectWithTag("Player").GetComponent<BaseCharacter>();
-        private CharacterInventory CharacterInventory => Character.GetComponent<CharacterInventory>();
-       // PlayerCharacter PC;
+        private BaseCharacter Character;
 
         GameObject MenuPanelParent { get; set; }
         GameObject CreateMenu(Vector2 Size, Vector2 Position) {
