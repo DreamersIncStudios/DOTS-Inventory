@@ -20,9 +20,13 @@ namespace DreamersInc.MagicSkill
         public readonly Vector2Int origin;
         private readonly Dir direction;
         private readonly AugmentGrid placedObject;
-
+        public AugmentGrid GetPlaceGrid
+        {
+            get { return placedObject; }
+        }
         public List<Vector2Int> GetGridPositionList() {
-            return placedObject.GetGridPositionList(origin,direction);
+            return placedObject.grid.GetGridObject(origin).
+                GetGridPositionList(origin,placedObject);
         }
 
     }

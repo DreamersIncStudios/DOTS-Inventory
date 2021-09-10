@@ -33,7 +33,7 @@ namespace DreamersInc.MagicSkill {
             this.SkillSpellname = name;
             this.level = Level;
             this.value = value;
-            this.grid = new AugmentGrid(width, height, name);
+            this.grid = new AugmentGrid(width, height, name, Color.red);
             grid.grid.GetGridObject(1, 0).SetStatus(GridStatus.Open);
             grid.grid.GetGridObject(1, 2).SetStatus(GridStatus.Open);
         }

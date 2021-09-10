@@ -1,4 +1,3 @@
-
 using System;
 using UnityEngine;
 
@@ -130,6 +129,16 @@ namespace DreamersInc.Utils
             GetXY(WorldPosition, out int x, out int  y);
             return GetGridObject(x, y);
         }
+       public int GetWidth
+        {
+            get { return width; }
+        }
+
+        public int GetHeight
+        {
+            get { return height; }
+        }
+
 
     }
 

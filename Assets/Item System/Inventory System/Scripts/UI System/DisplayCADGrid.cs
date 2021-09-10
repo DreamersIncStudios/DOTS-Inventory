@@ -23,7 +23,6 @@ namespace Dreamers.InventorySystem.UISystem
                 gridSquares = Resources.Load<Sprite>("Sprites/Grid_Square");
                 this.CAD = CAD;
             }
-        
 
             public override GameObject CreatePanel(Transform Parent)
             {
@@ -36,15 +35,25 @@ namespace Dreamers.InventorySystem.UISystem
                 GameObject CADGRID = Manager.GetPanel(Top.transform, new Vector2(0, 300), new Vector2(0, 150));
                     GridLayoutGroup gridLayoutGroup = CADGRID.AddComponent<GridLayoutGroup>();
                 gridLayoutGroup.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+                gridLayoutGroup.startCorner = GridLayoutGroup.Corner.LowerLeft;
+                gridLayoutGroup.childAlignment = TextAnchor.UpperCenter;
                 gridLayoutGroup.constraintCount = CAD.GetDimensions.x;
                 gridLayoutGroup.cellSize = new Vector2(50, 50);
                 gridSquares = Resources.Load<Sprite>("Sprites/Grid_Square");
-                for (int x = 0; x < CAD.GetDimensions.x; x++)
-                {
-                    for (int y = 0; y < CAD.GetDimensions.y; y++)
-                    {
 
-                        Manager.GetImage(CADGRID.transform, gridSquares, "gridSquare");
+                for (int y = 0; y < CAD.GetDimensions.y; y++)
+                {
+                    for (int x = 0; x < CAD.GetDimensions.x; x++)
+                    {
+                        int i = x; int j = y;
+                        //Todo Check to see if slot is taken 
+
+                        Button gridUI= Manager.UIButton(CADGRID.transform,"");
+                        CAD.grid.GetGridObject(i, j).SetButton(gridUI);
+                        gridUI.onClick.AddListener(() => {
+
+                            CAD.grid.GetGridObject(i, j).AddMapToGrid(CAD.test.Grid);
+                        });
                     }
                 }
                 return Top;
