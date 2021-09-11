@@ -341,3 +341,4 @@ healthchecksdb
 /Library
 /Temp
 *.csproj
+*.mb
