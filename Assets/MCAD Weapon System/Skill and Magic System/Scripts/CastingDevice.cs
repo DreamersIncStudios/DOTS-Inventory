@@ -13,7 +13,7 @@ namespace DreamersInc.MagicSkill
         public GridGeneric<MagicSkillGridObject> grid;
         public List<string> SpellNames;
         public Vector2Int GetDimensions { get { return new Vector2Int(width, height); } }
-        public GridPlaceCADSO test;
+        public List<GridPlaceCADSO> test;
         public void Setup ( int width = 15, int height =10, float cellsize = 5f) {
             grid = new GridGeneric<MagicSkillGridObject>(width, height, cellsize, (GridGeneric<MagicSkillGridObject> g, int x, int y) => new MagicSkillGridObject(g, x, y)
             , true);
@@ -24,9 +24,15 @@ namespace DreamersInc.MagicSkill
         }
         private void Start()
         {
-            test = (GridPlaceCADSO)ScriptableObject.CreateInstance(typeof(GridPlaceCADSO));
-            test.Create("FireBall", 2, 3, 1, 100);
+            test = new List<GridPlaceCADSO>();
+            for (int i = 0; i < 20; i++)
+            { 
+               GridPlaceCADSO temp = (GridPlaceCADSO)ScriptableObject.CreateInstance(typeof(GridPlaceCADSO));
+                temp.Create("FireBall", 2, 3, 1, 100, Color.black);
+                test.Add(temp);
+            }
             Setup();
+
         }
 
         public void Update()

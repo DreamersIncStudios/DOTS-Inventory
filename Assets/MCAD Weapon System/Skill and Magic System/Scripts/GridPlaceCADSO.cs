@@ -28,12 +28,12 @@ namespace DreamersInc.MagicSkill {
 
         public  void RemoveAugment(CastingDevice Grid) { }
 
-        public void Create(string name, int width, int height, int Level, int value)
+        public void Create(string name, int width, int height, int Level, int value, Color color = default)
         {
             this.SkillSpellname = name;
             this.level = Level;
             this.value = value;
-            this.grid = new AugmentGrid(width, height, name, Color.red);
+            this.grid = new AugmentGrid(width, height, name, color);
             grid.grid.GetGridObject(1, 0).SetStatus(GridStatus.Open);
             grid.grid.GetGridObject(1, 2).SetStatus(GridStatus.Open);
         }

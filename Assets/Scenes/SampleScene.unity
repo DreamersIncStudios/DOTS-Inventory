@@ -564,7 +564,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpellNames: []
-  test: {fileID: 0}
+  test: []
 --- !u!54 &830280136
 Rigidbody:
   m_ObjectHideFlags: 0

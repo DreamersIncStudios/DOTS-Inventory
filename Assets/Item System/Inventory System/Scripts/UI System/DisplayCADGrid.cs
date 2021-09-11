@@ -1,12 +1,9 @@
 
-using Dreamers.Global;
-using Dreamers.InventorySystem.Base;
-using Dreamers.InventorySystem.Interfaces;
-using Stats;
 using UnityEngine;
 using UnityEngine.UI;
 using DreamersInc.MagicSkill;
 using System;
+using DreamersInc.Utils;
 
 namespace Dreamers.InventorySystem.UISystem
 {
@@ -49,13 +46,27 @@ namespace Dreamers.InventorySystem.UISystem
                         //Todo Check to see if slot is taken 
 
                         Button gridUI= Manager.UIButton(CADGRID.transform,"");
+                        gridUI.gameObject.AddComponent<GridSquareDrop>().Create(new Vector2Int(i,j), CAD);
                         CAD.grid.GetGridObject(i, j).SetButton(gridUI);
+                        gridUI.navigation = new Navigation() { mode = Navigation.Mode.None };
+
+
                         gridUI.onClick.AddListener(() => {
 
-                            CAD.grid.GetGridObject(i, j).AddMapToGrid(CAD.test.Grid);
+                            CAD.grid.GetGridObject(i, j).RemoveMapToGrid(new Vector2Int(i,j));
+                            
                         });
                     }
                 }
+                GameObject Inventory = Manager.GetPanel(Top.transform, new Vector2(0, 150), new Vector2(0, 150));
+                Inventory.AddComponent<HorizontalLayoutGroup>();
+                foreach (GridPlaceCADSO so in CAD.test) {
+                    Image item = Manager.GetImage(Inventory.transform, gridSquares);
+                    item.gameObject.AddComponent<DragDropGridMap>().GridSO = so;
+                    item.gameObject.AddComponent<CanvasGroup>();
+
+                }
+
                 return Top;
             }
 

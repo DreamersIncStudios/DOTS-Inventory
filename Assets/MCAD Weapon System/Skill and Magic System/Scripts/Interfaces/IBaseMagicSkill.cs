@@ -17,7 +17,7 @@ namespace DreamersInc.MagicSkill
         Classification GetClassification { get; }
         Specialty GetSpecialty { get; }
 
-        void Create( string name, int width, int Height, int Level, int value);
+        void Create( string name, int width, int Height, int Level, int value, Color color);
         void AugmentItem(CastingDevice Grid, int x , int y);
         void RemoveAugment(CastingDevice Grid);
     }

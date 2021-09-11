@@ -24,10 +24,10 @@ namespace DreamersInc.MagicSkill
         {
             get { return placedObject; }
         }
-        public List<Vector2Int> GetGridPositionList() {
-            return placedObject.grid.GetGridObject(origin).
-                GetGridPositionList(origin,placedObject);
-        }
+        //public List<Vector2Int> GetGridPositionList() {
+        //    return placedObject.grid.GetGridObject(origin).
+        //        GetGridPositionList(origin,placedObject);
+        //}
 
     }
 }

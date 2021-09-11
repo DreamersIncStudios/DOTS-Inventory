@@ -75,7 +75,7 @@ namespace DreamersInc.MagicSkill {
 
         public void Reset() {
             placedAugmentedGrid = null;
-            gridColor = Color.white;
+            SetButtonColor(gridColor = Color.white);
             refernceToSkill = null;
             SetStatus(GridStatus.Open);
             //grid.TriggerGridObjectChanged(x, y);
@@ -84,9 +84,9 @@ namespace DreamersInc.MagicSkill {
         public bool CanPlace() {
             return Status == GridStatus.Open;
         }
-        public PlacedAugmentedGrid GetPlacedAugmentedGrid() {
-            return placedAugmentedGrid;
-        }
+        //public PlacedAugmentedGrid GetPlacedAugmentedGrid() {
+        //    return placedAugmentedGrid;
+        //}
         public GridStatus GetStatus
         {
             get
@@ -132,12 +132,10 @@ namespace DreamersInc.MagicSkill {
 
         public void RemoveMapToGrid(Vector2Int input)
         {
-            int x = input.x;
-            int y = input.y;
-            if (grid.GetGridObject(x, y).GetPlacedAugmentedGrid() != null)
+            if (grid.GetGridObject(x, y).placedAugmentedGrid != null)
             {
                 List<Vector2Int> gridPositionList = new List<Vector2Int>();
-                gridPositionList = grid.GetGridObject(x, y).GetPlacedAugmentedGrid().GetGridPositionList();
+                gridPositionList = grid.GetGridObject(x, y).GetGridPositionList(input,placedAugmentedGrid.GetPlaceGrid);
                 foreach (Vector2Int vector in gridPositionList)
                 {
                     grid.GetGridObject(vector).Reset();
