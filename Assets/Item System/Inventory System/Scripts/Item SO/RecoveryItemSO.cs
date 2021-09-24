@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
 using Stats;
-using Dreamers.InventorySystem.Base;
+using Dreamers.InventorySystem.Interfaces;
 using Unity.Burst;
 using Unity.Jobs;
 using Unity.Collections;

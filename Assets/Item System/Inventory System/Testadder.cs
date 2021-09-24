@@ -6,6 +6,7 @@ using Unity.Entities;
 using Stats;
 using Dreamers.InventorySystem.Base;
 using Dreamers.InventorySystem.UISystem;
+using Dreamers.InventorySystem.Interfaces;
 
 #if UNITY_EDITOR
 

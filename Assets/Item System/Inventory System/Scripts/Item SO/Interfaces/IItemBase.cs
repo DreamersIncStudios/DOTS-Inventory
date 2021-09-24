@@ -3,7 +3,7 @@ using UnityEngine;
 using Stats;
 using Dreamers.InventorySystem.Base;
 
-namespace Dreamers.InventorySystem
+namespace Dreamers.InventorySystem.Interfaces
 {
 
     public interface IItemBase
@@ -12,7 +12,6 @@ namespace Dreamers.InventorySystem
         string ItemName { get; }
         string Description {get;}
         Sprite Icon { get; }
-        int Value { get; }
         ItemType Type { get; }
         bool Stackable { get; }
         bool Disposible { get; }
@@ -25,7 +24,7 @@ namespace Dreamers.InventorySystem
 
     }
     [System.Serializable]
-    public abstract class ItemBaseSO : ScriptableObject, IItemBase
+    public abstract class ItemBaseSO : ScriptableObject, IItemBase,IPurchasable
     {
         [SerializeField] private uint _itemID;
         public uint ItemID { get { return _itemID; }  } // To be implemented with Database system/CSV Editor creator 
@@ -37,8 +36,8 @@ namespace Dreamers.InventorySystem
         [SerializeField] private Sprite _icon;
         public Sprite Icon { get { return _icon; } }
 
-        [SerializeField] private int _value;
-        public int Value { get { return _value; } }
+        [SerializeField] private uint _value;
+        public uint Value { get { return _value; } }
         [SerializeField] private ItemType _type;
         public ItemType Type { get { return _type; } }
         [SerializeField]  private bool _stackable;
@@ -47,6 +46,9 @@ namespace Dreamers.InventorySystem
         public bool Disposible { get { return !QuestItem; } }
         [SerializeField] bool _questItem;
         public bool QuestItem { get { return _questItem; } }
+
+        [SerializeField]private uint maxStackCount;
+        public uint MaxStackCount { get { return maxStackCount; } }
 
         public void setItemID(uint ID)
         {
@@ -106,7 +108,10 @@ namespace Dreamers.InventorySystem
             else { inventory.ItemsInInventory.RemoveAt(IndexOf); }
         }
 
-
+        public void AdjustCount(int mod)
+        {
+            throw new System.NotImplementedException();
+        }
     }
     public enum ItemType
     {

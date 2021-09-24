@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Dreamers.InventorySystem.Generic;
+using Dreamers.InventorySystem.Interfaces;
 
 namespace Dreamers.InventorySystem
 {
@@ -10,7 +11,7 @@ namespace Dreamers.InventorySystem
     public class CreateStore : MonoBehaviour
     {
         public StoreTypes StoreType;
-        public List<IPurchasable> InitialItems;
+     [SerializeReference]  public List<ItemBaseSO> InitialItems;
         public Shop shop;
 
         private void Awake()

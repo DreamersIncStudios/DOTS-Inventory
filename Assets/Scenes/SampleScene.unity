@@ -514,7 +514,6 @@ MonoBehaviour:
     MaxActivationPoints: 0
     QuickAccessItems: []
     NumOfQuickAccessSlots: 0
-  Gold: 5000
   Save:
     EquippedWeapons: []
     EquippedArmors:
@@ -789,6 +788,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1383526290}
   - component: {fileID: 1383526289}
+  - component: {fileID: 1383526291}
   m_Layer: 0
   m_Name: store
   m_TagString: Untagged
@@ -809,6 +809,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StoreType: 0
+  InitialItems:
+  - {fileID: 11400000, guid: 9da3c7a8ad3ecfc42917d92dd4b84223, type: 2}
 --- !u!4 &1383526290
 Transform:
   m_ObjectHideFlags: 0
@@ -823,6 +825,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1383526291
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383526288}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1496049537
 GameObject:
   m_ObjectHideFlags: 0
@@ -875,8 +890,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1934555976}
-  - component: {fileID: 1934555975}
   - component: {fileID: 1934555977}
+  - component: {fileID: 1934555975}
   m_Layer: 0
   m_Name: StoreFront
   m_TagString: Untagged
@@ -893,28 +908,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1934555974}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ea85ce53b4299c42873348acc48298a, type: 3}
+  m_Script: {fileID: 11500000, guid: 1a1ce6f8f449a0343a90a7650c411834, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Base:
-    StoreName: FIrst Store
-    StoreInventory:
-      ItemsInInventory:
-      - Item: {fileID: 11400000, guid: defbe74f21f853f46b55eb48e670f46d, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 50da1fbcb683d264ea4ebaa5b25ada0a, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 1570f87a4daa73449b19f524906d9f5f, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 6da72a949f5f2b4448689132018a5fd4, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 9da3c7a8ad3ecfc42917d92dd4b84223, type: 2}
-        Count: 0
-      MaxInventorySize: 0
-    CharacterInventory: {fileID: 830280131}
-    Sell: 0.75
-    Buy: 1
-  player: {fileID: 830280125}
+  StoreType: 0
+  InitialItems: []
 --- !u!4 &1934555976
 Transform:
   m_ObjectHideFlags: 0

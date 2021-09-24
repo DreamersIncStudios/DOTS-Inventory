@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Dreamers.Global;
 using UnityEngine.UI;
-using Dreamers.InventorySystem;
+using Dreamers.InventorySystem.Interfaces;
 namespace Dreamers.InventorySystem.Generic
 {
     public class Shop 
     {
         private string shopName;
-        private List<IPurchasable> itemsToSell;
-        private List<IPurchasable> itemsToBuyback;
-        private uint storeWallet;
+        private List<ItemBaseSO> itemsToSell;
+        private List<ItemBaseSO> itemsToBuyback;
         [Range(.5f, 1.0f)]
         public float Sell;
         [Range(.5f, 1.0f)]
@@ -19,30 +18,30 @@ namespace Dreamers.InventorySystem.Generic
         readonly UIManager manager;
         public bool Displayed { get { return (bool)MenuPanelParent; } }
         bool Buying = true;
-        public Shop(string name = "", List<IPurchasable> itemToSell= default, uint SeedCapital = 1500)
+        public Shop(string name = "", List<ItemBaseSO> itemToSell= default, uint SeedCapital = 1500)
         {
             this.shopName = name;
-            this.storeWallet = SeedCapital;
+          //  this.storeWallet = SeedCapital;
             AddItemsToInventory(itemToSell);
             manager = UIManager.instance;
 
         }
         #region manage Inventory
-        public void AddItemsToInventory(IPurchasable item)
+        public void AddItemsToInventory(ItemBaseSO item)
         {
             itemsToSell.Add(item);
         }
-        public void AddItemsToInventory(List<IPurchasable> items)
+        public void AddItemsToInventory(List<ItemBaseSO> items)
         {
             itemsToSell.AddRange(items);
         }
 
-        public void SellItemToShop(IPurchasable item, out uint gold)
+        public void SellItemToShop(ItemBaseSO item, out uint gold)
         {
             itemsToBuyback.Add(item);
             gold = item.Value;
         }
-        public void SellItemToShop(List<IPurchasable> items, out uint gold)
+        public void SellItemToShop(List<ItemBaseSO> items, out uint gold)
         {
             itemsToSell.AddRange(items);
             gold = new uint();
@@ -51,16 +50,16 @@ namespace Dreamers.InventorySystem.Generic
                 gold += item.Value;
             }
         }
-        public void RemoveItemFromInventory(IPurchasable item)
+        public void RemoveItemFromInventory(ItemBaseSO item)
         {
             itemsToSell.Remove(item);
         }
 
-        public int GetItemIndex(IPurchasable item)
+        public int GetItemIndex(ItemBaseSO item)
         {
             return itemsToSell.IndexOf(item);
         }
-        public IPurchasable GetItem(int index)
+        public ItemBaseSO GetItem(int index)
         {
             return itemsToSell[index];
         }
@@ -69,11 +68,11 @@ namespace Dreamers.InventorySystem.Generic
             // TODO Implement Logic
             return new Vector2(Sell, Buy);
         }
-        bool PurchaseItem(IPurchasable item, uint PlayerCashOnHand)
+        bool PurchaseItem(ItemBaseSO item, uint PlayerCashOnHand)
         {
             if (item.Value <= PlayerCashOnHand)
             {
-                storeWallet += item.Value;
+             //   storeWallet += item.Value;
                 return true;
             }
             else { return false; }
@@ -177,14 +176,14 @@ namespace Dreamers.InventorySystem.Generic
             ItemPanel = DisplayItems(ItemType.None, MainPanel.transform,characterInventory);
             return MainPanel;
         }
-        Button ItemButton(Transform Parent, IPurchasable item)
+        Button ItemButton(Transform Parent, ItemBaseSO item)
         {
             Button temp = manager.UIButton(Parent, item.ItemName);
             temp.name = item.ItemName;
             Text texttemp = temp.GetComponentInChildren<Text>();
             texttemp.alignment = TextAnchor.LowerCenter;
             if (item.Stackable)
-                texttemp.text += item.Count;
+                texttemp.text += item.MaxStackCount;
             temp.GetComponentInChildren<Text>().alignment = TextAnchor.LowerCenter;
             temp.GetComponent<Image>().sprite = item.Icon;
 
@@ -239,7 +238,7 @@ namespace Dreamers.InventorySystem.Generic
             return playerGold;
         }
 
-        GameObject PopUpItemPanel(Vector2 Pos, IPurchasable item, CharacterInventory playerInventory)
+        GameObject PopUpItemPanel(Vector2 Pos, ItemBaseSO item, CharacterInventory playerInventory)
         {
             GameObject PopUp = manager.GetPanel(manager.UICanvas().transform, new Vector2(400, 400), Pos);
             Image temp = PopUp.GetComponent<Image>();
@@ -374,15 +373,5 @@ namespace Dreamers.InventorySystem.Generic
         #endregion
     }
     //Todo Move to SO interfaces
-    public interface IPurchasable
-    {
-        uint Value { get; }
-        ItemType Type {get;}
-        string ItemName { get; }
-        string Description { get; }
-        uint Count { get;  }
-        void AdjustCount(int mod);
-        bool Stackable { get; }
-        Sprite Icon { get; }
-    }
+
 }
