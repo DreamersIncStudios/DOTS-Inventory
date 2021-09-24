@@ -78,15 +78,12 @@ namespace DreamersInc.MagicSkill {
             SetButtonColor(gridColor = Color.white);
             refernceToSkill = null;
             SetStatus(GridStatus.Open);
-            //grid.TriggerGridObjectChanged(x, y);
         }
 
         public bool CanPlace() {
             return Status == GridStatus.Open;
         }
-        //public PlacedAugmentedGrid GetPlacedAugmentedGrid() {
-        //    return placedAugmentedGrid;
-        //}
+     
         public GridStatus GetStatus
         {
             get

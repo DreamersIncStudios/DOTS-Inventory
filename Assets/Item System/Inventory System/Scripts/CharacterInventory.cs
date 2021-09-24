@@ -16,7 +16,7 @@ namespace Dreamers.InventorySystem
         public EquipmentBase Equipment;
         DisplayMenu Menu;
         public Entity self { get; private set; }
-        public int Gold;
+        public int Gold { get; private set; }
 #if UNITY_EDITOR
 
         public EquipmentSave Save;
@@ -62,11 +62,16 @@ namespace Dreamers.InventorySystem
 
         }
 
+
         public void LoadInventory(EquipmentSave equipmentSave, InventorySave inventorySave) {
             Inventory.LoadInventory(inventorySave);
             Equipment.LoadEquipment(PC,equipmentSave);
         
         }
-
+        public void AdjustGold(int modValue)
+        {
+            if (modValue <= Gold)
+                Gold =(int)Mathf.Clamp(Gold+ modValue, 0,Mathf.Infinity);
+        }
     }
 }

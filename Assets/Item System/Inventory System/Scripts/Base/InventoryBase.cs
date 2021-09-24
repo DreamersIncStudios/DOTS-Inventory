@@ -92,7 +92,8 @@ namespace Dreamers.InventorySystem.Base {
             MaxInventorySize = inventorySave.MaxInventorySize;
             ItemsInInventory = inventorySave.ItemsInInventory;
         }
-
+        public void AddToInventory() { }
+        public void RemoveFromInventory() { }
 
         public bool OpenSlot { get { return ItemsInInventory.Count < MaxInventorySize; } }
    
