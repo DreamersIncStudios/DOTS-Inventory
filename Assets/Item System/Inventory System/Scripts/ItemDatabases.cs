@@ -63,8 +63,7 @@ namespace Dreamers.InventorySystem
             [MenuItem("Assets/Create/RPG/Recovery Item")]
             static public void CreateRecoveryItem()
             {
-                RecoveryItemSO Item;
-                ScriptableObjectUtility.CreateAsset<RecoveryItemSO>("Item", out Item);
+                ScriptableObjectUtility.CreateAsset<RecoveryItemSO>("Item", out RecoveryItemSO Item);
                 ItemDatabase.LoadDatabaseForce();
                 Item.setItemID((uint)ItemDatabase.Items.Count + 1);
                 Debug.Log( Item.ItemID );
@@ -74,8 +73,7 @@ namespace Dreamers.InventorySystem
             [MenuItem("Assets/Create/RPG/Armor Item")]
             static public void CreateArmorItem()
             {
-                ArmorSO Item;
-                ScriptableObjectUtility.CreateAsset<ArmorSO>("Item", out Item);
+                ScriptableObjectUtility.CreateAsset<ArmorSO>("Item", out ArmorSO Item);
                 ItemDatabase.LoadDatabaseForce();
                 Item.setItemID((uint)ItemDatabase.Items.Count + 1);
                 Debug.Log(Item.ItemID);
@@ -85,8 +83,7 @@ namespace Dreamers.InventorySystem
             [MenuItem("Assets/Create/RPG/Weapon Item")]
             static public void CreateWeaponItem()
             {
-                WeaponSO Item;
-                ScriptableObjectUtility.CreateAsset<WeaponSO>("Item", out Item);
+                ScriptableObjectUtility.CreateAsset<WeaponSO>("Item", out WeaponSO Item);
                 ItemDatabase.LoadDatabaseForce();
                 Item.setItemID((uint)ItemDatabase.Items.Count + 1);
                 Debug.Log(Item.ItemID);
@@ -97,8 +94,7 @@ namespace Dreamers.InventorySystem
             [MenuItem("Assets/Create/RPG/Projectile Item")]
                  static public void CreateBlasterItem()
             {
-                BlasterSO Item;
-                ScriptableObjectUtility.CreateAsset<BlasterSO>("Item", out Item);
+                ScriptableObjectUtility.CreateAsset<BlasterSO>("Item", out BlasterSO Item);
                 ItemDatabase.LoadDatabaseForce();
                 Item.setItemID((uint)ItemDatabase.Items.Count + 1);
                 Debug.Log(Item.ItemID);

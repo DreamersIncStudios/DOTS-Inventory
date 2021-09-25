@@ -27,6 +27,7 @@ namespace Dreamers.InventorySystem.UISystem
             GetCADPanel = new CADPanel(new Vector2(1400, 1000), new Vector2(0, 150), Character.GetComponent<CastingDevice>());
             GetEquiqmentPanel = new EquiqmentPanel(new Vector2(400, 400), new Vector2(0, 150), Character, GetInventoryPanel);
 
+            GetInventoryPanel.equiqmentPanel = GetEquiqmentPanel;
             MenuPanelParent = CreateMenu(
         new Vector2(0, 0),
         new Vector2(0, 0));

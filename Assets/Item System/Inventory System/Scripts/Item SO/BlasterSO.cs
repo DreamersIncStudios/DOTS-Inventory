@@ -62,14 +62,14 @@ namespace Dreamers.InventorySystem
 
         }
 
-        public override void Use(CharacterInventory characterInventory, int IndexOf, BaseCharacter player)
+        public override void Use(CharacterInventory characterInventory, BaseCharacter player)
         {
             //throw new System.NotImplementedException();
         }
 
         public new bool EquipItem(CharacterInventory characterInventory, int IndexOf, BaseCharacter player)
         {
-            bool temp = base.EquipItem(characterInventory, IndexOf, player);
+            bool temp = base.EquipItem(characterInventory,  player);
             if(temp)
                 Convert(characterInventory.self, World.DefaultGameObjectInjectionWorld.EntityManager);
             return temp;

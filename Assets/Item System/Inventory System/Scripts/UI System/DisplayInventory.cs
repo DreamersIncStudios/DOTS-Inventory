@@ -14,7 +14,7 @@ namespace Dreamers.InventorySystem.UISystem
             ItemType DisplayItems;
             GameObject itemsDisplayerPanel { get; set; }
             CharacterInventory CharacterInventory => Character.GetComponent<CharacterInventory>();
-            EquiqmentPanel equiqmentPanel= DisplayMenu.GetEquiqmentPanel;
+            public EquiqmentPanel equiqmentPanel;
 
             InventoryBase Inventory => CharacterInventory.Inventory;
 
@@ -171,7 +171,7 @@ namespace Dreamers.InventorySystem.UISystem
                         use.onClick.AddListener(() =>
                         {
                             RecoveryItemSO temp = (RecoveryItemSO)Slot.Item;
-                            temp.Use(CharacterInventory, IndexOf, Character);
+                            temp.Use(CharacterInventory, Character);
 
                             itemsDisplayerPanel = ItemsDisplayPanel(Top.transform, Inventory, DisplayItems);
                             Object.Destroy(PopUp);
@@ -189,11 +189,11 @@ namespace Dreamers.InventorySystem.UISystem
                             {
                                 case ItemType.Armor:
                                     ArmorSO Armor = (ArmorSO)Slot.Item;
-                                  equipedItem=  Armor.EquipItem(CharacterInventory, IndexOf, Character);
+                                  equipedItem=  Armor.EquipItem(CharacterInventory,  Character);
                                     break;
                                 case ItemType.Weapon:
                                     WeaponSO weapon = (WeaponSO)Slot.Item;
-                                    equipedItem = weapon.EquipItem(CharacterInventory, IndexOf, Character);
+                                    equipedItem = weapon.EquipItem(CharacterInventory, Character);
                                     break;
                             }
                             //TODO Implement Change Event here
@@ -223,7 +223,7 @@ namespace Dreamers.InventorySystem.UISystem
                 {
                     Button Drop = Manager.UIButton(ButtonPanel.transform, "Drop");
                     Drop.onClick.AddListener(() => {
-                        Slot.Item.RemoveFromInventory(CharacterInventory, IndexOf);
+                        CharacterInventory.Inventory.RemoveFromInventory(Slot.Item);
                         Object.Destroy(PopUp);
                     });
                 }

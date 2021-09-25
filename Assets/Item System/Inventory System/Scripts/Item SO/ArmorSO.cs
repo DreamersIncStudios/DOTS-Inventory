@@ -74,7 +74,7 @@ namespace Dreamers.InventorySystem
         }
 
         #endregion
-        public  bool EquipItem(CharacterInventory characterInventory, int IndexOf, BaseCharacter player)
+        public  bool EquipItem(CharacterInventory characterInventory, BaseCharacter player)
         {
             EquipmentBase Equipment = characterInventory.Equipment;
 
@@ -108,7 +108,7 @@ namespace Dreamers.InventorySystem
                 }
                 EquipmentUtility.ModCharacterStats(player, Modifiers, true);
 
-                RemoveFromInventory(characterInventory, IndexOf);
+                characterInventory.Inventory.RemoveFromInventory(this);
                 player.StatUpdate();
                 return Equipped = true;
             }
@@ -120,7 +120,7 @@ namespace Dreamers.InventorySystem
         public  bool Unequip(CharacterInventory characterInventory, BaseCharacter player)
         {
             EquipmentBase Equipment = characterInventory.Equipment;
-            AddToInventory(characterInventory);
+            characterInventory.Inventory.AddToInventory(this);
             Destroy(armorModel);
            EquipmentUtility.ModCharacterStats(player, Modifiers, false);
             Equipment.EquippedArmor.Remove(this.ArmorType);
@@ -133,7 +133,7 @@ namespace Dreamers.InventorySystem
 
 
 
-        public override void Use(CharacterInventory characterInventory, int IndexOf, BaseCharacter player)
+        public override void Use(CharacterInventory characterInventory,  BaseCharacter player)
         {
             throw new System.NotImplementedException();
         }

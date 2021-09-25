@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Dreamers.InventorySystem.Interfaces;
 namespace Dreamers.InventorySystem.Generic
 {
+    [System.Serializable]
     public class Shop 
     {
         private string shopName;
@@ -21,7 +22,9 @@ namespace Dreamers.InventorySystem.Generic
         public Shop(string name = "", List<ItemBaseSO> itemToSell= default, uint SeedCapital = 1500)
         {
             this.shopName = name;
-          //  this.storeWallet = SeedCapital;
+            //  this.storeWallet = SeedCapital;
+            itemsToSell = new List<ItemBaseSO>();
+            itemsToBuyback = new List<ItemBaseSO>();
             AddItemsToInventory(itemToSell);
             manager = UIManager.instance;
 
@@ -201,29 +204,35 @@ namespace Dreamers.InventorySystem.Generic
             basePanel.name = "Items Display";
             basePanel.padding = new RectOffset() { bottom = 20, top = 20, left = 20, right = 20 };
             basePanel.spacing = new Vector2(20, 20);
-
-                //   inventory = Store.StoreInventory;
-                for (int i = 0; i < itemsToSell.Count; i++)
+            List<ItemBaseSO> itemsToDisplay = itemsToSell;
+            if (!Buying) {
+                itemsToDisplay = new List<ItemBaseSO>();
+                foreach (var slot in playerInventory.Inventory.ItemsInInventory)
                 {
-                    int index = i;
-                    if (itemsToSell[i].Type == Filter)
+                    itemsToDisplay.Add(slot.Item);
+                }
+            }
+
+            for (int i = 0; i < itemsToDisplay.Count; i++)
+            {
+                int index = i;
+                if (itemsToSell[i].Type == Filter || Filter == ItemType.None)
+                {
+                    Button temp = ItemButton(basePanel.transform, itemsToDisplay[index]);
+                    temp.onClick.AddListener(() =>
                     {
-                        Button temp = ItemButton(basePanel.transform, itemsToSell[index]);
-                        temp.onClick.AddListener(() =>
-                        {
 
-                            GameObject pop = PopUpItemPanel(temp.GetComponent<RectTransform>().anchoredPosition
-                                 + new Vector2(575, -175)
-                                 ,  itemsToSell[index], playerInventory);
-                            pop.AddComponent<PopUpMouseControl>();
+                        GameObject pop = PopUpItemPanel(temp.GetComponent<RectTransform>().anchoredPosition
+                             + new Vector2(575, -175)
+                             , itemsToDisplay[index], playerInventory);
+                        pop.AddComponent<PopUpMouseControl>();
 
-                        });
-                    }
-                } 
-            
- 
-            return basePanel.gameObject;
-        }
+                    });
+                }
+            }
+
+                return basePanel.gameObject;
+            }
 
         GameObject DisplayPlayerGold(Transform MainPanel, CharacterInventory playerInventory)
         {
@@ -272,7 +281,7 @@ namespace Dreamers.InventorySystem.Generic
                             if (PurchaseItem(item, (uint)playerInventory.Gold))
                             {
                                 playerInventory.AdjustGold(-(int)item.Value);
-                                playerInventory.Inventory.AddToInventory(/* item*/); //TODO Implement 
+                                playerInventory.Inventory.AddToInventory(item); //TODO Implement 
                               // Todo implement change event
                                 playerGold = DisplayPlayerGold(MenuPanelParent.transform, playerInventory);
                                 Object.Destroy(PopUp);
@@ -301,7 +310,7 @@ namespace Dreamers.InventorySystem.Generic
                             if (PurchaseItem(item, (uint)playerInventory.Gold))
                             {
                                 playerInventory.AdjustGold(-(int)item.Value);
-                                playerInventory.Inventory.AddToInventory(/* item*/); //TODO Implement 
+                                playerInventory.Inventory.AddToInventory( item); //TODO Implement 
                                                                                      // Todo implement change event
                                 playerGold = DisplayPlayerGold(MenuPanelParent.transform, playerInventory);
                                 Object.Destroy(PopUp);
@@ -328,7 +337,7 @@ namespace Dreamers.InventorySystem.Generic
                         Sell1.onClick.AddListener(() =>
                         {
                             playerInventory.AdjustGold((int)item.Value);
-                            playerInventory.Inventory.RemoveFromInventory(/*item*/);
+                            playerInventory.Inventory.RemoveFromInventory(item);
                             Object.Destroy(PopUp);
                             //TODO implement event to handle changes
                             playerGold = DisplayPlayerGold(MenuPanelParent.transform, playerInventory);
@@ -353,7 +362,7 @@ namespace Dreamers.InventorySystem.Generic
                         Sell.onClick.AddListener(() =>
                         {
                             playerInventory.AdjustGold((int)item.Value);
-                            playerInventory.Inventory.RemoveFromInventory(/*item*/);
+                            playerInventory.Inventory.RemoveFromInventory(item);
                             Object.Destroy(PopUp);
                             //TODO implement event to handle changes
                             playerGold = DisplayPlayerGold(MenuPanelParent.transform, playerInventory);

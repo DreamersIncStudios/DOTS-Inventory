@@ -27,10 +27,10 @@ namespace Dreamers.InventorySystem {
         public TypeOfGeneralItem GeneralItemType { get { return _GeneralType; } }
 
 
-        public override void Use(CharacterInventory characterInventory, int IndexOf, BaseCharacter player)
+        public override void Use(CharacterInventory characterInventory, BaseCharacter player)
         {
             /// Rewrite this system to be entity based 
-            Use(characterInventory, IndexOf);
+            Use(characterInventory);
             Material CharacterMaterial = player.GetComponent<Renderer>().material;
             EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         

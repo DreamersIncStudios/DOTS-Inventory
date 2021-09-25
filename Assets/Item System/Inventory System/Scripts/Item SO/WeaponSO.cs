@@ -94,7 +94,7 @@ namespace Dreamers.InventorySystem
         }
         //TODO Should this be a bool instead of Void
 
-        public bool EquipItem(CharacterInventory characterInventory, int IndexOf,BaseCharacter player)
+        public bool EquipItem(CharacterInventory characterInventory, BaseCharacter player)
         {
             EquipmentBase Equipment = characterInventory.Equipment;
             if (player.Level >= LevelRqd)
@@ -128,7 +128,7 @@ namespace Dreamers.InventorySystem
 
                 }
                 EquipmentUtility.ModCharacterStats(player, Modifiers, true);
-                RemoveFromInventory(characterInventory, IndexOf);
+                characterInventory.Inventory.RemoveFromInventory(this);
 
                 
                 player.StatUpdate();
@@ -143,7 +143,7 @@ namespace Dreamers.InventorySystem
         public bool Unequip(CharacterInventory characterInventory, BaseCharacter player)
         {
             EquipmentBase Equipment = characterInventory.Equipment;
-            AddToInventory(characterInventory);
+            characterInventory.Inventory.AddToInventory(this);
             Destroy(WeaponModel);
 
             EquipmentUtility.ModCharacterStats(player,Modifiers, false);
@@ -156,7 +156,7 @@ namespace Dreamers.InventorySystem
             //TODO Implement Convert at top level
         }
 
-        public override void Use(CharacterInventory characterInventory, int IndexOf, BaseCharacter player)
+        public override void Use(CharacterInventory characterInventory, BaseCharacter player)
         {
             throw new System.NotImplementedException();
         }

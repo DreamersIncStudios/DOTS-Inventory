@@ -35,16 +35,16 @@ public class Testadder : MonoBehaviour,IConvertGameObjectToEntity
         Equip = temp.Equipment;
      SetupPC();
         
-        addering[0].AddToInventory(Inventory);
-        addering[0].AddToInventory(Inventory);
-        addering[0].AddToInventory(Inventory);
-        addering[1].AddToInventory(Inventory);
-        addering[1].AddToInventory(Inventory);
-        addering[1].AddToInventory(Inventory);
-        addering[2].AddToInventory(Inventory);
-        addering[2].AddToInventory(Inventory);
-        addering[2].AddToInventory(Inventory);
-        addering[2].AddToInventory(Inventory);
+       Inventory.Inventory.AddToInventory(addering[0]);
+        Inventory.Inventory.AddToInventory(addering[0]);
+        Inventory.Inventory.AddToInventory(addering[0]);
+        Inventory.Inventory.AddToInventory(addering[1]);
+        Inventory.Inventory.AddToInventory(addering[1]);
+        Inventory.Inventory.AddToInventory(addering[1]);
+        Inventory.Inventory.AddToInventory(addering[2]);
+        Inventory.Inventory.AddToInventory(addering[2]);
+        Inventory.Inventory.AddToInventory(addering[2]);
+        Inventory.Inventory.AddToInventory(addering[2]);
 
        Menu = new  DisplayMenu(PC);
     }
