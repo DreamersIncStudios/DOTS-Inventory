@@ -63,17 +63,33 @@ namespace Dreamers.InventorySystem.Base {
             return FindItemSlots((int)item.ItemID, out returnedItem);
         }
 
-        public ItemSlot FindItemSlot(int ItemID, out int indexOf)
+        public bool FindItemSlotIndex(int ItemID, out int indexOf)
         {
             indexOf = -1;
             foreach (ItemSlot itemSlot in ItemsInInventory)
             {
                 if (itemSlot.Item.ItemID == ItemID)
+                {
                     indexOf = ItemsInInventory.IndexOf(itemSlot);
-                    return itemSlot;
+                    return true;
+                }
             }
 
-            return new ItemSlot();
+            return false;
+        }
+
+        public bool FindItemSlotIndex(int ItemID, out ItemSlot slot)
+        {
+            foreach (ItemSlot itemSlot in ItemsInInventory)
+            {
+                if (itemSlot.Item.ItemID == ItemID)
+                {
+                    slot = itemSlot;
+                    return true;
+                }
+            }
+            slot = default;
+            return false;
         }
 
         public List<ItemSlot> GetItemsByType(ItemType Type) {
@@ -154,7 +170,8 @@ namespace Dreamers.InventorySystem.Base {
         }
 
         public void ForceRemoveFromInventory(ItemBaseSO item) {
-            if (item.Stackable) {
+            if (item.Stackable)
+            {
                 FirstIndexOfItem(item, out ItemSlot slot);
                 int index = ItemsInInventory.IndexOf(slot);
                 slot.Count--;
@@ -162,11 +179,18 @@ namespace Dreamers.InventorySystem.Base {
                 {
                     ItemsInInventory.RemoveAt(index);
                 }
-                else {
+                else
+                {
                     ItemsInInventory[index] = slot;
                 }
             }
-        
+            else
+            {
+                FindItemSlotIndex((int)item.ItemID, out int index);
+                ItemsInInventory.RemoveAt(index);
+
+            }
+
         }
 
         public bool OpenSlot { get { return ItemsInInventory.Count < MaxInventorySize; } }

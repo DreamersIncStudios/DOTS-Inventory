@@ -11,6 +11,8 @@ namespace Dreamers.InventorySystem
     public class CreateStore : MonoBehaviour
     {
         public StoreTypes StoreType;
+        private GameObject player;
+        private bool canOpen => (bool)player;
      [SerializeReference]  public List<ItemBaseSO> InitialItems;
         public Shop shop;
 
@@ -18,15 +20,31 @@ namespace Dreamers.InventorySystem
         {
             shop = new Shop(StoreType.ToString(),InitialItems);
         }
-        public void OnTriggerStay(Collider other)
+        private void Update()
         {
-            if (other.gameObject.tag.Equals("Player"))
+            if (canOpen)
             {
                 if (Input.GetKeyUp(KeyCode.V) && shop.Displayed) { shop.CloseStore(); }
                 if (Input.GetKeyUp(KeyCode.V) && !shop.Displayed)
                 {
-                    shop.OpenStore(other.GetComponent<CharacterInventory>());
+                    shop.OpenStore(player.GetComponent<CharacterInventory>());
                 }
+
+            }
+        }
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.tag.Equals("Player"))
+            {
+                player = other.gameObject;
+
+            }
+        }
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.gameObject.tag.Equals("Player"))
+            {
+                player = null;
             }
         }
     }

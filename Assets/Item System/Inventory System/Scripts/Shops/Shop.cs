@@ -1,4 +1,5 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Dreamers.Global;
@@ -27,7 +28,8 @@ namespace Dreamers.InventorySystem.Generic
             itemsToBuyback = new List<ItemBaseSO>();
             AddItemsToInventory(itemToSell);
             manager = UIManager.instance;
-
+            Sell = 1;
+            Buy = 1;
         }
         #region manage Inventory
         public void AddItemsToInventory(ItemBaseSO item)
@@ -39,18 +41,18 @@ namespace Dreamers.InventorySystem.Generic
             itemsToSell.AddRange(items);
         }
 
-        public void SellItemToShop(ItemBaseSO item, out uint gold)
+        public void SellItemToShop(ItemBaseSO item, out uint goldMod)
         {
             itemsToBuyback.Add(item);
-            gold = item.Value;
+            goldMod = item.Value;
         }
-        public void SellItemToShop(List<ItemBaseSO> items, out uint gold)
+        public void SellItemToShop(List<ItemBaseSO> items, out uint goldMod)
         {
             itemsToSell.AddRange(items);
-            gold = new uint();
+            goldMod = new uint();
             foreach (var item in items)
             {
-                gold += item.Value;
+                goldMod += item.Value;
             }
         }
         public void RemoveItemFromInventory(ItemBaseSO item)
@@ -68,7 +70,7 @@ namespace Dreamers.InventorySystem.Generic
         }
         public Vector2 GetStoreMod(int luck, int Charsima) {
 
-            // TODO Implement Logic
+            // TODO Implement Logic for modifying buy and sell amount. Player with higher luck / charisma get larger discounts
             return new Vector2(Sell, Buy);
         }
         bool PurchaseItem(ItemBaseSO item, uint PlayerCashOnHand)
@@ -79,12 +81,10 @@ namespace Dreamers.InventorySystem.Generic
                 return true;
             }
             else { return false; }
-
         }
         bool PurchaseItem(int itemIndex, uint PlayerCashOnHand)
         {
             return PurchaseItem(GetItem(itemIndex), PlayerCashOnHand);
-
         }
         #endregion
 
@@ -94,7 +94,6 @@ namespace Dreamers.InventorySystem.Generic
         GameObject ItemPanel;
         GameObject playerGold; // possible just work with player inventory
 
-
         public void OpenStore(CharacterInventory characterInventory)
         {
             MenuPanelParent = CreateStoreUI(new Vector2(0, 0),
@@ -103,14 +102,12 @@ namespace Dreamers.InventorySystem.Generic
 
         public void CloseStore()
         {
-            Object.Destroy(MenuPanelParent);
-
+            UnityEngine.Object.Destroy(MenuPanelParent);
         }
-
         GameObject CreateStoreUI(Vector2 Size, Vector2 Position, CharacterInventory characterInventory)
         {
             if (MenuPanelParent)
-                Object.Destroy(MenuPanelParent);
+                UnityEngine.Object.Destroy(MenuPanelParent);
 
             GameObject Parent = manager.UICanvas();
             GameObject MainPanel = manager.GetPanel(Parent.transform, Size, Position);
@@ -146,7 +143,6 @@ namespace Dreamers.InventorySystem.Generic
                 .onClick.AddListener(() =>
                 {
                     Buying = false;
-
                     ItemPanel = DisplayItems(ItemType.None, MainPanel.transform, characterInventory);
                 });
             #region header
@@ -189,18 +185,15 @@ namespace Dreamers.InventorySystem.Generic
                 texttemp.text += item.MaxStackCount;
             temp.GetComponentInChildren<Text>().alignment = TextAnchor.LowerCenter;
             temp.GetComponent<Image>().sprite = item.Icon;
-
-
             return temp;
         }
-
+        List<GameObject> itemButton;
         GameObject DisplayItems(ItemType Filter, Transform Parent , CharacterInventory playerInventory)
         {
             if (ItemPanel)
-                Object.Destroy(ItemPanel);
-
-            GridLayoutGroup basePanel = manager.GetPanel(Parent.transform, new Vector2(1920, 0), new Vector2(0, 0))
-                 .AddComponent<GridLayoutGroup>();
+                UnityEngine.Object.Destroy(ItemPanel);
+            ItemPanel = manager.GetPanel(Parent.transform, new Vector2(1920, 0), new Vector2(0, 0));
+                 GridLayoutGroup basePanel = ItemPanel.AddComponent<GridLayoutGroup>();
             basePanel.name = "Items Display";
             basePanel.padding = new RectOffset() { bottom = 20, top = 20, left = 20, right = 20 };
             basePanel.spacing = new Vector2(20, 20);
@@ -212,13 +205,15 @@ namespace Dreamers.InventorySystem.Generic
                     itemsToDisplay.Add(slot.Item);
                 }
             }
-
+            itemButton = new List<GameObject>();
             for (int i = 0; i < itemsToDisplay.Count; i++)
             {
                 int index = i;
-                if (itemsToSell[i].Type == Filter || Filter == ItemType.None)
+                if (itemsToDisplay[i].Type == Filter || Filter == ItemType.None)
                 {
                     Button temp = ItemButton(basePanel.transform, itemsToDisplay[index]);
+                    itemButton.Add(temp.gameObject);
+
                     temp.onClick.AddListener(() =>
                     {
 
@@ -231,25 +226,41 @@ namespace Dreamers.InventorySystem.Generic
                 }
             }
 
-                return basePanel.gameObject;
+                return ItemPanel;
             }
+        public class OnWalletChangedEventArgs : EventArgs {
+            public CharacterInventory inventory;
+            public GameObject deleteThis;
+            public bool soldItem;
+        }
+        EventHandler<OnWalletChangedEventArgs> OnWalletChanged;
 
         GameObject DisplayPlayerGold(Transform MainPanel, CharacterInventory playerInventory)
         {
-
             if (playerGold)
-                Object.Destroy(playerGold);
+                UnityEngine.Object.Destroy(playerGold);
 
-            Text goldInWallet = manager.TextBox(MainPanel, new Vector2(400, 50)).GetComponent<Text>();
+            Text goldInWallet = manager.TextBox(MainPanel, new Vector2(400, 50));
+            playerGold = goldInWallet.gameObject;
             goldInWallet.alignment = TextAnchor.LowerRight;
             goldInWallet.text = playerInventory.Gold.ToString() + "G";
             goldInWallet.fontSize = 16;
+            OnWalletChanged += (object sender, OnWalletChangedEventArgs eventArgs) =>
+            {
+                goldInWallet.text = eventArgs.inventory.Gold.ToString() + "G";
+                if (eventArgs.soldItem)
+                    UnityEngine.Object.Destroy(eventArgs.deleteThis);
+            };
+
             return playerGold;
         }
-
+        public EventHandler<OnPriceChangedEventArg> OnPriceChanged;
+            public class OnPriceChangedEventArg : EventArgs {
+            public int value;
+        }
         GameObject PopUpItemPanel(Vector2 Pos, ItemBaseSO item, CharacterInventory playerInventory)
         {
-            GameObject PopUp = manager.GetPanel(manager.UICanvas().transform, new Vector2(400, 400), Pos);
+            GameObject PopUp = manager.GetPanel(manager.UICanvas().transform, new Vector2(600, 400), Pos);
             Image temp = PopUp.GetComponent<Image>();
             Color color = temp.color; color.a = 1.0f;
             temp.color = color;
@@ -258,117 +269,100 @@ namespace Dreamers.InventorySystem.Generic
             PopUp.AddComponent<PopUpMouseControl>();
 
             group.childControlWidth = false;
-
-            Text info = manager.TextBox(PopUp.transform, new Vector2(250, 300));
+            GameObject descriptionPanel = manager.GetPanel(PopUp.transform, new Vector2(200, 400), Pos);
+            descriptionPanel.AddComponent<VerticalLayoutGroup>();
+            Text info = manager.TextBox(descriptionPanel.transform, new Vector2(250, 300));
             info.text = item.ItemName + "\n";
             info.text += item.Description + "\n";
-            info.fontSize = 20;
+            info.fontSize = 24;
+            Text price = manager.TextBox(descriptionPanel.transform, new Vector2(250, 300));
+            price.fontSize = 26;
 
-            info.text += "Cost: " + Mathf.RoundToInt(item.Value * Sell) + " gil";
-
-            VerticalLayoutGroup ButtonPanel = manager.GetPanel(PopUp.transform, new Vector2(150, 300), Pos).AddComponent<VerticalLayoutGroup>();
+            VerticalLayoutGroup buttonPanel = manager.GetPanel(PopUp.transform, new Vector2(150, 300), Pos).AddComponent<VerticalLayoutGroup>();
+            buttonPanel.childControlHeight = buttonPanel.childForceExpandHeight = false;
             if (Buying)
             {
+                Button buy = manager.UIButton(buttonPanel.transform, "Buy");
+                Slider quantitySlider = manager.UISlider(buttonPanel.transform);
+                quantitySlider.onValueChanged.AddListener(delegate {
+                    if (OnPriceChanged != null)
+                        OnPriceChanged(this, new OnPriceChangedEventArg {  value = (int)quantitySlider.value });
+
+                });
+
+                int sellQuantity = (int)quantitySlider.value;
+            price.text = "Cost: " + Mathf.RoundToInt(item.Value * Sell)*quantitySlider.value + " gil";
+
+                OnPriceChanged += (object sender, OnPriceChangedEventArg eventArg) => {
+                    price.text = "Cost: " + Mathf.RoundToInt(item.Value * Sell) * eventArg.value + " gil";
+                    sellQuantity = eventArg.value;
+                };
+                buy.onClick.AddListener(() =>
+                {
+                    for (int i = 0; i < sellQuantity; i++)
+                    {
+                        if (PurchaseItem(item, (uint)playerInventory.Gold))
+                        {
+                            Debug.Log(sellQuantity);
+                            playerInventory.AdjustGold(-(int)item.Value);
+                            playerInventory.Inventory.AddToInventory(item); 
+                        }
+                        else
+                        {
+                            //TODO Implement Can't Afford message
+                            Debug.Log("Player has NSF");
+                        }
+
+                        if (OnWalletChanged != null) OnWalletChanged(this, new OnWalletChangedEventArgs { inventory = playerInventory,soldItem=false });
+                    }
+                    UnityEngine.Object.Destroy(PopUp);
+
+                });
                 switch (item.Type)
                 {
-                    case ItemType.General:
-                    case ItemType.Crafting_Materials:
-
-                        Button Buy1 = manager.UIButton(ButtonPanel.transform, "Buy 1 ");
-                       // Button Buy5 = manager.UIButton(ButtonPanel.transform, "Buy 5 ");
-                        Buy1.onClick.AddListener(() =>
-                        {
-                            if (PurchaseItem(item, (uint)playerInventory.Gold))
-                            {
-                                playerInventory.AdjustGold(-(int)item.Value);
-                                playerInventory.Inventory.AddToInventory(item); //TODO Implement 
-                              // Todo implement change event
-                                playerGold = DisplayPlayerGold(MenuPanelParent.transform, playerInventory);
-                                Object.Destroy(PopUp);
-                            }else
-                            {
-                                //TODO Implement Can't Afford message
-                                Debug.Log("Player has NSF");
-                            }
-                        });
-                        //Todo Consider Implement with UI Slider and for loop
-                        //Buy5.onClick.AddListener(() =>
-                        //{
-                        //    Store.BuyXItemsFrom(Slot, 5);
-                        //    playerGold = DisplayPlayerGold(MenuPanelParent.transform, playerInventory);
-                        //    ItemPanel = DisplayItems(ItemType.None, MenuPanelParent.transform, playerInventory);
-                        //    Object.Destroy(PopUp);
-
-                        //});
-                        break;
                     case ItemType.Armor:
                     case ItemType.Weapon:
                     case ItemType.Blueprint_Recipes:
-                        Button Buy = manager.UIButton(ButtonPanel.transform, "Buy");
-                        Buy.onClick.AddListener(() =>
-                        {
-                            if (PurchaseItem(item, (uint)playerInventory.Gold))
-                            {
-                                playerInventory.AdjustGold(-(int)item.Value);
-                                playerInventory.Inventory.AddToInventory( item); //TODO Implement 
-                                                                                     // Todo implement change event
-                                playerGold = DisplayPlayerGold(MenuPanelParent.transform, playerInventory);
-                                Object.Destroy(PopUp);
-                            }
-                            else
-                            {
-                                //TODO Implement Can't Afford message
-                                Debug.Log("Player has NSF");
-                            }
-                        });
-
+                       quantitySlider.gameObject.SetActive(false);
                         break;
                 }
             }
             else
             {
+                Button sell = manager.UIButton(buttonPanel.transform, "Sell");
+                Slider quantitySlider = manager.UISlider(buttonPanel.transform);
+                quantitySlider.onValueChanged.AddListener(delegate {
+                    if (OnPriceChanged != null)
+                        OnPriceChanged(this, new OnPriceChangedEventArg { value = (int)quantitySlider.value });
+
+                });
+
+                int buyQuantity = (int)quantitySlider.value;
+                price.text = "Cost: " + Mathf.RoundToInt(item.Value * Sell) * quantitySlider.value + " gil";
+
+                OnPriceChanged += (object sender, OnPriceChangedEventArg eventArg) => {
+                    price.text = "Cost: " + Mathf.RoundToInt(item.Value * Buy) * eventArg.value + " gil";
+                    buyQuantity = eventArg.value;
+                };
+                sell.onClick.AddListener(() =>
+                {
+                    for (int i = 0; i < buyQuantity; i++)
+                    {
+                        SellItemToShop(item, out uint goldMod);
+                        playerInventory.AdjustGold((int)goldMod);
+                        playerInventory.Inventory.RemoveFromInventory(item);
+                    }
+                    ItemPanel = DisplayItems(ItemType.None, MenuPanelParent.transform, playerInventory);
+                    UnityEngine.Object.Destroy(PopUp);
+                        if (OnWalletChanged != null) OnWalletChanged(this, new OnWalletChangedEventArgs { inventory = playerInventory, deleteThis=sell.gameObject, soldItem=true });
+                });
+
                 switch (item.Type)
                 {
-                    case ItemType.General:
-                    case ItemType.Crafting_Materials:
-
-                        Button Sell1 = manager.UIButton(ButtonPanel.transform, "Sell 1 ");
-                       // Button Sell5 = manager.UIButton(ButtonPanel.transform, "Sell 5 ");
-                        Sell1.onClick.AddListener(() =>
-                        {
-                            playerInventory.AdjustGold((int)item.Value);
-                            playerInventory.Inventory.RemoveFromInventory(item);
-                            Object.Destroy(PopUp);
-                            //TODO implement event to handle changes
-                            playerGold = DisplayPlayerGold(MenuPanelParent.transform, playerInventory);
-                            ItemPanel = DisplayItems(ItemType.None, MenuPanelParent.transform, playerInventory);
-
-                        });
-                        //TODO implement with slided
-                        //Sell5.onClick.AddListener(() =>
-                        //{
-                        //    Store.SellxItemsTo(Slot, IndexOf, 5);
-                        //    ItemPanel = DisplayItems(ItemType.None, MenuPanelParent.transform, playerInventory);
-                        //    playerGold = DisplayPlayerGold(MenuPanelParent.transform, playerInventory);
-                        //    ItemPanel = DisplayItems(ItemType.None, MenuPanelParent.transform, playerInventory);
-                        //    Object.Destroy(PopUp);
-
-                        //});
-                        break;
                     case ItemType.Armor:
                     case ItemType.Weapon:
                     case ItemType.Blueprint_Recipes:
-                        Button Sell = manager.UIButton(ButtonPanel.transform, "sell");
-                        Sell.onClick.AddListener(() =>
-                        {
-                            playerInventory.AdjustGold((int)item.Value);
-                            playerInventory.Inventory.RemoveFromInventory(item);
-                            Object.Destroy(PopUp);
-                            //TODO implement event to handle changes
-                            playerGold = DisplayPlayerGold(MenuPanelParent.transform, playerInventory);
-                            ItemPanel = DisplayItems(ItemType.None, MenuPanelParent.transform, playerInventory);
-                        });
-
+                        quantitySlider.gameObject.SetActive(false);
                         break;
                 }
             }
@@ -376,11 +370,7 @@ namespace Dreamers.InventorySystem.Generic
         }
 
 
-
-
-
         #endregion
     }
-    //Todo Move to SO interfaces
 
 }

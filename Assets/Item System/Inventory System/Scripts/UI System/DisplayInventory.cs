@@ -112,17 +112,7 @@ namespace Dreamers.InventorySystem.UISystem
                     ItemSlot Slot = inventory.ItemsInInventory[i];
                     int IndexOf = i;
 
-                    if (DisplayItems == ItemType.None)
-                    {
-                        Button temp = ItemButton(Main.transform, Slot);
-                        temp.onClick.AddListener(() =>
-                        {
-                            GameObject pop = PopUpItemPanel(temp.GetComponent<RectTransform>().anchoredPosition
-                                 + new Vector2(575, -175)
-                                 , Slot, IndexOf,temp);
-                        });
-                    }
-                    else if (Slot.Item.Type == Type)
+                 if (Slot.Item.Type == Type|| Type == ItemType.None)
                     {
                         Button temp = ItemButton(Main.transform, Slot);
                         temp.onClick.AddListener(() =>
