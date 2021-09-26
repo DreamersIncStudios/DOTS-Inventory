@@ -342,3 +342,5 @@ healthchecksdb
 /Temp
 *.csproj
 *.mb
+/Builds/windows/Product Name_Data
+/Builds/windows

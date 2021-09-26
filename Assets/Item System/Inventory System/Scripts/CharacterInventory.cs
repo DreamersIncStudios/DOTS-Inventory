@@ -31,8 +31,9 @@ namespace Dreamers.InventorySystem
             Menu = new DisplayMenu(PC);
 #if UNITY_EDITOR
             Equipment.LoadEquipment(PC,Save);
-            Gold = 2000; //TODO remove in final 
 #endif
+            Gold = 2000; //TODO remove in final 
+
         }
         bool CloseMenu => Input.GetKeyUp(KeyCode.I) && Menu.Displayed;
         bool OpenMenu => Input.GetKeyUp(KeyCode.I) && !Menu.Displayed;

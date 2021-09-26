@@ -382,7 +382,6 @@ GameObject:
   - component: {fileID: 830280128}
   - component: {fileID: 830280127}
   - component: {fileID: 830280126}
-  - component: {fileID: 830280132}
   - component: {fileID: 830280131}
   - component: {fileID: 830280130}
   - component: {fileID: 830280133}
@@ -504,11 +503,17 @@ MonoBehaviour:
     ItemsInInventory:
     - Item: {fileID: 11400000, guid: 50da1fbcb683d264ea4ebaa5b25ada0a, type: 2}
       Count: 1
+    - Item: {fileID: 11400000, guid: 6da72a949f5f2b4448689132018a5fd4, type: 2}
+      Count: 1
+    - Item: {fileID: 11400000, guid: 1570f87a4daa73449b19f524906d9f5f, type: 2}
+      Count: 1
+    - Item: {fileID: 11400000, guid: 846e8c95810073849808c87ddce0293a, type: 2}
+      Count: 1
+    - Item: {fileID: 11400000, guid: 5fa69137951380a40bd60918be05ae65, type: 2}
+      Count: 20
     - Item: {fileID: 11400000, guid: 9da3c7a8ad3ecfc42917d92dd4b84223, type: 2}
       Count: 1
-    - Item: {fileID: 11400000, guid: 8a999ef255c4dc745b9d1f6b708c6825, type: 2}
-      Count: 1
-    MaxInventorySize: 30
+    MaxInventorySize: 40
   Equipment:
     CurrentActivationPoints: 0
     MaxActivationPoints: 0
@@ -516,27 +521,7 @@ MonoBehaviour:
     NumOfQuickAccessSlots: 0
   Save:
     EquippedWeapons: []
-    EquippedArmors:
-    - {fileID: 11400000, guid: 1570f87a4daa73449b19f524906d9f5f, type: 2}
-    - {fileID: 11400000, guid: defbe74f21f853f46b55eb48e670f46d, type: 2}
-    - {fileID: 11400000, guid: 6da72a949f5f2b4448689132018a5fd4, type: 2}
---- !u!114 &830280132
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 830280125}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb84b9d0264a299428aff52845c91508, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ChangeValue: 25
-  addering:
-  - {fileID: 11400000, guid: 5fa69137951380a40bd60918be05ae65, type: 2}
-  - {fileID: 11400000, guid: defbe74f21f853f46b55eb48e670f46d, type: 2}
-  - {fileID: 11400000, guid: 8a999ef255c4dc745b9d1f6b708c6825, type: 2}
+    EquippedArmors: []
 --- !u!114 &830280133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -855,6 +840,9 @@ MonoBehaviour:
   InitialItems:
   - {fileID: 11400000, guid: 6da72a949f5f2b4448689132018a5fd4, type: 2}
   - {fileID: 11400000, guid: 50da1fbcb683d264ea4ebaa5b25ada0a, type: 2}
+  shop:
+    Sell: 0
+    Buy: 0
 --- !u!4 &1934555976
 Transform:
   m_ObjectHideFlags: 0
