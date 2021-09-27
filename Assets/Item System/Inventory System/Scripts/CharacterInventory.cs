@@ -4,6 +4,7 @@ using UnityEngine;
 using Unity.Entities;
 using Dreamers.InventorySystem.Base;
 using Dreamers.InventorySystem.UISystem;
+using Dreamers.InventorySystem.MissionSystem;
 using Stats;
 
 namespace Dreamers.InventorySystem

@@ -8,5 +8,7 @@ namespace Dreamers.InventorySystem.Interfaces
         uint Value { get; }
         uint MaxStackCount { get; }
         bool Stackable { get; }
+
+        //TODO COnsider adding can cell?
     }
 }
