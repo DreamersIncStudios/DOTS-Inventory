@@ -179,6 +179,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Collections.BurstComp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Entities.Hybrid.EndToEnd.Tests", "Unity.Entities.Hybrid.EndToEnd.Tests.csproj", "{745E7F91-B36A-95D1-8C3A-C2F567863C61}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quest.Editor", "Quest.Editor.csproj", "{BED6575B-B561-ADB1-95CA-8652D496E4F9}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityEngine.UI", "UnityEngine.UI.Player.csproj", "{FB95F811-68EC-6E35-3B2F-5F44C9852D23}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.RenderPipelines.Core.Runtime", "Unity.RenderPipelines.Core.Runtime.Player.csproj", "{BECC8365-7A6B-1C55-E506-96FA9A9B6963}"
@@ -617,6 +619,10 @@ Global
 		{745E7F91-B36A-95D1-8C3A-C2F567863C61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{745E7F91-B36A-95D1-8C3A-C2F567863C61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{745E7F91-B36A-95D1-8C3A-C2F567863C61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BED6575B-B561-ADB1-95CA-8652D496E4F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BED6575B-B561-ADB1-95CA-8652D496E4F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BED6575B-B561-ADB1-95CA-8652D496E4F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BED6575B-B561-ADB1-95CA-8652D496E4F9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FB95F811-68EC-6E35-3B2F-5F44C9852D23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FB95F811-68EC-6E35-3B2F-5F44C9852D23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB95F811-68EC-6E35-3B2F-5F44C9852D23}.Release|Any CPU.ActiveCfg = Release|Any CPU

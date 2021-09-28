@@ -15,6 +15,7 @@ namespace Dreamers.InventorySystem
         private Animator anim => this.GetComponent<Animator>();
         public InventoryBase Inventory;
         public EquipmentBase Equipment;
+        public MissionHub QuestLog;
         DisplayMenu Menu;
         public Entity self { get; private set; }
         public int Gold { get; private set; }
@@ -30,6 +31,8 @@ namespace Dreamers.InventorySystem
         public void Start()
         {
             Menu = new DisplayMenu(PC);
+            QuestLog = new MissionHub(null, null, new List<MissionSystem.SO.MissionQuestSO>());
+            QuestLog.AddMissionSide( Instantiate( QuestDatabase.GetQuest((uint)1)));
 #if UNITY_EDITOR
             Equipment.LoadEquipment(PC,Save);
 #endif
@@ -76,5 +79,10 @@ namespace Dreamers.InventorySystem
             if (modValue <= Gold)
                 Gold =(int)Mathf.Clamp(Gold+ modValue, 0,Mathf.Infinity);
         }
+
+
+
+
+
     }
 }

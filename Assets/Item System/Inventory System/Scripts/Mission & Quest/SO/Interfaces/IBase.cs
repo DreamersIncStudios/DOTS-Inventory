@@ -12,7 +12,10 @@ namespace Dreamers.InventorySystem.MissionSystem.Interfaces
         int ReqdLevel { get; }
         int GoldReward { get; }
         IPurchasable ItemReward { get; }
-
+        public bool IsSideQuest { get; }
+#if UNITY_EDITOR
+        void CreateQuest(string name, string Objective, int level, int GoldReward, IPurchasable items);
+#endif
         void AcceptQuest();
         void CompleteQuest();
         void QuestRequirementsMet();

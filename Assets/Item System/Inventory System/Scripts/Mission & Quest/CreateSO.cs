@@ -11,11 +11,11 @@ namespace Dreamers.InventorySystem.MissionSystem.SO
     public static class CreateSO
     {
         [MenuItem("Assets/Create/Missions")]
-        static public void CreateRecoveryItem()
+        static public void CreateDefeatQuest()
         {
             ScriptableObjectUtility.CreateAsset<DefeatEnemyMissionSO>("Defeat Enemy Mission", out DefeatEnemyMissionSO Item);
-            ItemDatabase.LoadDatabaseForce();
-            Item.setItemID((uint)QuestDatabase.Missions.Count + 1);
+            QuestDatabase.LoadDatabaseForced();
+            Item.setItemID((uint)QuestDatabase.Missions.Count);
             Debug.Log(Item.MissionID);
             // need to deal with duplicate itemID numbers 
 

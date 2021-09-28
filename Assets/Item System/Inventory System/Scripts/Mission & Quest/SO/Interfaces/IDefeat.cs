@@ -5,8 +5,13 @@ namespace Dreamers.InventorySystem.MissionSystem.Interfaces
 {
     public interface IDefeat
     {
-        GameObject DefeatWhat { get; }
+        NPC DefeatWhat { get; }
         uint DefeatHowMany { get; }
+        uint HowMany { get; }
+        bool ResetOnDeath { get; }
+        public QuestType questType{get;}
 
     }
+
+    public enum QuestType { Collect, Defeat, Destroy, Defend}
 }
