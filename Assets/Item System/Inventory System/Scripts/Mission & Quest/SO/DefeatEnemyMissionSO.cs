@@ -4,9 +4,9 @@ using UnityEngine;
 using Dreamers.InventorySystem.MissionSystem.Interfaces;
 using Dreamers.InventorySystem.Interfaces;
 
-namespace Dreamers.InventorySystem.MissionSystem.SO
+namespace Dreamers.InventorySystem.MissionSystem.Task
 {
-    public class DefeatEnemyMissionSO : MissionQuestSO, IDefeat, IPurchasable
+    public class DefeatEnemyMissionSO : TaskSO, IDefeat, IPurchasable
     {
         public NPC DefeatWhat { get { return defeatWhat; } }
         [SerializeField] NPC defeatWhat;
@@ -33,13 +33,7 @@ namespace Dreamers.InventorySystem.MissionSystem.SO
         public void ResetCount() {
             HowMany = 0;
         }
-#if UNITY_EDITOR
 
-        public void CreateQuest(string name, string Objective, int level, int GoldReward, IPurchasable items, NPC Defeatwhat) {
-            base.CreateQuest(name, Objective, level, GoldReward, items);
-           base.SetSideQuest(true);
-        }
-#endif
 
        
     }

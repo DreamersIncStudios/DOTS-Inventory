@@ -11,8 +11,9 @@ namespace Dreamers.InventorySystem.Generic
     public class Shop 
     {
         private string shopName;
-        private List<ItemBaseSO> itemsToSell;
-        private List<ItemBaseSO> itemsToBuyback;
+        private StoreTypes storeType;
+        private List<IPurchasable> itemsToSell;
+        private List<IPurchasable> itemsToBuyback;
         [Range(.5f, 1.0f)]
         public float Sell;
         [Range(.5f, 1.0f)]
@@ -20,33 +21,34 @@ namespace Dreamers.InventorySystem.Generic
         readonly UIManager manager;
         public bool Displayed { get { return (bool)MenuPanelParent; } }
         bool Buying = true;
-        public Shop(string name = "", List<ItemBaseSO> itemToSell= default, uint SeedCapital = 1500)
+        public Shop(string name = "",StoreTypes store=StoreTypes.General, List<IPurchasable> itemToSell= default, uint SeedCapital = 1500)
         {
             this.shopName = name;
+            storeType = store;
             //  this.storeWallet = SeedCapital;
-            itemsToSell = new List<ItemBaseSO>();
-            itemsToBuyback = new List<ItemBaseSO>();
+            itemsToSell = new List<IPurchasable>();
+            itemsToBuyback = new List<IPurchasable>();
             AddItemsToInventory(itemToSell);
             manager = UIManager.instance;
             Sell = 1;
             Buy = 1;
         }
         #region manage Inventory
-        public void AddItemsToInventory(ItemBaseSO item)
+        public void AddItemsToInventory(IPurchasable item)
         {
             itemsToSell.Add(item);
         }
-        public void AddItemsToInventory(List<ItemBaseSO> items)
+        public void AddItemsToInventory(List<IPurchasable> items)
         {
             itemsToSell.AddRange(items);
         }
 
-        public void SellItemToShop(ItemBaseSO item, out uint goldMod)
+        public void SellItemToShop(IPurchasable item, out uint goldMod)
         {
             itemsToBuyback.Add(item);
             goldMod = item.Value;
         }
-        public void SellItemToShop(List<ItemBaseSO> items, out uint goldMod)
+        public void SellItemToShop(List<IPurchasable> items, out uint goldMod)
         {
             itemsToSell.AddRange(items);
             goldMod = new uint();
@@ -55,16 +57,16 @@ namespace Dreamers.InventorySystem.Generic
                 goldMod += item.Value;
             }
         }
-        public void RemoveItemFromInventory(ItemBaseSO item)
+        public void RemoveItemFromInventory(IPurchasable item)
         {
             itemsToSell.Remove(item);
         }
 
-        public int GetItemIndex(ItemBaseSO item)
+        public int GetItemIndex(IPurchasable item)
         {
             return itemsToSell.IndexOf(item);
         }
-        public ItemBaseSO GetItem(int index)
+        public IPurchasable GetItem(int index)
         {
             return itemsToSell[index];
         }
@@ -73,7 +75,7 @@ namespace Dreamers.InventorySystem.Generic
             // TODO Implement Logic for modifying buy and sell amount. Player with higher luck / charisma get larger discounts
             return new Vector2(Sell, Buy);
         }
-        bool PurchaseItem(ItemBaseSO item, uint PlayerCashOnHand)
+        bool PurchaseItem(IPurchasable item, uint PlayerCashOnHand)
         {
             if (item.Value <= PlayerCashOnHand)
             {
@@ -188,30 +190,50 @@ namespace Dreamers.InventorySystem.Generic
             return temp;
         }
         List<GameObject> itemButton;
-        GameObject DisplayItems(ItemType Filter, Transform Parent , CharacterInventory playerInventory)
+        GameObject DisplayItems(ItemType Filter, Transform Parent, CharacterInventory playerInventory)
         {
             if (ItemPanel)
                 UnityEngine.Object.Destroy(ItemPanel);
             ItemPanel = manager.GetPanel(Parent.transform, new Vector2(1920, 0), new Vector2(0, 0));
-                 GridLayoutGroup basePanel = ItemPanel.AddComponent<GridLayoutGroup>();
+            GridLayoutGroup basePanel = ItemPanel.AddComponent<GridLayoutGroup>();
             basePanel.name = "Items Display";
             basePanel.padding = new RectOffset() { bottom = 20, top = 20, left = 20, right = 20 };
             basePanel.spacing = new Vector2(20, 20);
-            List<ItemBaseSO> itemsToDisplay = itemsToSell;
-            if (!Buying) {
-                itemsToDisplay = new List<ItemBaseSO>();
+            if (storeType != StoreTypes.Mission)
+            {
+                ItemStore(Filter, playerInventory, basePanel.transform);
+            }
+            else {
+                MissionStore();
+            }
+            return ItemPanel;
+        }
+
+        private void ItemStore(ItemType Filter, CharacterInventory playerInventory, Transform basePanel) {
+            List<ItemBaseSO> itemsToDisplay = new List<ItemBaseSO>();
+
+            if (!Buying)
+            {
                 foreach (var slot in playerInventory.Inventory.ItemsInInventory)
                 {
                     itemsToDisplay.Add(slot.Item);
                 }
             }
+            else
+            {
+                foreach (var slot in itemsToSell)
+                {
+                    itemsToDisplay.Add((ItemBaseSO)slot);
+                }
+            }
+
             itemButton = new List<GameObject>();
             for (int i = 0; i < itemsToDisplay.Count; i++)
             {
                 int index = i;
                 if (itemsToDisplay[i].Type == Filter || Filter == ItemType.None)
                 {
-                    Button temp = ItemButton(basePanel.transform, itemsToDisplay[index]);
+                    Button temp = ItemButton(basePanel, (ItemBaseSO)itemsToDisplay[index]);
                     itemButton.Add(temp.gameObject);
 
                     temp.onClick.AddListener(() =>
@@ -219,15 +241,17 @@ namespace Dreamers.InventorySystem.Generic
 
                         GameObject pop = PopUpItemPanel(temp.GetComponent<RectTransform>().anchoredPosition
                              + new Vector2(575, -175)
-                             , itemsToDisplay[index], playerInventory);
+                             , (ItemBaseSO)itemsToDisplay[index], playerInventory);
                         pop.AddComponent<PopUpMouseControl>();
 
                     });
                 }
             }
+        }
+        public void MissionStore() { 
+        
+        }
 
-                return ItemPanel;
-            }
         public class OnWalletChangedEventArgs : EventArgs {
             public CharacterInventory inventory;
             public GameObject deleteThis;

@@ -17,3 +17,7 @@ MonoBehaviour:
   objective: 
   reqdLevel: 0
   goldReward: 0
+  tasks:
+  - {fileID: 0}
+  defeatWhat: 0
+  defeatHowMany: 0

@@ -9,9 +9,8 @@ namespace Dreamers.InventorySystem.MissionSystem.Interfaces
         uint DefeatHowMany { get; }
         uint HowMany { get; }
         bool ResetOnDeath { get; }
-        public QuestType questType{get;}
 
     }
-
-    public enum QuestType { Collect, Defeat, Destroy, Defend}
+    //TODO move
+    public enum TaskTypes { Collect, Defeat, Destroy, Defend}
 }

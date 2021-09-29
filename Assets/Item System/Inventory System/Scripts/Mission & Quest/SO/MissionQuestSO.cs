@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Dreamers.InventorySystem.Interfaces;
 using Dreamers.InventorySystem.MissionSystem.Interfaces;
+using Dreamers.InventorySystem.MissionSystem.Task;
 
 namespace Dreamers.InventorySystem.MissionSystem.SO
 {
-    public abstract class MissionQuestSO : ScriptableObject, IBase
+    public class MissionQuestSO : ScriptableObject, IBase, IPurchasable
     {
 
         #region SO Variables
@@ -22,10 +23,16 @@ namespace Dreamers.InventorySystem.MissionSystem.SO
         [SerializeField] int goldReward;
         public IPurchasable ItemReward { get { return itemReward; } }
         [SerializeField] IPurchasable itemReward;
-        public QuestType questType { get; private set; }
+        public TaskTypes questType { get; private set; }
         public bool IsSideQuest { get; private set; }
+        public uint Value { get { return 150; } }
+        public uint MaxStackCount { get { return 0; } }
+        public bool Stackable { get { return false; } }
+        public List<TaskSO> Tasks { get { return tasks; } }
+        [SerializeField] List<TaskSO> tasks;
         #endregion
-
+        public bool Sequential;
+        public int CurrentTask;
         MissionHub hub { get {  return GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterInventory>().QuestLog; } }
 
 #if UNITY_EDITOR
@@ -43,7 +50,7 @@ namespace Dreamers.InventorySystem.MissionSystem.SO
         }
 
 
-        public virtual void CreateQuest(string name,string Objective, int level, int GoldReward, IPurchasable items) {
+        public void CreateQuest(string name,string Objective, int level, int GoldReward, IPurchasable items) {
             this.missionName = name;
             objective = Objective;
             reqdLevel = level;
@@ -52,12 +59,12 @@ namespace Dreamers.InventorySystem.MissionSystem.SO
         }
 #endif
         // determine if virtual or abstract
-        public virtual void AcceptQuest() {
+        public  void AcceptQuest() {
             hub.Register(this);
         }
-        public virtual void CompleteQuest() {
+        public  void CompleteQuest() {
         }
-        public virtual void QuestRequirementsMet() {
+        public void QuestRequirementsMet() {
             //TODO Implement UI 
             Debug.Log(Name + " has been Completed. Please see ______ to turn in quest");
             hub.Deregister(this);

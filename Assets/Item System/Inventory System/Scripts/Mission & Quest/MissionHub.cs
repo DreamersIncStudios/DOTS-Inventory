@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Dreamers.InventorySystem.MissionSystem.SO;
 using Dreamers.InventorySystem.Interfaces;
+using Dreamers.InventorySystem.MissionSystem.Task;
 namespace Dreamers.InventorySystem.MissionSystem {
 
     [System.Serializable]
@@ -44,30 +45,30 @@ namespace Dreamers.InventorySystem.MissionSystem {
                 return false;
         }
         public void Register(MissionQuestSO SO) {
-            switch (SO.questType) {
-                case Interfaces.QuestType.Collect:
-                    DefeatEnemyMissionSO defeatEnemyMissionSO = (DefeatEnemyMissionSO)SO;
-                 onKillEvent.AddListener(defeatEnemyMissionSO.IncrementCounter);
-                    if (defeatEnemyMissionSO.ResetOnDeath)
-                        OnDeathEvent.AddListener(defeatEnemyMissionSO.ResetCount);
+            //switch (SO.questType) {
+            //    case Interfaces.TaskTypes.Collect:
+            //        DefeatEnemyMissionSO defeatEnemyMissionSO = (DefeatEnemyMissionSO)SO;
+            //     onKillEvent.AddListener(defeatEnemyMissionSO.IncrementCounter);
+            //        if (defeatEnemyMissionSO.ResetOnDeath)
+            //            OnDeathEvent.AddListener(defeatEnemyMissionSO.ResetCount);
 
-                    break;
+            //        break;
             
-            }
+            //}
         
         }
         public void Deregister( MissionQuestSO SO) {
-            switch (SO.questType)
-            {
-                case Interfaces.QuestType.Collect:
-                    DefeatEnemyMissionSO defeatEnemyMissionSO = (DefeatEnemyMissionSO)SO;
-                    onKillEvent.RemoveListener(defeatEnemyMissionSO.IncrementCounter);
-                    if (defeatEnemyMissionSO.ResetOnDeath)
-                        OnDeathEvent.RemoveListener(defeatEnemyMissionSO.ResetCount);
+            //switch (SO.questType)
+            //{
+            //    case Interfaces.TaskTypes.Collect:
+            //        DefeatEnemyMissionSO defeatEnemyMissionSO = (DefeatEnemyMissionSO)SO;
+            //        onKillEvent.RemoveListener(defeatEnemyMissionSO.IncrementCounter);
+            //        if (defeatEnemyMissionSO.ResetOnDeath)
+            //            OnDeathEvent.RemoveListener(defeatEnemyMissionSO.ResetCount);
 
-                    break;
+            //        break;
 
-            }
+            //}
    
         }
         public void OnCollect(ItemBaseSO item) {
