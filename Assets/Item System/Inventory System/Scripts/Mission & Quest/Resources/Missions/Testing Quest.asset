@@ -9,13 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de6cf9382afeae84e8b0657360696d0c, type: 3}
-  m_Name: Test case 1
+  m_Script: {fileID: 11500000, guid: 6266ed4cf8a144e4caa821a54230ca10, type: 3}
+  m_Name: Testing Quest
   m_EditorClassIdentifier: 
-  missionName: Test kill
+  missionName: 'Test Mission '
   ID: 1
-  objective: 
+  objective: 'Kill 30 cubes '
   reqdLevel: 0
-  goldReward: 0
-  defeatWhat: 0
-  defeatHowMany: 30
+  goldReward: 6000
+  tasks:
+  - {fileID: 11400000, guid: 6731596d178fb594b84bb3bb0dc48911, type: 2}
+  Sequential: 0
+  CurrentTask: 0

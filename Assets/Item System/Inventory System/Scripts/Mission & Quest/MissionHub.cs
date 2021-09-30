@@ -11,8 +11,8 @@ namespace Dreamers.InventorySystem.MissionSystem {
     public class MissionHub
     {
         public MissionQuestSO SelectedMission;
-        List<MissionQuestSO> OpenStoryMissions;
-        Dictionary<uint,MissionQuestSO> SideQuests;
+        List<MissionQuestSO> OpenStoryMissions; //TODO Change to dictonary 
+        Dictionary<uint,MissionQuestSO> SideQuests; 
         UnityEvent<NPC> onKillEvent;
         UnityEvent<ItemBaseSO> onCollectEvent;
         UnityEvent OnDeathEvent;
@@ -39,37 +39,49 @@ namespace Dreamers.InventorySystem.MissionSystem {
             if (!SideQuests.ContainsKey(SO.MissionID))
             {
                 SideQuests.Add(SO.MissionID, SO);
-                Register(SO);
+                SO.AcceptQuest();
                 return true;
             } else
                 return false;
         }
-        public void Register(MissionQuestSO SO) {
-            //switch (SO.questType) {
-            //    case Interfaces.TaskTypes.Collect:
-            //        DefeatEnemyMissionSO defeatEnemyMissionSO = (DefeatEnemyMissionSO)SO;
-            //     onKillEvent.AddListener(defeatEnemyMissionSO.IncrementCounter);
-            //        if (defeatEnemyMissionSO.ResetOnDeath)
-            //            OnDeathEvent.AddListener(defeatEnemyMissionSO.ResetCount);
+        public void UnlockStoryMisstion(MissionQuestSO SO)
+        {
+            //TODO Check completed Story mission list if not completed already add 
 
-            //        break;
-            
-            //}
-        
+            OpenStoryMissions.Add(SO);
         }
-        public void Deregister( MissionQuestSO SO) {
-            //switch (SO.questType)
-            //{
-            //    case Interfaces.TaskTypes.Collect:
-            //        DefeatEnemyMissionSO defeatEnemyMissionSO = (DefeatEnemyMissionSO)SO;
-            //        onKillEvent.RemoveListener(defeatEnemyMissionSO.IncrementCounter);
-            //        if (defeatEnemyMissionSO.ResetOnDeath)
-            //            OnDeathEvent.RemoveListener(defeatEnemyMissionSO.ResetCount);
 
-            //        break;
+        public void Register(MissionQuestSO SO)
+        {
+            foreach (var item in SO.workingTasks)
+            {
+                switch (item.TaskType)
+                {
+                    case Interfaces.TaskTypes.Defeat:
+                        DefeatEnemyTaskSO defeatEnemy = (DefeatEnemyTaskSO)item;
+                        defeatEnemy.ResetCount();
+                        onKillEvent.AddListener(defeatEnemy.IncrementCounter);
+                        if (defeatEnemy.ResetOnDeath)
+                            OnDeathEvent.AddListener(defeatEnemy.ResetCount);
 
-            //}
-   
+                        break;
+
+                }
+            }
+        }
+        public void Deregister( TaskSO tasks) {
+            switch (tasks.TaskType)
+            {
+                case Interfaces.TaskTypes.Defeat:
+                    DefeatEnemyTaskSO defeatEnemy = (DefeatEnemyTaskSO)tasks;
+                    onKillEvent.RemoveListener(defeatEnemy.IncrementCounter);
+                    if (defeatEnemy.ResetOnDeath)
+                        OnDeathEvent.RemoveListener(defeatEnemy.ResetCount);
+
+                    break;
+
+            }
+
         }
         public void OnCollect(ItemBaseSO item) {
             onCollectEvent.Invoke( item);

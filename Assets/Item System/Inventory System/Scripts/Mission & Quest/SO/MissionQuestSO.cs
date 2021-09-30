@@ -28,8 +28,9 @@ namespace Dreamers.InventorySystem.MissionSystem.SO
         public uint Value { get { return 150; } }
         public uint MaxStackCount { get { return 0; } }
         public bool Stackable { get { return false; } }
-        public List<TaskSO> Tasks { get { return tasks; } }
+        public  List<TaskSO> Tasks { get { return tasks; } }
         [SerializeField] List<TaskSO> tasks;
+        public List<TaskSO> workingTasks { get; private set; }
         #endregion
         public bool Sequential;
         public int CurrentTask;
@@ -60,16 +61,42 @@ namespace Dreamers.InventorySystem.MissionSystem.SO
 #endif
         // determine if virtual or abstract
         public  void AcceptQuest() {
+            if (IsSideQuest)
+            {
+                hub.AddMissionSide(this);
+            }
+            else {
+                hub.UnlockStoryMisstion(this);
+            }
+
+            workingTasks = new List<TaskSO>();
+            foreach (var task in Tasks)
+            {
+                workingTasks.Add(Instantiate(task));
+            }
             hub.Register(this);
+            numberOfCompleteTask = new int();
         }
         public  void CompleteQuest() {
         }
+
+        int numberOfCompleteTask;
+        bool QuestComplete => numberOfCompleteTask == Tasks.Count;
         public void QuestRequirementsMet() {
+            numberOfCompleteTask++;
+            foreach (var item in Tasks)
+            {
+                if (item.Complete)
+                {
+                    hub.Deregister(item);
+                }
+            }
             //TODO Implement UI 
-            Debug.Log(Name + " has been Completed. Please see ______ to turn in quest");
-            hub.Deregister(this);
-
-
+            
+            if (QuestComplete)
+            {
+                Debug.Log(Name + " has been Completed. Please see ______ to turn in quest");
+            }
 
         }
 

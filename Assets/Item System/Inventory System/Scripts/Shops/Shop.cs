@@ -5,10 +5,11 @@ using UnityEngine;
 using Dreamers.Global;
 using UnityEngine.UI;
 using Dreamers.InventorySystem.Interfaces;
+using Dreamers.InventorySystem.MissionSystem.SO;
 namespace Dreamers.InventorySystem.Generic
 {
     [System.Serializable]
-    public class Shop 
+    public class Shop
     {
         private string shopName;
         private StoreTypes storeType;
@@ -185,8 +186,14 @@ namespace Dreamers.InventorySystem.Generic
             texttemp.alignment = TextAnchor.LowerCenter;
             if (item.Stackable)
                 texttemp.text += item.MaxStackCount;
-            temp.GetComponentInChildren<Text>().alignment = TextAnchor.LowerCenter;
+            texttemp.alignment = TextAnchor.LowerCenter;
             temp.GetComponent<Image>().sprite = item.Icon;
+            return temp;
+        }
+        Button QuestButton(Transform Parent, MissionQuestSO quest) { 
+            Button temp = manager.UIButton(Parent, quest.Name);
+            temp.name = quest.Name;
+            temp.GetComponentInChildren<Text>().text += quest.Objective;
             return temp;
         }
         List<GameObject> itemButton;
@@ -195,23 +202,23 @@ namespace Dreamers.InventorySystem.Generic
             if (ItemPanel)
                 UnityEngine.Object.Destroy(ItemPanel);
             ItemPanel = manager.GetPanel(Parent.transform, new Vector2(1920, 0), new Vector2(0, 0));
-            GridLayoutGroup basePanel = ItemPanel.AddComponent<GridLayoutGroup>();
-            basePanel.name = "Items Display";
-            basePanel.padding = new RectOffset() { bottom = 20, top = 20, left = 20, right = 20 };
-            basePanel.spacing = new Vector2(20, 20);
+      
             if (storeType != StoreTypes.Mission)
             {
-                ItemStore(Filter, playerInventory, basePanel.transform);
+                ItemStore(Filter, playerInventory);
             }
             else {
-                MissionStore();
+                MissionStore(playerInventory);
             }
             return ItemPanel;
         }
 
-        private void ItemStore(ItemType Filter, CharacterInventory playerInventory, Transform basePanel) {
+        private void ItemStore(ItemType Filter, CharacterInventory playerInventory) {
             List<ItemBaseSO> itemsToDisplay = new List<ItemBaseSO>();
-
+            GridLayoutGroup basePanel = ItemPanel.AddComponent<GridLayoutGroup>();
+            basePanel.name = "Items Display";
+            basePanel.padding = new RectOffset() { bottom = 20, top = 20, left = 20, right = 20 };
+            basePanel.spacing = new Vector2(20, 20);
             if (!Buying)
             {
                 foreach (var slot in playerInventory.Inventory.ItemsInInventory)
@@ -233,7 +240,7 @@ namespace Dreamers.InventorySystem.Generic
                 int index = i;
                 if (itemsToDisplay[i].Type == Filter || Filter == ItemType.None)
                 {
-                    Button temp = ItemButton(basePanel, (ItemBaseSO)itemsToDisplay[index]);
+                    Button temp = ItemButton(basePanel.transform, (ItemBaseSO)itemsToDisplay[index]);
                     itemButton.Add(temp.gameObject);
 
                     temp.onClick.AddListener(() =>
@@ -248,8 +255,24 @@ namespace Dreamers.InventorySystem.Generic
                 }
             }
         }
-        public void MissionStore() { 
-        
+        public void MissionStore(CharacterInventory playerInventory) {
+
+           VerticalLayoutGroup basePanel = ItemPanel.AddComponent<VerticalLayoutGroup>();
+            basePanel.name = "Items Display";
+            basePanel.padding = new RectOffset() { bottom = 20, top = 20, left = 20, right = 20 };
+
+            //TODO implement scroll view 
+            MonoBehaviour.Destroy(basePanel.GetComponent<GridLayoutGroup>());
+            foreach (var item in itemsToSell)
+            {
+                MissionQuestSO quest = (MissionQuestSO)item;
+
+                QuestButton(basePanel.transform, (MissionQuestSO)quest).onClick.AddListener(()=> {
+                    quest.AcceptQuest();
+                    // TODO Add modal menu for accept etc etc Remove from story inventory.
+                    //TODO Mission system need to check mission player already has been creating list of mission to add
+                });
+            }
         }
 
         public class OnWalletChangedEventArgs : EventArgs {

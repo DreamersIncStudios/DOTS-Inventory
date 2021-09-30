@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Dreamers.Global;
+using Dreamers.InventorySystem.MissionSystem.Task;
 
 #if UNITY_EDITOR
 
@@ -12,15 +13,20 @@ namespace Dreamers.InventorySystem.MissionSystem.SO
     public static class CreateSO
     {
         [MenuItem("Assets/Create/Missions")]
-        static public void CreateDefeatQuest()
+        static public void CreateQuest()
         {
-            ScriptableObjectUtility.CreateAsset<MissionQuestSO>("Defeat Enemy Mission", out MissionQuestSO Item);
+            ScriptableObjectUtility.CreateAsset<MissionQuestSO>("Quest", out MissionQuestSO Item);
             QuestDatabase.LoadDatabaseForced();
             Item.setItemID((uint)QuestDatabase.Missions.Count);
-            Debug.Log(Item.MissionID);
-            // need to deal with duplicate itemID numbers 
-
         }
+
+        [MenuItem("Assets/Create/TaskDefeat")]
+        static public void CreateTask() {
+            ScriptableObjectUtility.CreateAsset<DefeatEnemyTaskSO>("Quest", out DefeatEnemyTaskSO item);
+            TaskDatabase.LoadDatabaseForced();
+            item.setItemID((uint)TaskDatabase.Tasks.Count);
+        }
+
     }
 }
 

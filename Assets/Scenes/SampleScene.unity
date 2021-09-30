@@ -349,6 +349,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 784174261}
+  - component: {fileID: 784174260}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -356,6 +357,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &784174260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 784174259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7058fd0cb5dcc3f40ab7883272de3568, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &784174261
 Transform:
   m_ObjectHideFlags: 0
@@ -520,7 +533,7 @@ MonoBehaviour:
     QuickAccessItems: []
     NumOfQuickAccessSlots: 0
   QuestLog:
-    SelectedMission: {fileID: 0}
+    SelectedMission: {fileID: 11400000, guid: 96d6787a3fd015c47a44106f57e5a6a3, type: 2}
   Save:
     EquippedWeapons: []
     EquippedArmors: []
@@ -839,7 +852,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StoreType: 3
-  InitialItemsID: 0a000000000000000500000001000000090000000800000003000000060000000c000000
+  InitialItemsID: 050000000500000005000000
   shop:
     Sell: 0
     Buy: 0

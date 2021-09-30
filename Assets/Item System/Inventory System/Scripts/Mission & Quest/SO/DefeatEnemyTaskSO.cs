@@ -6,13 +6,13 @@ using Dreamers.InventorySystem.Interfaces;
 
 namespace Dreamers.InventorySystem.MissionSystem.Task
 {
-    public class DefeatEnemyMissionSO : TaskSO, IDefeat, IPurchasable
+    public class DefeatEnemyTaskSO : TaskSO, IDefeat, IPurchasable
     {
         public NPC DefeatWhat { get { return defeatWhat; } }
         [SerializeField] NPC defeatWhat;
         public uint DefeatHowMany { get { return defeatHowMany; } }
         [SerializeField] uint defeatHowMany;
-    public uint HowMany { get; private set; }
+        [SerializeField] public uint HowMany { get; private set; }
         public bool ResetOnDeath { get; private set; }
         public uint Value { get { return 150; } }
         public uint MaxStackCount { get { return 0; } }
@@ -24,9 +24,9 @@ namespace Dreamers.InventorySystem.MissionSystem.Task
             Debug.Log(HowMany + "Defeated");
             if (Completed) {
             QuestRequirementsMet();
-//#if UNITY_EDITOR
-//                this.ResetCount();
-//#endif
+#if UNITY_EDITOR
+                this.ResetCount();
+#endif
             }
         }
 

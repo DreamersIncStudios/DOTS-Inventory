@@ -6,29 +6,42 @@ namespace Dreamers.InventorySystem.MissionSystem.Task
 {
     public abstract class TaskSO : ScriptableObject, ITask
     {
+        public string Name { get { return _name; } }
+        [SerializeField] string _name;
         public TaskTypes TaskType { get { return taskTypes; } }
         [SerializeField] TaskTypes taskTypes;
 
         public bool Complete { get { return complete; } }
             [SerializeField] bool complete;
+        public uint TaskID { get; private set; }
+  
+        public void QuestRequirementsMet() {
+            //TODO Implement UI Change
+            Debug.Log("Task Complete");
 
-        public void Deregister()
-        {
-            throw new System.NotImplementedException();
         }
 
-        public void Register()
+#if UNITY_EDITOR
+
+        public void setItemID(uint ID)
         {
-            throw new System.NotImplementedException();
+            if (!TaskDatabase.Tasks.TryGetValue(ID, out _))
+                this.TaskID = ID;
+            else
+            {
+                setItemID(ID + 1);
+            }
         }
-        public void QuestRequirementsMet() { }
+    
+#endif
     }
 
     public interface ITask {
+        string Name { get; }
         TaskTypes TaskType{get;}
+        uint TaskID { get; }
         bool Complete { get; }
-        void Register();
-        void Deregister();
+    
         void QuestRequirementsMet();
     }
 }
