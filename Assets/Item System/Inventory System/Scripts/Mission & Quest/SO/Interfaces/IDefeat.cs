@@ -12,5 +12,5 @@ namespace Dreamers.InventorySystem.MissionSystem.Interfaces
 
     }
     //TODO move
-    public enum TaskTypes { Collect, Defeat, Destroy, Defend}
+    public enum TaskTypes { Empty, Collect, Defeat, Destroy, Defend}
 }

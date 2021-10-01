@@ -34,7 +34,7 @@ namespace Dreamers.InventorySystem.MissionSystem.Task
             HowMany = 0;
         }
 
-
+        
        
     }
 }

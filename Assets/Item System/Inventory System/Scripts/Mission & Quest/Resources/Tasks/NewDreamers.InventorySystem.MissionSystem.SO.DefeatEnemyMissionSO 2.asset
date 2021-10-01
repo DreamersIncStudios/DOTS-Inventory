@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: NewDreamers.InventorySystem.MissionSystem.SO.DefeatEnemyMissionSO 2
   m_EditorClassIdentifier: 
   _name: 
-  taskTypes: 0
+  tasktype: 2
   complete: 0
   defeatWhat: 0
   defeatHowMany: 0

@@ -32,7 +32,7 @@ namespace Dreamers.InventorySystem
         {
             Menu = new DisplayMenu(PC);
             QuestLog = new MissionHub(null, null, new List<MissionSystem.SO.MissionQuestSO>());
-            QuestLog.AddMissionSide( Instantiate( QuestDatabase.GetQuest((uint)1)));
+            Instantiate( QuestDatabase.GetQuest((uint)1)).AcceptQuest();
 #if UNITY_EDITOR
             Equipment.LoadEquipment(PC,Save);
 #endif

@@ -24,7 +24,7 @@ namespace Dreamers.InventorySystem.MissionSystem.SO
         static public void CreateTask() {
             ScriptableObjectUtility.CreateAsset<DefeatEnemyTaskSO>("Quest", out DefeatEnemyTaskSO item);
             TaskDatabase.LoadDatabaseForced();
-            item.setItemID((uint)TaskDatabase.Tasks.Count);
+            item.setItemIDandType((uint)TaskDatabase.Tasks.Count, Interfaces.TaskTypes.Defeat);
         }
 
     }

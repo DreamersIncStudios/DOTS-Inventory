@@ -851,8 +851,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a1ce6f8f449a0343a90a7650c411834, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StoreType: 3
-  InitialItemsID: 050000000500000005000000
+  StoreType: 4
+  InitialItemsID: 010000000100000001000000
   shop:
     Sell: 0
     Buy: 0

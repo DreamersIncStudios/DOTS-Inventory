@@ -19,5 +19,6 @@ MonoBehaviour:
   goldReward: 6000
   tasks:
   - {fileID: 11400000, guid: 6731596d178fb594b84bb3bb0dc48911, type: 2}
+  - {fileID: 11400000, guid: 6731596d178fb594b84bb3bb0dc48911, type: 2}
   Sequential: 0
   CurrentTask: 0

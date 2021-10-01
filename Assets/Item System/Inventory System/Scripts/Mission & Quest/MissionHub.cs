@@ -30,7 +30,7 @@ namespace Dreamers.InventorySystem.MissionSystem {
                 foreach (var item in OpenSideQuest)
                 {
                     SideQuests.Add(item.MissionID, item);
-                    Register(item);
+                    item.AcceptQuest();
                 }
             }
         }
@@ -39,7 +39,7 @@ namespace Dreamers.InventorySystem.MissionSystem {
             if (!SideQuests.ContainsKey(SO.MissionID))
             {
                 SideQuests.Add(SO.MissionID, SO);
-                SO.AcceptQuest();
+                Register(SO);
                 return true;
             } else
                 return false;
@@ -48,7 +48,7 @@ namespace Dreamers.InventorySystem.MissionSystem {
         {
             //TODO Check completed Story mission list if not completed already add 
 
-            OpenStoryMissions.Add(SO);
+//            OpenStoryMissions.Add(SO);
         }
 
         public void Register(MissionQuestSO SO)

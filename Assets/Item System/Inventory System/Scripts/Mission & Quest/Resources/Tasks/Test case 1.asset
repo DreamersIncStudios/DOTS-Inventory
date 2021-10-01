@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Test case 1
   m_EditorClassIdentifier: 
   _name: 'Kill Cubes '
-  taskTypes: 1
+  tasktype: 2
   complete: 0
   defeatWhat: 0
   defeatHowMany: 30

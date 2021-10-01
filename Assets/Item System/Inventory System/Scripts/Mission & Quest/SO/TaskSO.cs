@@ -8,12 +8,12 @@ namespace Dreamers.InventorySystem.MissionSystem.Task
     {
         public string Name { get { return _name; } }
         [SerializeField] string _name;
-        public TaskTypes TaskType { get { return taskTypes; } }
-        [SerializeField] TaskTypes taskTypes;
-
+        public TaskTypes TaskType { get { return tasktype; } }
+       [SerializeField] private TaskTypes tasktype;
         public bool Complete { get { return complete; } }
-            [SerializeField] bool complete;
-        public uint TaskID { get; private set; }
+        [SerializeField] bool complete;
+        //TODO show IDNumber
+        [SerializeField] public uint TaskID { get; private set; }
   
         public void QuestRequirementsMet() {
             //TODO Implement UI Change
@@ -23,13 +23,17 @@ namespace Dreamers.InventorySystem.MissionSystem.Task
 
 #if UNITY_EDITOR
 
-        public void setItemID(uint ID)
+
+        public void setItemIDandType(uint ID, TaskTypes type)
         {
             if (!TaskDatabase.Tasks.TryGetValue(ID, out _))
+            {
                 this.TaskID = ID;
+                tasktype = type;
+            }
             else
             {
-                setItemID(ID + 1);
+                setItemIDandType(ID + 1, type);
             }
         }
     

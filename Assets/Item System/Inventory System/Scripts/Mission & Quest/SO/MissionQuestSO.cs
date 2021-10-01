@@ -24,7 +24,8 @@ namespace Dreamers.InventorySystem.MissionSystem.SO
         public IPurchasable ItemReward { get { return itemReward; } }
         [SerializeField] IPurchasable itemReward;
         public TaskTypes questType { get; private set; }
-        public bool IsSideQuest { get; private set; }
+        public bool IsSideQuest { get{ return isSideQuest; }}
+        [SerializeField] bool isSideQuest;
         public uint Value { get { return 150; } }
         public uint MaxStackCount { get { return 0; } }
         public bool Stackable { get { return false; } }
@@ -47,7 +48,7 @@ namespace Dreamers.InventorySystem.MissionSystem.SO
             }
         }
         public void SetSideQuest(bool set) {
-            IsSideQuest = set;
+            isSideQuest = set;
         }
 
 
@@ -61,6 +62,14 @@ namespace Dreamers.InventorySystem.MissionSystem.SO
 #endif
         // determine if virtual or abstract
         public  void AcceptQuest() {
+            workingTasks = new List<TaskSO>();
+            foreach (var task in Tasks)
+            {
+                workingTasks.Add(Instantiate(task));
+                Debug.Log(task.TaskType);
+
+            }
+
             if (IsSideQuest)
             {
                 hub.AddMissionSide(this);
@@ -68,13 +77,6 @@ namespace Dreamers.InventorySystem.MissionSystem.SO
             else {
                 hub.UnlockStoryMisstion(this);
             }
-
-            workingTasks = new List<TaskSO>();
-            foreach (var task in Tasks)
-            {
-                workingTasks.Add(Instantiate(task));
-            }
-            hub.Register(this);
             numberOfCompleteTask = new int();
         }
         public  void CompleteQuest() {
