@@ -17,6 +17,7 @@ MonoBehaviour:
   objective: 'Kill 30 cubes '
   reqdLevel: 0
   goldReward: 6000
+  isSideQuest: 1
   tasks:
   - {fileID: 11400000, guid: 6731596d178fb594b84bb3bb0dc48911, type: 2}
   - {fileID: 11400000, guid: 6731596d178fb594b84bb3bb0dc48911, type: 2}

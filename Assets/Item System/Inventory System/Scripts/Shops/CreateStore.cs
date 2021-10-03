@@ -20,7 +20,7 @@ namespace Dreamers.InventorySystem
         
         public Shop shop;
 
-        private void Awake()
+        private void Start()
         {
 
             shop = new Shop(StoreType.ToString(), StoreType,output());
