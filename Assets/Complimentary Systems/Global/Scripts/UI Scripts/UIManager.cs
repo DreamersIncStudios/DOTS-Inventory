@@ -61,7 +61,10 @@ namespace Dreamers.Global
         private GameObject SliderPrefab;
         // write anchoring system
 
+        #region Modal Windows
+        public GameObject StatsWindow;
 
+        #endregion
 
         public GameObject GetPanel(Transform Parent, Vector2 Size, Vector2 Position)
         {

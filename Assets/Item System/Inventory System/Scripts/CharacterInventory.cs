@@ -9,7 +9,7 @@ using Stats;
 
 namespace Dreamers.InventorySystem
 {
-    public class CharacterInventory : MonoBehaviour,IConvertGameObjectToEntity
+    public class CharacterInventory : MonoBehaviour, IConvertGameObjectToEntity
     {
         private BaseCharacter PC => this.GetComponent<BaseCharacter>();
         private Animator anim => this.GetComponent<Animator>();
@@ -23,6 +23,7 @@ namespace Dreamers.InventorySystem
 
         public EquipmentSave Save;
 #endif
+        [SerializeField] Canvas menuCanvas;
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
             self = entity;
@@ -30,7 +31,7 @@ namespace Dreamers.InventorySystem
 
         public void Start()
         {
-            Menu = new DisplayMenu(PC);
+            Menu = new DisplayMenu(PC,menuCanvas);
             QuestLog = new MissionHub(null, null, new List<MissionSystem.SO.MissionQuestSO>());
             Instantiate( QuestDatabase.GetQuest((uint)1)).AcceptQuest();
 #if UNITY_EDITOR
@@ -39,13 +40,18 @@ namespace Dreamers.InventorySystem
             Gold = 2000; //TODO remove in final 
 
         }
-        bool CloseMenu => Input.GetKeyUp(KeyCode.I) && Menu.Displayed;
-        bool OpenMenu => Input.GetKeyUp(KeyCode.I) && !Menu.Displayed;
+ 
+        bool OpenCloseMenu => Input.GetKeyUp(KeyCode.I) ;
         private void Update()
         {
-            if (CloseMenu) { Menu.CloseCharacterMenu(); }
-            if (OpenMenu)
-            { Menu.OpenCharacterMenu(Inventory); }
+            if (OpenCloseMenu)
+            {
+                if (!Menu.Displayed)
+                    Menu.OpenCharacterMenu(Inventory);
+                else
+                    Menu.CloseCharacterMenu();
+            }
+
         }
         public void EquipWeaponAnim()
         {
