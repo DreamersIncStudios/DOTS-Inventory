@@ -6,6 +6,7 @@ using Dreamers.InventorySystem.Base;
 using Dreamers.InventorySystem.UISystem;
 using Dreamers.InventorySystem.MissionSystem;
 using Stats;
+using Dreamers.InventorySystem.Interfaces;
 
 namespace Dreamers.InventorySystem
 {
@@ -41,17 +42,9 @@ namespace Dreamers.InventorySystem
 
         }
  
-        bool OpenCloseMenu => Input.GetKeyUp(KeyCode.I) ;
         private void Update()
         {
-            if (OpenCloseMenu)
-            {
-                if (!Menu.Displayed)
-                    Menu.OpenCharacterMenu(Inventory);
-                else
-                    Menu.CloseCharacterMenu();
-            }
-
+ 
         }
         public void EquipWeaponAnim()
         {

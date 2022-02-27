@@ -62,7 +62,10 @@ namespace Dreamers.Global
         // write anchoring system
 
         #region Modal Windows
+        public GameObject ModalWindow;
         public GameObject StatsWindow;
+        public GameObject InventoryWindow;
+
 
         #endregion
 

@@ -67,6 +67,7 @@ namespace Dreamers.InventorySystem
 
         public GameObject WeaponModel { get; set; }
 
+
         public void Equip(BaseCharacter player)
         {
             if (player.Level >= LevelRqd)
@@ -94,6 +95,12 @@ namespace Dreamers.InventorySystem
         }
         //TODO Should this be a bool instead of Void
 
+        /// <summary>
+        /// Equip Item in Inventory to Another Character
+        /// </summary>
+        /// <param name="characterInventory"></param>
+        /// <param name="player"></param>
+        /// <returns></returns>
         public bool EquipItem(CharacterInventory characterInventory, BaseCharacter player)
         {
             EquipmentBase Equipment = characterInventory.Equipment;
@@ -139,7 +146,22 @@ namespace Dreamers.InventorySystem
             }
 
         }
+        /// <summary>
+        /// Equip Item to Self
+        /// </summary>
+        /// <param name="characterInventory"></param>
+        /// <returns></returns>
+        public bool EquipItem(CharacterInventory characterInventory)
+        {
+            return EquipItem(characterInventory, characterInventory.GetComponent<BaseCharacter>());
+        }
 
+        /// <summary>
+        /// Unequip item from character and return to target inventory
+        /// </summary>
+        /// <param name="characterInventory"></param>
+        /// <param name="player"></param>
+        /// <returns></returns>
         public bool Unequip(CharacterInventory characterInventory, BaseCharacter player)
         {
             EquipmentBase Equipment = characterInventory.Equipment;
@@ -150,6 +172,15 @@ namespace Dreamers.InventorySystem
             Equipment.EquippedWeapons.Remove(this.Slot);
             Equipped = false;
             return true; ;
+        }
+        /// <summary>
+        /// Unequip item from self and return inventory
+        /// </summary>
+        /// <param name="characterInventory"></param>
+        /// <returns></returns>
+        public bool Unequip(CharacterInventory characterInventory)
+        {
+            return Unequip(characterInventory, characterInventory.GetComponent<BaseCharacter>());
         }
         public override void Convert(Entity entity, EntityManager dstManager)
         { 

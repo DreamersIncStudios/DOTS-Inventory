@@ -13,7 +13,9 @@ namespace Dreamers.InventorySystem.Base {
             ItemsInInventory = new List<ItemSlot>();
             MaxInventorySize = size;
         }
-        // Need to Update for Stackable items;
+        //TODO Need to Update for Stackable items;
+        //TODO Remove Quest from Inventory System
+
         public bool OpenSlots(ItemBaseSO item, out ItemSlot itemSlot) {
             itemSlot = new ItemSlot();
             if (FindItemSlots(item, out List<ItemSlot> itemSlots)) { }

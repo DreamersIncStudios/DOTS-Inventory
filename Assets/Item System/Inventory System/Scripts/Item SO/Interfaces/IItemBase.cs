@@ -55,7 +55,7 @@ namespace Dreamers.InventorySystem.Interfaces
         }
 #endif
 
-        public void Use(CharacterInventory characterInventory)
+        public virtual void Use(CharacterInventory characterInventory)
         {
             characterInventory.Inventory.RemoveFromInventory(this);
         }

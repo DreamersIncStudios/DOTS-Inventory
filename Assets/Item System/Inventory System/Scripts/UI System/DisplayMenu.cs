@@ -20,36 +20,11 @@ namespace Dreamers.InventorySystem.UISystem
         Canvas getCanvas;
         public DisplayMenu(BaseCharacter player, Canvas MenuCanvas) {
             Manager = UIManager.instance;
-            this.Character = player;
             getCanvas = MenuCanvas;
             Displayed = false;
         }
 
-        public void OpenCharacterMenu(InventoryBase inventory) {
-
-         CreateMenu();
-            Displayed = true;
-        }
-
-        public void CloseCharacterMenu() {
-            Transform[] children = getCanvas.GetComponentsInChildren<Transform>();
-            foreach (Transform child in getCanvas.transform)
-            {
-                Object.Destroy(child.gameObject);
-            }
-
-            Displayed = false;
-        }
-
-        private BaseCharacter Character;
-
-        GameObject statPanel;
-        void CreateMenu()
-        {
-            statPanel = Object.Instantiate(Manager.StatsWindow, getCanvas.transform);
-            CharacterStatModal characterStat = statPanel.GetComponent<CharacterStatModal>();
-            characterStat.ShowAsCharacterStats(Character, Character.GetComponent<CharacterInventory>().Equipment);
-        }
+ 
 
         GameObject TabView;
         public Sprite[] TabIcons;
