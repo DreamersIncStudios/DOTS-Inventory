@@ -63,6 +63,7 @@ namespace Dreamers.Global
 
         #region Modal Windows
         public GameObject ModalWindow;
+        public GameObject ModalMenu;
         public GameObject StatsWindow;
         public GameObject InventoryWindow;
 

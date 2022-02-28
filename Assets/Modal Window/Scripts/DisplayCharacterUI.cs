@@ -1,5 +1,6 @@
 using Dreamers.Global;
 using Dreamers.InventorySystem.Base;
+using Dreamers.ModalWindows;
 using Stats;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,11 +13,11 @@ namespace Dreamers.InventorySystem.UISystem
     {
         UIManager Manager;
 
-        bool OpenCloseMenu => Input.GetKeyUp(KeyCode.I);
+        bool OpenCloseMenu => Input.GetKeyUp(KeyCode.I) || Input.GetKeyUp(KeyCode.JoystickButton7);
         [SerializeField] Canvas getCanvas;
         public bool Displayed { get; private set; }
         InventoryBase Inventory => character.GetComponent<CharacterInventory>().Inventory;
-
+        [SerializeField] List<MenuButtons> menuItems;
         private void Awake()
         {
             Manager = UIManager.instance;
@@ -41,7 +42,7 @@ namespace Dreamers.InventorySystem.UISystem
         {
             foreach (Transform child in getCanvas.transform)
             {
-                Object.Destroy(child.gameObject);
+                Destroy(child.gameObject);
             }
 
             Displayed = false;
@@ -52,10 +53,10 @@ namespace Dreamers.InventorySystem.UISystem
         void CreateMenu()
         {
             Manager = UIManager.instance;
-
-            CharacterStatModal characterStat = Object.Instantiate(Manager.StatsWindow, getCanvas.transform).GetComponent<CharacterStatModal>();
+            CreateSideMenu();
+            CharacterStatModal characterStat = Instantiate(Manager.StatsWindow, getCanvas.transform).GetComponent<CharacterStatModal>();
             characterStat.ShowAsCharacterStats(character);
-            ItemModalWindow items = Object.Instantiate(Manager.InventoryWindow, getCanvas.transform).GetComponent<ItemModalWindow>();
+            ItemModalWindow items = Instantiate(Manager.InventoryWindow, getCanvas.transform).GetComponent<ItemModalWindow>();
             items.ShowAsCharacterInventory(character.GetComponent<CharacterInventory>());
         }
         public void OpenCharacterMenu(InventoryBase inventory)
@@ -65,5 +66,10 @@ namespace Dreamers.InventorySystem.UISystem
             Displayed = true;
         }
 
+        void CreateSideMenu() {
+            ModalMenu menu = Instantiate(Manager.ModalMenu, getCanvas.transform).GetComponent<ModalMenu>();
+            menu.DisplayMenu("Still In Dev", menuItems);
+        
+        }
     }
 }

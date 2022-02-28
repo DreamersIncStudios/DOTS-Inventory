@@ -27,12 +27,10 @@ namespace Dreamers.InventorySystem.UISystem
 
         [Header("Footer")]
         [SerializeField] Transform footerArea;
-        InventoryBase inventoryToDisplay;
+        InventoryBase inventoryToDisplay => charInventory.Inventory;
         CharacterInventory charInventory;
         public void ShowAsCharacterInventory(CharacterInventory inventory) {
-
-            inventoryToDisplay = inventory.Inventory;
-            charInventory = inventory;
+            charInventory =  inventory;
             itemsOnDisplay = new List<Button>();
             DisplayItems(ItemType.None);
            
@@ -45,12 +43,14 @@ namespace Dreamers.InventorySystem.UISystem
         /// Show Item in Inventory basedon the filter selected 
         /// </summary>
         /// <param name="filter"> Filter selection of none shows all items </param>
+
+        ItemType curFilter;
        void DisplayItems(ItemType filter) {
 
             if (itemsOnDisplay.Count != 0) {
                 ClearItemList();
             }
-
+            curFilter = filter;
             for (int i = 0; i < inventoryToDisplay.ItemsInInventory.Count; i++)
             {
                 ItemSlot Slot = inventoryToDisplay.ItemsInInventory[i];
@@ -90,7 +90,17 @@ namespace Dreamers.InventorySystem.UISystem
                             });
                             break;
                     }
-                    useItem.AddListener(() => { DisplayItems(filter); });
+                    useItem.AddListener(() => { 
+                        DisplayItems(filter);
+                       var statWinodw = transform.root.GetComponentInChildren<CharacterStatModal>();
+                        if (statWinodw) {
+                            var basechar = charInventory.GetComponent<BaseCharacter>();
+
+                            //Todo rewrite so we can target other characters
+                            statWinodw.UpdateEquipmentGrid(basechar, charInventory.Equipment, charInventory);
+                            statWinodw.UpdatePlayerStatsText(charInventory.GetComponent<BaseCharacter>());
+                        }
+                    });
                     item.onClick.AddListener(() => {
                         ModalWindow pop = Instantiate(UIManager.instance.ModalWindow, item.transform.position, Quaternion.identity).GetComponent<ModalWindow>();
                         pop.transform.SetParent(item.transform.root);
@@ -109,6 +119,11 @@ namespace Dreamers.InventorySystem.UISystem
         public void DisplayItems(int filter) {
             DisplayItems((ItemType)filter);
         
+        }
+
+        public void Refresh() {
+            charInventory = charInventory.gameObject.GetComponent<CharacterInventory>();
+            DisplayItems(curFilter);
         }
         public void ClearItemList() {
 

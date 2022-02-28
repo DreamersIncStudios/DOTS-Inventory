@@ -19,13 +19,13 @@ namespace Dreamers.ModalWindows
         CanvasGroup group => GetComponent<CanvasGroup>();
         RectTransform windowRect => GetComponent<RectTransform>();
 
-        public void DisplayMenu(string title, List<MenuButtons> buttons, string exitText = null, UnityEvent ExitAction= null) {
+        public void DisplayMenu(string title, List<MenuButtons> buttons, string exitText = null, UnityEvent ExitAction = null) {
 
             headerArea.gameObject.SetActive(!string.IsNullOrEmpty(title));
             titleField.text = title;
             List<Button> selectionButtons = new List<Button>();
             selectionButtons.Add(SelectionButton);
-            for (int i = 0; i < buttons.Count-1; i++)
+            for (int i = 0; i < buttons.Count - 1; i++)
             {
                 selectionButtons.Add(Instantiate(SelectionButton, SelectionButton.transform.parent));
             }
@@ -35,7 +35,7 @@ namespace Dreamers.ModalWindows
                 selectionButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = buttons[i].text;
                 selectionButtons[i].onClick.AddListener(() => { buttons[index].actionToTake.Invoke(); });
             }
-              
+
             alternativeButton.gameObject.SetActive(!string.IsNullOrEmpty(exitText));
             alternativeButton.transform.SetAsLastSibling();
             alternativeButton.GetComponentInChildren<TextMeshProUGUI>().text = exitText;
@@ -45,6 +45,7 @@ namespace Dreamers.ModalWindows
             });
         }
     }
+    [System.Serializable]
     public struct MenuButtons
     {
         public string text;

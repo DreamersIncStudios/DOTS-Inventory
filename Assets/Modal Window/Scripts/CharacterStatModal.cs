@@ -46,18 +46,29 @@ namespace Dreamers.InventorySystem.UISystem
             {
                 curEquip.Add(Instantiate(EquipmentButton, EquipmentButton.transform.parent));
             }
+            UpdateEquipmentGrid(character, equipmentBase, inventory);
+
+        }
+
+        public void UpdateEquipmentGrid(BaseCharacter character, EquipmentBase equipmentBase, CharacterInventory inventory) {
+
             for (int i = 0; i < System.Enum.GetValues(typeof(WeaponSlot)).Length; i++)
             {
                 int index = i;
+                curEquip[index].onClick = new Button.ButtonClickedEvent();
                 if (equipmentBase.EquippedWeapons.TryGetValue((WeaponSlot)i, out WeaponSO value))
                 {
                     curEquip[index].image.sprite = value.Icon;
-                   curEquip[i].GetComponentInChildren<TextMeshProUGUI>().text = value.ItemName;
+                    curEquip[i].GetComponentInChildren<TextMeshProUGUI>().text = value.ItemName;
                     curEquip[index].onClick.AddListener(() => {
-                        value.Unequip(inventory, character);
+                        value.Unequip(inventory);
                         curEquip[index].image.sprite = defaultButton;
                         curEquip[index].GetComponentInChildren<TextMeshProUGUI>().text = "";
                         UpdatePlayerStatsText(character);
+                        var item = transform.root.GetComponentInChildren<ItemModalWindow>();
+                         if (item) {
+                        item.Refresh();
+                            }
                         curEquip[index].onClick = new Button.ButtonClickedEvent();
                     });
                 }
@@ -65,14 +76,16 @@ namespace Dreamers.InventorySystem.UISystem
                 {
                     curEquip[i].image.sprite = defaultButton;
                     curEquip[i].GetComponentInChildren<TextMeshProUGUI>().text = "";
-;                }
+                    ;
+                }
             }
 
             for (int i = 0; i < System.Enum.GetValues(typeof(ArmorType)).Length; i++)
             {
-                int index = i+3;
+                int index = i + 3;
+                curEquip[index].onClick = new Button.ButtonClickedEvent();
 
-                if (equipmentBase   .EquippedArmor.TryGetValue((ArmorType)i, out ArmorSO value))
+                if (equipmentBase.EquippedArmor.TryGetValue((ArmorType)i, out ArmorSO value))
                 {
                     curEquip[index].image.sprite = value.Icon;
                     curEquip[index].GetComponentInChildren<TextMeshProUGUI>().text = value.ItemName;
@@ -81,6 +94,10 @@ namespace Dreamers.InventorySystem.UISystem
                         curEquip[index].image.sprite = defaultButton;
                         curEquip[index].GetComponentInChildren<TextMeshProUGUI>().text = "";
                         UpdatePlayerStatsText(character);
+                        var item = transform.root.GetComponentInChildren<ItemModalWindow>();
+                       if (item) {
+                            item.Refresh();
+                         }
                         curEquip[index].onClick = new Button.ButtonClickedEvent();
                     });
                 }
@@ -93,13 +110,7 @@ namespace Dreamers.InventorySystem.UISystem
             }
 
 
-        }
 
-        public void UpdateEquipmentGrid(EquipmentBase equipmentBase) {
-           
-
-
-        
         }
 
 
