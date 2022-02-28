@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
 using Stats;
-using Dreamers.InventorySystem.Base;
+using Dreamers.InventorySystem.Interfaces;
 using Unity.Burst;
 using Unity.Jobs;
 using Unity.Collections;
@@ -26,15 +26,19 @@ namespace Dreamers.InventorySystem {
         [SerializeField] private TypeOfGeneralItem _GeneralType;
         public TypeOfGeneralItem GeneralItemType { get { return _GeneralType; } }
 
-
-        public override void Use(CharacterInventory characterInventory, int IndexOf, BaseCharacter player)
+        /// <summary>
+        /// Use item on Another Character
+        /// </summary>
+        /// <param name="inventoryToUse">Inventory Item is being removed from</param>
+        /// <param name="character">Targer Character item to be used on</param>
+        public override void Use(CharacterInventory inventoryToUse, BaseCharacter character)
         {
             /// Rewrite this system to be entity based 
-            Use(characterInventory, IndexOf);
-            Material CharacterMaterial = player.GetComponent<Renderer>().material;
+            Use(inventoryToUse);
+            Material CharacterMaterial = character.GetComponent<Renderer>().material;
             EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         
-            PlayerStatComponent pc   =  entityManager.GetComponentData<PlayerStatComponent>(player.selfEntityRef);
+            PlayerStatComponent pc   =  entityManager.GetComponentData<PlayerStatComponent>(character.selfEntityRef);
             if (Iterations == 0)
             {
                 switch (RecoverWhat)
@@ -75,7 +79,14 @@ namespace Dreamers.InventorySystem {
                 entityManager.AddComponentData(pc.selfEntityRef, new TimedHeal() { Duruation = Frequency, Frequency = Frequency, Iterations = Iterations, RecoverAmount = (int)RecoverAmount });
             }
         }
-
+        /// <summary>
+        /// use item on Self 
+        /// </summary>
+        /// <param name="inventoryToUse"></param>
+        public override void Use(CharacterInventory inventoryToUse) {
+            Use(inventoryToUse, inventoryToUse.GetComponent<BaseCharacter>());
+        
+        }
         public override void Convert(Entity entity, EntityManager dstManager)
         { 
         

@@ -349,6 +349,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 784174261}
+  - component: {fileID: 784174260}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -356,6 +357,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &784174260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 784174259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7058fd0cb5dcc3f40ab7883272de3568, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &784174261
 Transform:
   m_ObjectHideFlags: 0
@@ -382,12 +395,12 @@ GameObject:
   - component: {fileID: 830280128}
   - component: {fileID: 830280127}
   - component: {fileID: 830280126}
-  - component: {fileID: 830280132}
   - component: {fileID: 830280131}
   - component: {fileID: 830280130}
   - component: {fileID: 830280133}
   - component: {fileID: 830280136}
   - component: {fileID: 830280134}
+  - component: {fileID: 830280132}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Player
@@ -504,23 +517,32 @@ MonoBehaviour:
     ItemsInInventory:
     - Item: {fileID: 11400000, guid: 50da1fbcb683d264ea4ebaa5b25ada0a, type: 2}
       Count: 1
+    - Item: {fileID: 11400000, guid: 6da72a949f5f2b4448689132018a5fd4, type: 2}
+      Count: 1
+    - Item: {fileID: 11400000, guid: 1570f87a4daa73449b19f524906d9f5f, type: 2}
+      Count: 1
+    - Item: {fileID: 11400000, guid: 846e8c95810073849808c87ddce0293a, type: 2}
+      Count: 1
+    - Item: {fileID: 11400000, guid: 5fa69137951380a40bd60918be05ae65, type: 2}
+      Count: 20
     - Item: {fileID: 11400000, guid: 9da3c7a8ad3ecfc42917d92dd4b84223, type: 2}
       Count: 1
-    - Item: {fileID: 11400000, guid: 8a999ef255c4dc745b9d1f6b708c6825, type: 2}
-      Count: 1
-    MaxInventorySize: 30
+    MaxInventorySize: 40
   Equipment:
     CurrentActivationPoints: 0
     MaxActivationPoints: 0
     QuickAccessItems: []
     NumOfQuickAccessSlots: 0
-  Gold: 5000
+  QuestLog:
+    SelectedMission: {fileID: 0}
   Save:
-    EquippedWeapons: []
+    EquippedWeapons:
+    - {fileID: 11400000, guid: 50da1fbcb683d264ea4ebaa5b25ada0a, type: 2}
     EquippedArmors:
     - {fileID: 11400000, guid: 1570f87a4daa73449b19f524906d9f5f, type: 2}
     - {fileID: 11400000, guid: defbe74f21f853f46b55eb48e670f46d, type: 2}
     - {fileID: 11400000, guid: 6da72a949f5f2b4448689132018a5fd4, type: 2}
+  menuCanvas: {fileID: 1141070541}
 --- !u!114 &830280132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -528,16 +550,27 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 830280125}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb84b9d0264a299428aff52845c91508, type: 3}
+  m_Script: {fileID: 11500000, guid: 48003e2bcfcc00d479441ac4e208e5fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ChangeValue: 25
-  addering:
-  - {fileID: 11400000, guid: 5fa69137951380a40bd60918be05ae65, type: 2}
-  - {fileID: 11400000, guid: defbe74f21f853f46b55eb48e670f46d, type: 2}
-  - {fileID: 11400000, guid: 8a999ef255c4dc745b9d1f6b708c6825, type: 2}
+  CharClass:
+    title: 9
+    Level: 1
+    Strength: 20
+    Vitality: 20
+    Awareness: 20
+    Speed: 20
+    Skill: 20
+    Resistance: 20
+    Concentration: 20
+    WillPower: 20
+    Charisma: 20
+    Luck: 20
+    difficultyMod: 20
+    LevelMod: 20
+  CharacterName: Ethan Knightman
 --- !u!114 &830280133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -779,6 +812,171 @@ MonoBehaviour:
       data1: 0
       data2: 0
   defaultFrameSettings: 0
+--- !u!1 &1141070538
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1141070542}
+  - component: {fileID: 1141070541}
+  - component: {fileID: 1141070540}
+  - component: {fileID: 1141070539}
+  m_Layer: 5
+  m_Name: Canvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1141070539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1141070538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &1141070540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1141070538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 1
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
+--- !u!223 &1141070541
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1141070538}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!224 &1141070542
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1141070538}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
+--- !u!1 &1213931559
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1213931562}
+  - component: {fileID: 1213931561}
+  - component: {fileID: 1213931560}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1213931560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213931559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+--- !u!114 &1213931561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213931559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!4 &1213931562
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213931559}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1496049537
 GameObject:
   m_ObjectHideFlags: 0
@@ -789,6 +987,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1496049538}
   - component: {fileID: 1496049539}
+  - component: {fileID: 1496049540}
   m_Layer: 0
   m_Name: 'UI Manager '
   m_TagString: Untagged
@@ -822,6 +1021,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e02f2b4d39f2cc45a96d9b39cd52cfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ModalWindow: {fileID: 7347563684732277479, guid: 8fd977f7c7a3f94479fc0cfb256c7c44,
+    type: 3}
+  StatsWindow: {fileID: 6156323984239388499, guid: 8b1fdaf5814953c4cb7a356f4b22d464,
+    type: 3}
+  InventoryWindow: {fileID: 6698811826374894524, guid: ce98a503923e2ee408a52e3cc9ea8e94,
+    type: 3}
+--- !u!114 &1496049540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1496049537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe11e4f5f0481294a937b4296668d15c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  getCanvas: {fileID: 1141070541}
+  character: {fileID: 830280130}
 --- !u!1 &1934555974
 GameObject:
   m_ObjectHideFlags: 0
@@ -831,8 +1050,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1934555976}
-  - component: {fileID: 1934555975}
   - component: {fileID: 1934555977}
+  - component: {fileID: 1934555975}
   m_Layer: 0
   m_Name: StoreFront
   m_TagString: Untagged
@@ -849,28 +1068,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1934555974}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ea85ce53b4299c42873348acc48298a, type: 3}
+  m_Script: {fileID: 11500000, guid: 1a1ce6f8f449a0343a90a7650c411834, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Base:
-    StoreName: FIrst Store
-    StoreInventory:
-      ItemsInInventory:
-      - Item: {fileID: 11400000, guid: defbe74f21f853f46b55eb48e670f46d, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 50da1fbcb683d264ea4ebaa5b25ada0a, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 1570f87a4daa73449b19f524906d9f5f, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 6da72a949f5f2b4448689132018a5fd4, type: 2}
-        Count: 0
-      - Item: {fileID: 11400000, guid: 9da3c7a8ad3ecfc42917d92dd4b84223, type: 2}
-        Count: 0
-      MaxInventorySize: 0
-    CharacterInventory: {fileID: 830280131}
-    Sell: 0.75
-    Buy: 1
-  player: {fileID: 830280125}
+  StoreType: 4
+  InitialItemsID: 010000000100000001000000
+  shop:
+    Sell: 0
+    Buy: 0
 --- !u!4 &1934555976
 Transform:
   m_ObjectHideFlags: 0

@@ -21,7 +21,8 @@ namespace Dreamers.Global
             UIPanelPrefab = Resources.Load("UI Prefabs/Panel") as GameObject;
             ButtonPrefab = Resources.Load("UI Prefabs/Button") as GameObject;
             TextBoxPrefab = Resources.Load("UI Prefabs/Text") as GameObject;
-       
+            SliderPrefab = Resources.Load("UI Prefabs/Slider") as GameObject;
+
         }
 
         private static GameObject _uICanvas;
@@ -57,10 +58,17 @@ namespace Dreamers.Global
         private GameObject UIPanelPrefab;
         private GameObject TextBoxPrefab;
         private GameObject ButtonPrefab;
-
+        private GameObject SliderPrefab;
         // write anchoring system
 
+        #region Modal Windows
+        public GameObject ModalWindow;
+        public GameObject ModalMenu;
+        public GameObject StatsWindow;
+        public GameObject InventoryWindow;
 
+
+        #endregion
 
         public GameObject GetPanel(Transform Parent, Vector2 Size, Vector2 Position)
         {
@@ -145,19 +153,14 @@ namespace Dreamers.Global
 
             return temp;
         }
-        public Button UIButton(Transform Parent, string TextToDisplay, Vector2 Size, Vector2 Position)
+        public Button UIButton(Transform Parent, string TextToDisplay, Vector2 Size , Vector2 Position)
         {
-            Button temp = Instantiate(ButtonPrefab).GetComponent<Button>();
-            temp.GetComponentInChildren<Text>().text = TextToDisplay;
-            temp.transform.SetParent(Parent, false);
+            Button temp = UIButton(Parent, TextToDisplay);
             RectTransform PanelRect = temp.GetComponent<RectTransform>();
-            PanelRect.pivot = new Vector2(0.5f, .5f);
-            PanelRect.anchorMax = new Vector2(0, 1);
-            PanelRect.anchorMin = new Vector2(0, 1);
             PanelRect.sizeDelta = Size;
             PanelRect.anchoredPosition = Position;
 
-            return temp;
+            return temp ;
         }
         public Image GetImage(Transform Parent, Sprite sprite=default, string name = "New Image")
         {
@@ -216,6 +219,30 @@ namespace Dreamers.Global
             PanelRect.anchorMax = new Vector2(1, 1);
             PanelRect.anchorMin = new Vector2(0, 0);
             return TextBox;
+        }
+
+
+        public Slider UISlider(Transform Parent, bool whole = true, int minValue = 1, int maxValue = 10)
+        {
+            Slider slider = Instantiate(SliderPrefab).GetComponent<Slider>();
+            slider.transform.SetParent(Parent, false);
+            RectTransform PanelRect = slider.GetComponent<RectTransform>();
+            PanelRect.pivot = new Vector2(0.5f, .5f);
+            PanelRect.anchorMax = new Vector2(0, 1);
+            PanelRect.anchorMin = new Vector2(0, 1);
+            slider.wholeNumbers = whole;
+            slider.maxValue = maxValue;
+            slider.minValue = minValue;
+            return slider;
+        }
+
+        public Slider UISlider(Transform Parent, Vector2 Size, Vector2 Position, bool whole = true, int minValue = 1, int maxValue = 10) {
+
+            Slider slider = UISlider(Parent,whole,minValue,maxValue);
+            RectTransform PanelRect = slider.GetComponent<RectTransform>();
+            PanelRect.sizeDelta = Size;
+            PanelRect.anchoredPosition = Position;
+            return slider;
         }
     }
 

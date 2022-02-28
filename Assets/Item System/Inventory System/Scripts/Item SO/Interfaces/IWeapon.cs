@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-namespace Dreamers.InventorySystem
+namespace Dreamers.InventorySystem.Interfaces
 {
     public interface IWeapon
     {

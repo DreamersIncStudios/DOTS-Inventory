@@ -74,7 +74,14 @@ namespace Dreamers.InventorySystem
         }
 
         #endregion
-        public  bool EquipItem(CharacterInventory characterInventory, int IndexOf, BaseCharacter player)
+       
+        /// <summary>
+        /// Equip Item in Inventory to Another Character
+        /// </summary>
+        /// <param name="characterInventory"></param>
+        /// <param name="player"></param>
+        /// <returns></returns>
+        public  bool EquipItem(CharacterInventory characterInventory, BaseCharacter player)
         {
             EquipmentBase Equipment = characterInventory.Equipment;
 
@@ -108,7 +115,7 @@ namespace Dreamers.InventorySystem
                 }
                 EquipmentUtility.ModCharacterStats(player, Modifiers, true);
 
-                RemoveFromInventory(characterInventory, IndexOf);
+                characterInventory.Inventory.RemoveFromInventory(this);
                 player.StatUpdate();
                 return Equipped = true;
             }
@@ -116,24 +123,50 @@ namespace Dreamers.InventorySystem
                 return Equipped =false;
             }
         }
+        
+        /// <summary>
+        /// Equip Item to Self
+        /// </summary>
+        /// <param name="characterInventory"></param>
+        /// <returns></returns>
+        public bool EquipItem(CharacterInventory characterInventory) {
+            return EquipItem(characterInventory, characterInventory.GetComponent<BaseCharacter>());
+        }
 
+        /// <summary>
+        /// Unequip item from character and return to target inventory
+        /// </summary>
+        /// <param name="characterInventory"></param>
+        /// <param name="player"></param>
+        /// <returns></returns>
         public  bool Unequip(CharacterInventory characterInventory, BaseCharacter player)
         {
             EquipmentBase Equipment = characterInventory.Equipment;
-            AddToInventory(characterInventory);
+            characterInventory.Inventory.AddToInventory(this);
             Destroy(armorModel);
            EquipmentUtility.ModCharacterStats(player, Modifiers, false);
             Equipment.EquippedArmor.Remove(this.ArmorType);
             Equipped = false;
             return true;
         }
+
+        /// <summary>
+        /// Unequip item from self and return inventory
+        /// </summary>
+        /// <param name="characterInventory"></param>
+        /// <returns></returns>
+        public bool Unequip(CharacterInventory characterInventory)
+        {
+            return Unequip(characterInventory, characterInventory.GetComponent<BaseCharacter>());
+        }
+
         public override void Convert(Entity entity, EntityManager dstManager)
         { }
 
 
 
 
-        public override void Use(CharacterInventory characterInventory, int IndexOf, BaseCharacter player)
+        public override void Use(CharacterInventory characterInventory,  BaseCharacter player)
         {
             throw new System.NotImplementedException();
         }

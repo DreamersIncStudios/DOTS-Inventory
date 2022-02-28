@@ -16,7 +16,7 @@ namespace DreamersInc.MagicSkill
         public List<GridPlaceCADSO> test;
         public void Setup ( int width = 15, int height =10, float cellsize = 5f) {
             grid = new GridGeneric<MagicSkillGridObject>(width, height, cellsize, (GridGeneric<MagicSkillGridObject> g, int x, int y) => new MagicSkillGridObject(g, x, y)
-            , true);
+            );
             this.width = width;
             this.height = height;
             this.cellsize = cellsize;

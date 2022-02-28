@@ -13,21 +13,16 @@ namespace DreamersInc.MagicSkill
         }
         public PlacedAugmentedGrid(Vector2Int origin,  AugmentGrid grid) {
             this.origin = origin;
-            this.direction = grid.dir;
+         //   this.direction = grid.dir;
             this.placedObject = grid;
         }
 
         public readonly Vector2Int origin;
-        private readonly Dir direction;
+       // private readonly Dir direction;
         private readonly AugmentGrid placedObject;
         public AugmentGrid GetPlaceGrid
         {
             get { return placedObject; }
         }
-        //public List<Vector2Int> GetGridPositionList() {
-        //    return placedObject.grid.GetGridObject(origin).
-        //        GetGridPositionList(origin,placedObject);
-        //}
-
     }
 }

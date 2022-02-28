@@ -112,6 +112,8 @@ namespace Dreamers.InventorySystem.UISystem
                         }
                         break;
                 }
+
+                inventoryPanel.Refresh();
             }
 
             private ItemSlot itemSlot;

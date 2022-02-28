@@ -1,70 +1,97 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-
+using Dreamers.InventorySystem.Interfaces;
 namespace Dreamers.InventorySystem.Base {
     [System.Serializable]
     public class InventoryBase
     {
         public List<ItemSlot> ItemsInInventory;
         public uint MaxInventorySize;
+        public bool OverBurdened => ItemsInInventory.Count >= MaxInventorySize;
         public InventoryBase(uint size) 
         {
             ItemsInInventory = new List<ItemSlot>();
             MaxInventorySize = size;
         }
-        // Need to Update for Stackable items;
-        public bool OpenSlots(ItemSlot Slot) {
-            if (Slot.Item.Stackable) 
-            {
-                for (int i = 0; i < ItemsInInventory.Count; i++)
-                {
-                    ItemSlot itemInInventory = ItemsInInventory[i];
-                    if (itemInInventory.Item.ItemID == Slot.Item.ItemID && itemInInventory.Count < 99)
-                    {
-                        return true;
+        //TODO Need to Update for Stackable items;
+        //TODO Remove Quest from Inventory System
 
-                    }
-                    if (itemInInventory.Item.ItemID == Slot.Item.ItemID && itemInInventory.Count == 99)
+        public bool OpenSlots(ItemBaseSO item, out ItemSlot itemSlot) {
+            itemSlot = new ItemSlot();
+            if (FindItemSlots(item, out List<ItemSlot> itemSlots)) { }
+            {
+                foreach (var slot in itemSlots)
+                {
+                    if (!slot.Filled)
                     {
-                        return ItemsInInventory.Count < MaxInventorySize;
+                        itemSlot = slot;
+                        return true;
                     }
                 }
-                return false;
             }
-            else
-            return ItemsInInventory.Count < MaxInventorySize;  
-        }
-        public ItemBaseSO FirstIndexOfItem(int ItemID) {
-            foreach (ItemSlot itemSlot in ItemsInInventory) {
-                if (itemSlot.Item.ItemID == ItemID)
-                    return itemSlot.Item;
-            }
+                return false ;
 
-            return null;
+
+        }
+        public bool FirstIndexOfItem(int ItemID, out ItemSlot returnedItem) {
+
+            bool ans =FindItemSlots(ItemID, out List<ItemSlot> itemSlots);
+            returnedItem = itemSlots[0];
+            return ans;
         }
 
-        public ItemSlot FindItemSlot(int ItemID)
+        public bool FirstIndexOfItem(ItemBaseSO item, out ItemSlot returnedItem)
         {
+            return FirstIndexOfItem((int)item.ItemID, out returnedItem);
+        }
+
+        public bool FindItemSlots(int ItemID, out List<ItemSlot> item)
+        {
+            item = new List<ItemSlot>();
             foreach (ItemSlot itemSlot in ItemsInInventory)
             {
                 if (itemSlot.Item.ItemID == ItemID)
-                    return itemSlot;
+                {
+                   item.Add(itemSlot);
+                   
+                }
             }
 
-            return new ItemSlot();
+            return item.Count>0;
         }
 
-        public ItemSlot FindItemSlot(int ItemID, out int indexOf)
+        public bool FindItemSlots(ItemBaseSO item, out List<ItemSlot> returnedItem)
+        {
+            return FindItemSlots((int)item.ItemID, out returnedItem);
+        }
+
+        public bool FindItemSlotIndex(int ItemID, out int indexOf)
         {
             indexOf = -1;
             foreach (ItemSlot itemSlot in ItemsInInventory)
             {
                 if (itemSlot.Item.ItemID == ItemID)
+                {
                     indexOf = ItemsInInventory.IndexOf(itemSlot);
-                    return itemSlot;
+                    return true;
+                }
             }
 
-            return new ItemSlot();
+            return false;
+        }
+
+        public bool FindItemSlotIndex(int ItemID, out ItemSlot slot)
+        {
+            foreach (ItemSlot itemSlot in ItemsInInventory)
+            {
+                if (itemSlot.Item.ItemID == ItemID)
+                {
+                    slot = itemSlot;
+                    return true;
+                }
+            }
+            slot = default;
+            return false;
         }
 
         public List<ItemSlot> GetItemsByType(ItemType Type) {
@@ -92,7 +119,81 @@ namespace Dreamers.InventorySystem.Base {
             MaxInventorySize = inventorySave.MaxInventorySize;
             ItemsInInventory = inventorySave.ItemsInInventory;
         }
+        public bool AddToInventory(ItemBaseSO item ) {
+            if (OverBurdened && OpenSlots(item, out _))
+                return false;
+            else
+            {
+                if (item.Stackable)
+                {
+                    if (OpenSlots(item, out ItemSlot itemSlot))
+                    {
+                        itemSlot.Count++;
 
+                        return true;
+                    }
+                    else {
+                        AddNew(item);
+                            return true;
+                    }
+                }
+                else {
+                    AddNew(item);
+                    return true;
+                }
+            }
+        }
+        private void AddNew(ItemBaseSO item) {
+            ItemsInInventory.Add( new ItemSlot()
+            {
+                Item = item,
+                Count = 1
+            });
+        
+        }
+
+        public bool AddToInventory(int itemID) {
+           return AddToInventory( ItemDatabase.GetItem(itemID));
+        }
+
+        public bool RemoveFromInventory(int index) {
+            return RemoveFromInventory(ItemDatabase.GetItem(index));
+        }
+        public bool RemoveFromInventory(ItemBaseSO item) {
+            if (item.Type == ItemType.Quest) {
+                return false;
+            }
+            else
+            {
+                ForceRemoveFromInventory(item);
+                return true;
+            }
+        
+        }
+
+        public void ForceRemoveFromInventory(ItemBaseSO item) {
+            if (item.Stackable)
+            {
+                FirstIndexOfItem(item, out ItemSlot slot);
+                int index = ItemsInInventory.IndexOf(slot);
+                slot.Count--;
+                if (slot.Count <= 0)
+                {
+                    ItemsInInventory.RemoveAt(index);
+                }
+                else
+                {
+                    ItemsInInventory[index] = slot;
+                }
+            }
+            else
+            {
+                FindItemSlotIndex((int)item.ItemID, out int index);
+                ItemsInInventory.RemoveAt(index);
+
+            }
+
+        }
 
         public bool OpenSlot { get { return ItemsInInventory.Count < MaxInventorySize; } }
    
@@ -102,7 +203,7 @@ namespace Dreamers.InventorySystem.Base {
     public struct ItemSlot{
         public ItemBaseSO Item;
         public int Count;
-        
+        public bool Filled => Item.MaxStackCount >= Count;
     }
     [System.Serializable]
     public class InventorySave {

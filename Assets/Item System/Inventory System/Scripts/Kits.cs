@@ -26,11 +26,13 @@ namespace Dreamers.InventorySystem
         public void AddToInventory(CharacterInventory inventory) {
             foreach (WeaponSO weapon in Weapons)
             {
-                weapon.AddToInventory(inventory);
+                inventory.Inventory.AddToInventory(weapon);
+
             }
             foreach (ArmorSO armor in Armors)
             {
-                armor.AddToInventory(inventory);
+                inventory.Inventory.AddToInventory(armor);
+
             }
         }
     }

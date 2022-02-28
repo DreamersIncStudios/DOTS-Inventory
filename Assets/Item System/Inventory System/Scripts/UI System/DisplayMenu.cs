@@ -15,56 +15,16 @@ namespace Dreamers.InventorySystem.UISystem
      
         public enum PanelToRefresh { Inventory, CAD, PlayerStat, Equipment}
      
-        public bool Displayed { get { return (bool)MenuPanelParent; } }
+        public bool Displayed { get; private set; }
 
-        public DisplayMenu(BaseCharacter player ) {
+        Canvas getCanvas;
+        public DisplayMenu(BaseCharacter player, Canvas MenuCanvas) {
             Manager = UIManager.instance;
-            this.Character = player;
+            getCanvas = MenuCanvas;
+            Displayed = false;
         }
 
-        public void OpenCharacterMenu(InventoryBase inventory) {
-             GetInventoryPanel = new InventoryPanel(new Vector2(1400, 300), new Vector2(0, 150), Character);
-            GetCADPanel = new CADPanel(new Vector2(1400, 1000), new Vector2(0, 150), Character.GetComponent<CastingDevice>());
-            GetEquiqmentPanel = new EquiqmentPanel(new Vector2(400, 400), new Vector2(0, 150), Character, GetInventoryPanel);
-
-            MenuPanelParent = CreateMenu(
-        new Vector2(0, 0),
-        new Vector2(0, 0));
-
-        }
-
-        public void CloseCharacterMenu() {
-             Object.Destroy(MenuPanelParent);
-        }
-
-        private BaseCharacter Character;
-
-        GameObject MenuPanelParent { get; set; }
-        GameObject CreateMenu(Vector2 Size, Vector2 Position) {
-            if (MenuPanelParent) 
-                Object.Destroy(MenuPanelParent);
-
-            GameObject Parent = Manager.UICanvas();
-            GameObject MainPanel = Manager.GetPanel(Parent.transform, Size, Position);
-            MainPanel.transform.localScale = Vector3.one;
-            RectTransform PanelRect = MainPanel.GetComponent<RectTransform>();
-            PanelRect.pivot = new Vector2(0.5f, .5f);
-            PanelRect.anchorMax = new Vector2(1, 1);
-            PanelRect.anchorMin = new Vector2(.0f, .0f);
-
-            HorizontalLayoutGroup HLG = MainPanel.AddComponent<HorizontalLayoutGroup>();
-         //   DisplayItems = (ItemType)0; // change to zero when all tab is added
-
-
-            HLG.padding = new RectOffset() { bottom = 20, top = 20, left = 20, right = 20 };
-            HLG.spacing = 10;
-            HLG.childAlignment = TextAnchor.UpperLeft;
-            HLG.childControlHeight = true; HLG.childControlWidth = false;
-            HLG.childForceExpandHeight = true; HLG.childForceExpandWidth = true;
-            playerStats = CreatePlayerPanel(MainPanel.transform);
-            TabView = CreateTabView(MainPanel.transform);
-            return MainPanel;
-        }
+ 
 
         GameObject TabView;
         public Sprite[] TabIcons;

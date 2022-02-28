@@ -39,41 +39,35 @@ namespace DreamersInc.MagicSkill {
         }
         public static Dir GetNextDir(Dir dir)
         {
-            switch (dir)
+            return dir switch
             {
-                default:
-                case Dir.Down: return Dir.Left;
-                case Dir.Left: return Dir.Up;
-                case Dir.Up: return Dir.Right;
-                case Dir.Right: return Dir.Down;
-
-            }
+                Dir.Left => Dir.Up,
+                Dir.Up => Dir.Right,
+                Dir.Right => Dir.Down,
+                _ => Dir.Left,
+            };
         }
 
             public static int GetRotationAngle(Dir dir)
             {
-                switch (dir)
-                {
-                    default:
-                    case Dir.Down: return 0;
-                    case Dir.Left: return 90;
-                    case Dir.Up: return 180;
-                    case Dir.Right: return 270;
-
-                }
-            }
+            return dir switch
+            {
+                Dir.Left => 90,
+                Dir.Up => 180,
+                Dir.Right => 270,
+                _ => 0,
+            };
+        }
 
         public  Vector2Int GetRotationOffset(Dir dir)
         {
-            switch (dir)
+            return dir switch
             {
-                default:
-                case Dir.Down: return new Vector2Int(0,0);
-                case Dir.Left: return new Vector2Int(0, width);
-                case Dir.Up: return new Vector2Int(width, height);
-                case Dir.Right: return new Vector2Int(height, 0);
-
-            }
+                Dir.Left => new Vector2Int(0, width),
+                Dir.Up => new Vector2Int(width, height),
+                Dir.Right => new Vector2Int(height, 0),
+                _ => new Vector2Int(0, 0),
+            };
         }
 
     }

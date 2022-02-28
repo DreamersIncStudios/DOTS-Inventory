@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Entities;
+using Dreamers.InventorySystem.Interfaces;
 
 namespace Dreamers.InventorySystem
 {
@@ -13,7 +14,7 @@ namespace Dreamers.InventorySystem
         [SerializeField] private TypeOfGeneralItem _GeneralType;
         public TypeOfGeneralItem GeneralItemType { get { return _GeneralType; } }
 
-        public override void Use(CharacterInventory characterInventory, int IndexOf, BaseCharacter player)
+        public override void Use(CharacterInventory characterInventory,  BaseCharacter player)
         {
           
         }
