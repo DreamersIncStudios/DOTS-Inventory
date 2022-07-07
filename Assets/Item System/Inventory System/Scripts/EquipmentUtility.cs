@@ -7,7 +7,7 @@ using Stats;
 namespace Dreamers.InventorySystem{ 
 public static  class EquipmentUtility 
 {
-    public static void ModCharacterStats(BaseCharacter character, List<StatModifier> Modifiers, bool Add) {
+    public static void ModCharacterStats(BaseCharacter character, List<StatModifier> Modifiers, bool Add = true) {
         int MP = 1;
         if (!Add)
         {
