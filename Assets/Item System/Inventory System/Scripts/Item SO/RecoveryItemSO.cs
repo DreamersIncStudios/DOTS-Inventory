@@ -8,11 +8,12 @@ using Unity.Burst;
 using Unity.Jobs;
 using Unity.Collections;
 
-namespace Dreamers.InventorySystem {
+namespace Dreamers.InventorySystem
+{
     [System.Serializable]
-    public class RecoveryItemSO : ItemBaseSO, IRecoverItems,IGeneral
+    public class RecoveryItemSO : ItemBaseSO, IRecoverItems, IGeneral
     {
-        
+
         [SerializeField] private uint _recoverAmount;
         public uint RecoverAmount { get { return _recoverAmount; } }
         [SerializeField] private uint _iterations;
@@ -26,19 +27,15 @@ namespace Dreamers.InventorySystem {
         [SerializeField] private TypeOfGeneralItem _GeneralType;
         public TypeOfGeneralItem GeneralItemType { get { return _GeneralType; } }
 
-        /// <summary>
-        /// Use item on Another Character
-        /// </summary>
-        /// <param name="inventoryToUse">Inventory Item is being removed from</param>
-        /// <param name="character">Targer Character item to be used on</param>
-        public override void Use(CharacterInventory inventoryToUse, BaseCharacter character)
+
+        public override void Use(CharacterInventory characterInventory, BaseCharacter player)
         {
             /// Rewrite this system to be entity based 
-            Use(inventoryToUse);
-            Material CharacterMaterial = character.GetComponent<Renderer>().material;
+            Use(characterInventory);
+            Material CharacterMaterial = player.GetComponent<Renderer>().material;
             EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-        
-            PlayerStatComponent pc   =  entityManager.GetComponentData<PlayerStatComponent>(character.selfEntityRef);
+
+            PlayerStatComponent pc = entityManager.GetComponentData<PlayerStatComponent>(player.SelfEntityRef);
             if (Iterations == 0)
             {
                 switch (RecoverWhat)
@@ -74,26 +71,21 @@ namespace Dreamers.InventorySystem {
                         break;
                 }
             }
-            else {
+            else
+            {
                 pc.AdjustHealth((int)RecoverAmount);
                 entityManager.AddComponentData(pc.selfEntityRef, new TimedHeal() { Duruation = Frequency, Frequency = Frequency, Iterations = Iterations, RecoverAmount = (int)RecoverAmount });
             }
         }
-        /// <summary>
-        /// use item on Self 
-        /// </summary>
-        /// <param name="inventoryToUse"></param>
-        public override void Use(CharacterInventory inventoryToUse) {
-            Use(inventoryToUse, inventoryToUse.GetComponent<BaseCharacter>());
-        
-        }
+
         public override void Convert(Entity entity, EntityManager dstManager)
-        { 
-        
+        {
+
         }
-        void Activate() { 
-        
-        
+        void Activate()
+        {
+
+
         }
         public bool Equals(ItemBaseSO obj)
         {
@@ -106,7 +98,7 @@ namespace Dreamers.InventorySystem {
 
             // TODO: write your implementation of Equals() here
 
-           RecoveryItemSO Recover = (RecoveryItemSO)obj;
+            RecoveryItemSO Recover = (RecoveryItemSO)obj;
 
             return ItemID == Recover.ItemID && ItemName == Recover.ItemName && Value == Recover.Value && RecoverAmount == Recover.RecoverAmount &&
                 RecoverWhat == Recover.RecoverWhat && GeneralItemType == Recover.GeneralItemType && Iterations == Recover.Iterations;
@@ -115,7 +107,8 @@ namespace Dreamers.InventorySystem {
 
     }
 
-    public interface IRecoverItems {
+    public interface IRecoverItems
+    {
         uint RecoverAmount { get; }
         uint Iterations { get; }
         float Frequency { get; }
@@ -124,10 +117,12 @@ namespace Dreamers.InventorySystem {
     }
 
 
-    public enum RecoverType{
-        Health,Mana, HealthMana, Status, StatusPlusHealth, StatusPlusMana, All
+    public enum RecoverType
+    {
+        Health, Mana, HealthMana, Status, StatusPlusHealth, StatusPlusMana, All
     }
-    public struct TimedHeal : IComponentData {
+    public struct TimedHeal : IComponentData
+    {
         public float Duruation;
         public int RecoverAmount;
         public uint Iterations;
@@ -135,7 +130,8 @@ namespace Dreamers.InventorySystem {
         public bool RemoveComponent => Iterations <= 0;
     }
 
-    public class TimedHealSystem : SystemBase {
+    public partial class TimedHealSystem : SystemBase
+    {
 
         EntityQuery TimedHealEntities;
         EntityCommandBufferSystem _entityCommandBufferSystem;
@@ -143,8 +139,9 @@ namespace Dreamers.InventorySystem {
         protected override void OnCreate()
         {
             base.OnCreate();
-            TimedHealEntities = GetEntityQuery(new EntityQueryDesc() { 
-                All = new ComponentType[] { ComponentType.ReadWrite(typeof(PlayerStatComponent)), ComponentType.ReadWrite(typeof(TimedHeal))}
+            TimedHealEntities = GetEntityQuery(new EntityQueryDesc()
+            {
+                All = new ComponentType[] { ComponentType.ReadWrite(typeof(PlayerStatComponent)), ComponentType.ReadWrite(typeof(TimedHeal)) }
             });
 
             _entityCommandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
@@ -153,7 +150,8 @@ namespace Dreamers.InventorySystem {
         protected override void OnUpdate()
         {
             JobHandle systemDeps = Dependency;
-            systemDeps = new TimeHealJob() {
+            systemDeps = new TimeHealJob()
+            {
                 PlayerChunk = GetComponentTypeHandle<PlayerStatComponent>(false),
                 HealChunk = GetComponentTypeHandle<TimedHeal>(false),
                 EntitiesChunk = GetEntityTypeHandle(),
@@ -169,7 +167,7 @@ namespace Dreamers.InventorySystem {
         {
             public ComponentTypeHandle<PlayerStatComponent> PlayerChunk;
             public ComponentTypeHandle<TimedHeal> HealChunk;
-           [ReadOnly] public EntityTypeHandle EntitiesChunk;
+            [ReadOnly] public EntityTypeHandle EntitiesChunk;
             public EntityCommandBuffer.ParallelWriter CMDBuffer;
             public float DT;
             public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
@@ -183,15 +181,17 @@ namespace Dreamers.InventorySystem {
                     TimedHeal heal = Heals[i];
                     if (heal.RemoveComponent)
                     {
-                        CMDBuffer.RemoveComponent<TimedHeal>(chunkIndex,Entities[i]);
+                        CMDBuffer.RemoveComponent<TimedHeal>(chunkIndex, Entities[i]);
                     }
-                    else {
+                    else
+                    {
                         if (heal.Duruation <= 0.0f)
                         {
                             Players[i].AdjustHealth(heal.RecoverAmount);
                             heal.Duruation = heal.Frequency;
                         }
-                        else {
+                        else
+                        {
                             heal.Duruation -= DT;
                         }
                     }
