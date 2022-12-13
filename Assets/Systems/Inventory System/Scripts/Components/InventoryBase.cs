@@ -8,10 +8,17 @@ namespace Dreamers.InventorySystem.Base {
         public List<ItemSlot> ItemsInInventory;
         public uint MaxInventorySize;
         public bool OverBurdened => ItemsInInventory.Count >= MaxInventorySize;
-        public InventoryBase(uint size) 
+        public InventoryBase() 
         {
             ItemsInInventory = new List<ItemSlot>();
+        }
+
+        public void Init(uint size) {
             MaxInventorySize = size;
+        }
+        public void Init(InventoryBase save) { 
+            MaxInventorySize= save.MaxInventorySize;
+            ItemsInInventory= save.ItemsInInventory;
         }
         //TODO Need to Update for Stackable items;
         //TODO Remove Quest from Inventory System

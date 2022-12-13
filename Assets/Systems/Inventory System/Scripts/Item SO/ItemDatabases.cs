@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Dreamers.InventorySystem.Interfaces;
+using Dreamers.Global;
 
 namespace Dreamers.InventorySystem
 {
@@ -57,8 +58,8 @@ namespace Dreamers.InventorySystem
         }
 
 #if UNITY_EDITOR
-        public static class Creator { 
-        
+        public static class Creator {
+
             //[MenuItem("Assets/Create/RPG/Recovery Item")]
             //static public void CreateRecoveryItem()
             //{
@@ -69,26 +70,26 @@ namespace Dreamers.InventorySystem
             //    // need to deal with duplicate itemID numbers 
 
             //}
-            //[MenuItem("Assets/Create/RPG/Armor Item")]
-            //static public void CreateArmorItem()
-            //{
-            //    ScriptableObjectUtility.CreateAsset<ArmorSO>("Item", out ArmorSO Item);
-            //    ItemDatabase.LoadDatabaseForce();
-            //    Item.setItemID((uint)ItemDatabase.Items.Count + 1);
-            //    Debug.Log(Item.ItemID);
-            //    // need to deal with duplicate itemID numbers 
+            [MenuItem("Assets/Create/RPG/Armor Item")]
+            static public void CreateArmorItem()
+            {
+                ScriptableObjectUtility.CreateAsset<ArmorSO>("Item", out ArmorSO Item);
+                ItemDatabase.LoadDatabaseForce();
+                Item.setItemID((uint)ItemDatabase.Items.Count + 1);
+                Debug.Log(Item.ItemID);
+                // need to deal with duplicate itemID numbers 
 
-            //}
-            //[MenuItem("Assets/Create/RPG/Weapon Item")]
-            //static public void CreateWeaponItem()
-            //{
-            //    ScriptableObjectUtility.CreateAsset<WeaponSO>("Item", out WeaponSO Item);
-            //    ItemDatabase.LoadDatabaseForce();
-            //    Item.setItemID((uint)ItemDatabase.Items.Count + 1);
-            //    Debug.Log(Item.ItemID);
-            //    // need to deal with duplicate itemID numbers 
+            }
+            [MenuItem("Assets/Create/RPG/Weapon Item")]
+            static public void CreateWeaponItem()
+            {
+                ScriptableObjectUtility.CreateAsset<WeaponSO>("Item", out WeaponSO Item);
+                ItemDatabase.LoadDatabaseForce();
+                Item.setItemID((uint)ItemDatabase.Items.Count + 1);
+                Debug.Log(Item.ItemID);
+                // need to deal with duplicate itemID numbers 
 
-            //}
+            }
 
             //[MenuItem("Assets/Create/RPG/Projectile Item")]
             //     static public void CreateBlasterItem()

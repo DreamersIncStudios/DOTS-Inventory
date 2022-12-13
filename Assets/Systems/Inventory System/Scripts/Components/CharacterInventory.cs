@@ -1,4 +1,5 @@
 using Dreamers.InventorySystem.Base;
+using Stats.Entities;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Entities;
@@ -14,8 +15,34 @@ namespace Dreamers.InventorySystem
         public EquipmentBase Equipment;
 
         public void Setup() {
-            Inventory = new (10);
+            Inventory = new ();
+            Inventory.Init(10);
             Equipment = new();
+            Equipment.Init();
+
+        }
+        public void Setup(InventoryBase inventory)
+        {
+            Inventory = new();
+            Inventory.Init(inventory);
+            Equipment = new();
+            Equipment.Init();
+
+        }
+        public void Setup(EquipmentBase equipment, BaseCharacterComponent player)
+        {
+            Inventory = new();
+            Inventory.Init(10);
+            Equipment = new();
+            Equipment.Init(equipment,player);
+
+        }
+        public void Setup(InventoryBase inventory, EquipmentBase equipment, BaseCharacterComponent player)
+        {
+            Inventory = new();
+            Inventory.Init(inventory);
+            Equipment = new();
+            Equipment.Init(equipment,player);
 
         }
         public void RemoveGold(uint amount) {
@@ -30,4 +57,6 @@ namespace Dreamers.InventorySystem
                 Gold = (int)Mathf.Clamp(Gold + amount, 0, Mathf.Infinity);
         }
     }
+
+
 }

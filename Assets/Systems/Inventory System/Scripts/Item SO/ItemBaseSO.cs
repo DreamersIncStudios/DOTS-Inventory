@@ -1,6 +1,7 @@
 ﻿using Unity.Entities;
 using UnityEngine;
 using Stats;
+using Stats.Entities;
 
 namespace Dreamers.InventorySystem.Interfaces
 {
@@ -44,9 +45,8 @@ namespace Dreamers.InventorySystem.Interfaces
             characterInventory.Inventory.RemoveFromInventory(this);
         }
 
-        public abstract void Use(CharacterInventory characterInventory, BaseCharacter player);
+        public abstract void Use(CharacterInventory characterInventory, BaseCharacterComponent player);
 
-        public abstract void Convert(Entity entity, EntityManager dstManager);
 
     }
 }

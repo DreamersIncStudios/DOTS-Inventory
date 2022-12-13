@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using Stats.Entities;
 using Stats;
 namespace Dreamers.InventorySystem.Interfaces
 {
@@ -12,8 +13,8 @@ namespace Dreamers.InventorySystem.Interfaces
         bool Equipped { get; }
         HumanBodyBones EquipBone { get; }
        List<StatModifier> Modifiers { get; } // consider adding a set for levelUp equippment?
-        bool EquipItem(CharacterInventory characterInventory,  BaseCharacter player);
-        bool Unequip(CharacterInventory characterInventory, BaseCharacter player);
+        bool EquipItem(CharacterInventory characterInventory,  BaseCharacterComponent player,Animator Anim);
+        bool Unequip(CharacterInventory characterInventory, BaseCharacterComponent player);
 
     }
 
@@ -36,11 +37,5 @@ namespace Dreamers.InventorySystem.Interfaces
     {
         Common, Uncommon, Rare, Vintage, Lengendary, Exotic
     }
-    [System.Serializable]
-    public struct StatModifier
-    {
-        public AttributeName Stat;
-        public int BuffValue;
 
-    }
 }
